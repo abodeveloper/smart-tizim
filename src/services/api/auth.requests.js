@@ -4,4 +4,8 @@ function httpPostSignIn(loginDto) {
   return request.post("/login/", loginDto);
 }
 
-export { httpPostSignIn };
+function httpGetMe() {
+  return request.get("/me/");
+}
+
+export { httpPostSignIn, httpGetMe };

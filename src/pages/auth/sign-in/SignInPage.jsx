@@ -5,13 +5,15 @@ import { LockFilled, UserOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Card, Col, Flex, Form, Input, Row, Typography } from "antd";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import { object, string } from "yup";
-import { StyledSignInPage } from "./SignIn.styles";
+import { StyledSignInPage } from "./SignInPage.styles";
+import toast from "@/services/notification/notification";
+import { get } from "lodash";
 
-const { Title, Text, Paragraph, Link } = Typography;
+const { Title, Text } = Typography;
 
 const SignInPage = () => {
   const navigate = useNavigate();
@@ -29,19 +31,23 @@ const SignInPage = () => {
     mutationFn: httpPostSignIn,
     mutationKey: ["login"],
     onSuccess: (data) => {
-      setAccessToken(data);
-      setMe(data);
+      setAccessToken(get(data, "data.token"));
       navigate("/");
+    },
+    onError: (error) => {
+      toast
+        .setMessage(get(error.response.data.error, "message", "Error"))
+        .setDesc(get(error, "message"))
+        .error();
     },
   });
 
   const {
     handleSubmit,
-    register,
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: { username: "+998935221776", password: "Admin" },
+    defaultValues: { username: "", password: "" },
     resolver: yupResolver(schema),
   });
 
@@ -59,22 +65,24 @@ const SignInPage = () => {
             </Flex>
           </Col>
           <Col span={24}>
-            <Col span={24}>
-              <Flex align="center" justify="center" vertical>
-                <Title level={2}>{t("Kirish", { ns: "auth" })}</Title>
-                <Text>
-                  {t(
-                    "Iltimos, tizimga kirish uchun hisob ma'lumotlarini kiriting.",
-                    {
-                      ns: "auth",
-                    }
-                  )}
-                </Text>
-              </Flex>
-            </Col>
+            <Flex align="center" justify="center" vertical>
+              <Title level={2}>{t("Kirish", { ns: "auth" })}</Title>
+              <Text>
+                {t(
+                  "Iltimos, tizimga kirish uchun hisob ma'lumotlarini kiriting.",
+                  { ns: "auth" }
+                )}
+              </Text>
+            </Flex>
           </Col>
           <Col span={24}>
-            <Form onFinish={handleSubmit(onSubmit)} layout="vertical">
+            <Form
+              layout="vertical"
+              className="login-form"
+              name="login-form"
+              size="large"
+              onFinish={handleSubmit(onSubmit)}
+            >
               <Flex justify="center" vertical gap={"15px"}>
                 <Form.Item
                   label="Username"
@@ -82,10 +90,16 @@ const SignInPage = () => {
                   help={errors.username?.message}
                   required={true}
                 >
-                  <Input
-                    {...register("username")}
-                    placeholder="Enter your username"
-                    prefix={<UserOutlined />}
+                  <Controller
+                    name="username"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        placeholder="Enter your username"
+                        prefix={<UserOutlined />}
+                      />
+                    )}
                   />
                 </Form.Item>
 
@@ -95,11 +109,16 @@ const SignInPage = () => {
                   help={errors.password?.message}
                   required={true}
                 >
-                  <Input.Password
-                    {...register("password")}
-                    placeholder="Enter your password"
-                    prefix={<LockFilled />}
-                    required={true}
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => (
+                      <Input.Password
+                        {...field}
+                        placeholder="Enter your password"
+                        prefix={<LockFilled />}
+                      />
+                    )}
                   />
                 </Form.Item>
 
@@ -109,6 +128,7 @@ const SignInPage = () => {
                     type="primary"
                     htmlType="submit"
                     loading={isLoading}
+                    disabled={isLoading}
                   >
                     Tizimga kirish
                   </Button>

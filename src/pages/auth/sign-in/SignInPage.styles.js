@@ -7,7 +7,7 @@ export const StyledSignInPage = styled.div`
   align-items: center;
   height: 100vh;
   padding: 20px;
-  /* box-sizing: border-box; */
+  background-color: ${(props) => props.theme.colors.backgroundBaseDefault};
 
   .ant-card {
     max-width: 400px;

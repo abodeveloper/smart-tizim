@@ -32,29 +32,7 @@ export const StyledCustomDataTable = styled(Table)`
   }
 `;
 
-const CustomDataTable = ({ loading = false, columns, data }) => {
-  const [tableData, setTableData] = useState();
-
-  useEffect(() => {
-    setTableData(data);
-  }, [loading]);
-
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      defaultPageSize: 10,
-      showSizeChanger: true,
-      pageSizeOptions: ["5", "10", "50", "100"],
-    },
-  });
-
-  const handleTableChange = (pagination, filters, sorter) => {
-    setTableParams({ ...tableParams, pagination });
-
-    console.log(pagination);
-    console.log(filters);
-    console.log(sorter);
-  };
-
+const CustomDataTable = ({ columns, data, pagination, loading, onChange }) => {
   return (
     <Space direction="vertical" size="large" style={{ width: "100%" }}>
       <>
@@ -64,19 +42,25 @@ const CustomDataTable = ({ loading = false, columns, data }) => {
               <Empty description={"No data"} style={{ padding: "50px 0" }} />
             ),
           }}
-          loading={loading}
-          columns={columns}
-          rowKey={"id"}
           style={{ maxWidth: "100%" }}
           scroll={{ x: true }}
-          dataSource={tableData}
-          pagination={{
-            ...tableParams.pagination,
-            showSizeChanger: true,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`,
-          }}
-          onChange={handleTableChange}
+          columns={columns}
+          rowKey={(record) => record.id}
+          dataSource={data}
+          pagination={
+            pagination
+              ? {
+                  current: pagination.current,
+                  pageSize: pagination.pageSize,
+                  total: pagination.total,
+                  showSizeChanger: true,
+                  showTotal: (total, range) =>
+                    `${range[0]}-${range[1]} of ${total} items`,
+                }
+              : false
+          }
+          loading={loading}
+          onChange={onChange}
         />
       </>
     </Space>

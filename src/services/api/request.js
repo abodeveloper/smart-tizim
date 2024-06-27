@@ -17,7 +17,7 @@ request.interceptors.request.use(
       accessToken = get(JSON.parse(authStore), "state.accessToken", "");
     }
 
-    config.headers["Authorization"] = `Bearer ${accessToken}`;
+    config.headers["Authorization"] = ` token ${accessToken}`;
     return config;
   },
   (error) => {
@@ -35,15 +35,15 @@ request.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (
-      error.response?.status === 401 &&
-      window.location.pathname !== "auth/sign-in"
-    ) {
-      window.location.href = "/auth/sign-in";
-    }
-    if (error.response?.status === 403) {
-      window.location.href = "/";
-    }
+    // if (
+    //   error.response?.status === 401 &&
+    //   window.location.pathname !== "auth/sign-in"
+    // ) {
+    //   window.location.href = "/auth/sign-in";
+    // }
+    // if (error.response?.status === 403) {
+    //   window.location.href = "/";
+    // }
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error);

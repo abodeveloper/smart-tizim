@@ -18,6 +18,8 @@ const DashboardPage = lazy(() =>
   import("@/pages/admin/dashboard/DashboardPage")
 );
 
+const ProductsPage = lazy(() => import("@/pages/admin/products/ProductsPage"));
+
 // Not found page
 const NotFoundPage = lazy(() => import("@/pages/admin/not-found/NotFoundPage"));
 
@@ -38,6 +40,7 @@ const Router = () => {
               <Route path="admin">
                 <Route index element={<Navigate to="dashboard" />} />
                 <Route path={"dashboard"} element={<DashboardPage />} />
+                <Route path={"products"} element={<ProductsPage />} />
                 <Route path={"*"} element={<NotFoundPage />} />
               </Route>{" "}
             </Route>

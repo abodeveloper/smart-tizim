@@ -88,7 +88,7 @@ const Sidebar = ({ openSidebar }) => {
     });
 
     setMenus(updatedMenu);
-  }, []);
+  }, [location.pathname]);
 
   const handleCategoryClick = (clickedItem) => {
     const updatedMenu = MENUS.map((menu) =>
