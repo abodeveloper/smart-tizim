@@ -5,6 +5,9 @@ import lightTheme from "./styles/themes/lightTheme";
 import darkTheme from "./styles/themes/darkTheme";
 import GlobalStyles from "./styles/global.styles";
 import { ConfigProvider, theme } from "antd";
+import uzUZ from "antd/locale/uz_UZ";
+import ruRU from "antd/locale/ru_RU";
+import enUS from "antd/locale/en_US";
 
 function App() {
   const { mode } = useThemeStore();
@@ -28,7 +31,7 @@ function App() {
   };
 
   return (
-    <ConfigProvider theme={config}>
+    <ConfigProvider theme={config} locale={uzUZ}>
       <ThemeProvider theme={THEME}>
         <GlobalStyles />
         <Router />

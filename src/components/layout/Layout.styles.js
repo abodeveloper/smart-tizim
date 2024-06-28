@@ -282,7 +282,7 @@ export const Header = styled.div`
   box-sizing: border-box;
   background-color: ${(props) => props.theme.colors.backgroundBaseDefault};
   border-bottom: 1px solid ${(props) => props.theme.colors.borderNormal};
-
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;

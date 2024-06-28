@@ -15,9 +15,16 @@ request.interceptors.request.use(
     const authStore = localStorage.getItem("authStore");
     if (authStore) {
       accessToken = get(JSON.parse(authStore), "state.accessToken", "");
+      if (accessToken) {
+        config.headers["Authorization"] = `token ${accessToken}`;
+      }
     }
 
-    config.headers["Authorization"] = ` token ${accessToken}`;
+    // config.headers["Authorization"] = `token ${accessToken}`;
+
+    // config.headers[
+    //   "Authorization"
+    // ] = `token 48837c6a139e938f36bc42fc23f0dded4a4a926c`;
     return config;
   },
   (error) => {

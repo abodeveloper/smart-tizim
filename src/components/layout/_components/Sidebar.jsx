@@ -77,6 +77,37 @@ const Sidebar = ({ openSidebar }) => {
         },
       ],
     },
+    {
+      label: "MAHSULOT",
+      icon: <RiSettings6Fill />,
+      children: [
+        {
+          title: "Mahsulot",
+          path: "/products/products",
+          icon: <RiCopperCoinFill />,
+        },
+        {
+          title: "Omborga mahsulot",
+          path: "/products/products",
+          icon: <RiCopperCoinFill />,
+        },
+        {
+          title: "Kategoriya",
+          path: "/products/products",
+          icon: <RiCopperCoinFill />,
+        },
+        {
+          title: "Format",
+          path: "/products/products",
+          icon: <RiCopperCoinFill />,
+        },
+        {
+          title: "O'chirilgan mahsulotlar",
+          path: "/products/products",
+          icon: <RiCopperCoinFill />,
+        },
+      ],
+    },
   ]);
 
   useEffect(() => {

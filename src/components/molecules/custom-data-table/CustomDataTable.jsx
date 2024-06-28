@@ -28,7 +28,7 @@ export const StyledCustomDataTable = styled(Table)`
   }
 
   .ant-table-pagination {
-    margin: 20px 0 !important;
+    margin: 30px 0 !important;
   }
 `;
 
@@ -38,10 +38,17 @@ const CustomDataTable = ({ columns, data, pagination, loading, onChange }) => {
       <>
         <StyledCustomDataTable
           locale={{
-            emptyText: (
-              <Empty description={"No data"} style={{ padding: "50px 0" }} />
-            ),
+            // emptyText: (
+            //   <Empty description={"No data"} style={{ padding: "50px 0" }} />
+            // ),
+            // filterTitle: "Filter menu",
+            // filterConfirm: "Saqlash",
+            filterReset: "Tozalash",
+            // filterEmptyText: "Filtrlar yo'q",
+            // filterCheckall: "Barcha elementlarni tanlash",
+            // filterSearchPlaceholder: "Filtrlarda qidiruv",
           }}
+          bordered={true}
           style={{ maxWidth: "100%" }}
           scroll={{ x: true }}
           columns={columns}

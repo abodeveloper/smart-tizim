@@ -29,20 +29,18 @@ const Router = () => {
       <Suspense fallback={<PageSpinner />}>
         <IsAuth>
           <Routes>
-            {/* <Route path={"/"} element={<Layout />}>
-              <Route index element={<Navigate to="/dashboard" replace />} />
-              <Route path={"dashboard"} element={<DashboardPage />} />
-              <Route path={"*"} element={<NotFoundPage />} />
-            </Route> */}
-
             <Route path={"/"} element={<Layout />}>
               <Route index element={<Navigate to="admin" />} />
               <Route path="admin">
                 <Route index element={<Navigate to="dashboard" />} />
                 <Route path={"dashboard"} element={<DashboardPage />} />
+                <Route path={"*"} element={<NotFoundPage />} />
+              </Route>
+              <Route path="products">
+                <Route index element={<Navigate to="products" />} />
                 <Route path={"products"} element={<ProductsPage />} />
                 <Route path={"*"} element={<NotFoundPage />} />
-              </Route>{" "}
+              </Route>
             </Route>
           </Routes>
         </IsAuth>

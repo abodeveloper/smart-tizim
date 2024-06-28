@@ -12,6 +12,10 @@ export const StyledSignInPage = styled.div`
   .ant-card {
     max-width: 400px;
   }
+
+  .logo-box {
+    color: ${(props) => props.theme.colors.primaryColor};
+  }
 `;
 
 export const TitleBox = styled.div`
