@@ -8,4 +8,8 @@ function httpGetProducts(page, page_size, filters) {
   );
 }
 
-export { httpGetProducts };
+function httpPostProduct() {
+  return request.post(`/api/products/`);
+}
+
+export { httpGetProducts, httpPostProduct };

@@ -18,7 +18,13 @@ const DashboardPage = lazy(() =>
   import("@/pages/admin/dashboard/DashboardPage")
 );
 
-const ProductsPage = lazy(() => import("@/pages/admin/products/ProductsPage"));
+//Product
+const ProductsPage = lazy(() =>
+  import("@/pages/products/products/ProductsPage")
+);
+const CreateProductsPage = lazy(() =>
+  import("@/pages/products/products/CreateProductsPage")
+);
 
 // Not found page
 const NotFoundPage = lazy(() => import("@/pages/admin/not-found/NotFoundPage"));
@@ -39,6 +45,10 @@ const Router = () => {
               <Route path="products">
                 <Route index element={<Navigate to="products" />} />
                 <Route path={"products"} element={<ProductsPage />} />
+                <Route
+                  path={"products/create"}
+                  element={<CreateProductsPage />}
+                />
                 <Route path={"*"} element={<NotFoundPage />} />
               </Route>
             </Route>
