@@ -1,28 +1,28 @@
 import CustomDataTable from "@/components/molecules/custom-data-table/CustomDataTable";
+import PageTitle from "@/components/molecules/page-title/PageTitle";
+import useProductCategories from "@/hooks/api/useProductCategories";
+import useProductFormats from "@/hooks/api/useProductFormats";
 import { useErrorNotification } from "@/hooks/helpers/useErrorNotification";
+import useProductTypes from "@/hooks/useProductTypes";
 import { httpGetProducts } from "@/services/api/products.requests";
 import { objectToQueryString } from "@/utils/helpers";
-import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Button, Col, Flex, Row, Tag, Typography } from "antd";
-import { get } from "lodash";
-import { useEffect, useState } from "react";
 import {
+  ClearOutlined,
   DeleteFilled,
-  EyeFilled,
   EditFilled,
+  EyeFilled,
   HomeOutlined,
   PlusOutlined,
-  ClearOutlined,
 } from "@ant-design/icons";
-import useProductFormats from "@/hooks/api/useProductFormats";
-import useProductCategories from "@/hooks/api/useProductCategories";
-import { useTheme } from "styled-components";
-import useProductTypes from "@/hooks/useProductTypes";
-import PageTitle from "@/components/molecules/page-title/PageTitle";
+import { RiListSettingsFill } from "@remixicon/react";
+import { useQuery } from "@tanstack/react-query";
+import { Breadcrumb, Button, Col, Flex, Input, Row, Tag } from "antd";
+import { get } from "lodash";
+import { useEffect, useState } from "react";
+
+const { Search } = Input;
 
 const ProductsPage = () => {
-  const styledComponentsTheme = useTheme();
-
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -30,6 +30,7 @@ const ProductsPage = () => {
   });
 
   const [filters, setFilters] = useState({});
+  const [search, setSearch] = useState("");
 
   const {
     data,
@@ -82,6 +83,7 @@ const ProductsPage = () => {
 
   const clearFilters = () => {
     setFilters({});
+    setSearch("");
   };
 
   const { productFormatsOptions } = useProductFormats();
@@ -151,17 +153,16 @@ const ProductsPage = () => {
       filterSearch: true,
     },
     {
-      title: "Amallar",
+      title: <RiListSettingsFill />,
       key: "operation",
+      align: "center",
       fixed: "right",
       width: 100,
       render: () => (
-        <Flex align="center" justify="space-between">
-          <EyeFilled
-            style={{ color: styledComponentsTheme.colors.primaryColor }}
-          />
-          <EditFilled twoToneColor="red" />
-          <DeleteFilled twoToneColor="red" />
+        <Flex align="center" justify="space-between" gap={"middle"}>
+          <Button type="primary" icon={<EyeFilled />} />
+          <Button icon={<EditFilled />} />
+          <Button danger icon={<DeleteFilled />} />
         </Flex>
       ),
     },
@@ -177,40 +178,55 @@ const ProductsPage = () => {
     },
   ];
 
+  const handleOnSearch = (value) => {
+    setFilters({ ...filters, search: value });
+  };
+
+  const handleChangeSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <Row gutter={[20, 20]}>
       <Col span={24}>
         <Flex align="center" justify="space-between">
           <PageTitle>Mahsulotlar</PageTitle>
-          <Flex align="center" justify="space-between" gap="middle">
-            <Button icon={<ClearOutlined />} onClick={clearFilters}>
-              Tozalash
-            </Button>
-            <Button type="primary" icon={<PlusOutlined />}>
-              Qo'shish
-            </Button>
-          </Flex>
         </Flex>
       </Col>
       <Col span={24}>
         <Breadcrumb items={BREADCRUMB_ITEMS} />
       </Col>
       <Col span={24}>
-        <Flex align="center" justify="space-between" gap="middle">
-          <Button icon={<ClearOutlined />} onClick={clearFilters}>
-            Tozalash
-          </Button>
-          <Button type="primary" icon={<PlusOutlined />}>
-            Qo'shish
-          </Button>
-        </Flex>
-        <CustomDataTable
-          columns={columns}
-          data={get(data, "results", [])}
-          pagination={pagination}
-          loading={isLoading}
-          onChange={handleTableChange}
-        />
+        <Row gutter={[10, 10]}>
+          <Col xs={24} sm={24} md={24} lg={6} xl={6}>
+            <Search
+              value={search}
+              placeholder="Search"
+              enterButton
+              onSearch={handleOnSearch}
+              onChange={handleChangeSearch}
+            />
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={18} xl={18}>
+            <Flex align="center" justify="end" gap="middle">
+              <Button icon={<ClearOutlined />} onClick={clearFilters}>
+                Tozalash
+              </Button>
+              <Button type="primary" icon={<PlusOutlined />}>
+                Qo'shish
+              </Button>
+            </Flex>
+          </Col>
+          <Col span={24}>
+            <CustomDataTable
+              columns={columns}
+              data={get(data, "results", [])}
+              pagination={pagination}
+              loading={isLoading}
+              onChange={handleTableChange}
+            />
+          </Col>
+        </Row>
       </Col>
     </Row>
   );

@@ -338,6 +338,10 @@ export const Header = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  @media only screen and ${devices.md} {
+    padding: 0 15px;
+  }
+
   .switch-theme {
     width: 35px;
     height: 35px;
@@ -389,4 +393,8 @@ export const Content = styled.div`
   box-sizing: border-box;
   min-height: calc(100vh - 70px);
   background-color: ${(props) => props.theme.colors.backgroundBaseDefault};
+
+  @media only screen and ${devices.md} {
+    padding: 30px 15px;
+  }
 `;
