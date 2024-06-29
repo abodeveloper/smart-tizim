@@ -197,7 +197,7 @@ const ProductsPage = () => {
         <Breadcrumb items={BREADCRUMB_ITEMS} />
       </Col>
       <Col span={24}>
-        <Row gutter={[10, 10]}>
+        <Row gutter={[20, 20]}>
           <Col xs={24} sm={24} md={24} lg={6} xl={6}>
             <Search
               value={search}
