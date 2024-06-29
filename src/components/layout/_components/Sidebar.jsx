@@ -10,13 +10,14 @@ import {
   RiTeamFill,
   RiUserSettingsFill,
   RiSettings6Fill,
+  RiArrowLeftSLine,
 } from "@remixicon/react";
 import * as S from "../Layout.styles";
 import Category from "./Category";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const Sidebar = ({ openSidebar }) => {
+const Sidebar = ({ openSidebar, toggleSidebar }) => {
   const location = useLocation();
 
   const [MENUS, setMenus] = useState([
@@ -88,22 +89,22 @@ const Sidebar = ({ openSidebar }) => {
         },
         {
           title: "Omborga mahsulot",
-          path: "/products/products",
+          path: "/products/products-add",
           icon: <RiCopperCoinFill />,
         },
         {
           title: "Kategoriya",
-          path: "/products/products",
+          path: "/products/category",
           icon: <RiCopperCoinFill />,
         },
         {
           title: "Format",
-          path: "/products/products",
+          path: "/products/formats",
           icon: <RiCopperCoinFill />,
         },
         {
           title: "O'chirilgan mahsulotlar",
-          path: "/products/products",
+          path: "/products/deleted-products",
           icon: <RiCopperCoinFill />,
         },
       ],
@@ -132,7 +133,13 @@ const Sidebar = ({ openSidebar }) => {
 
   return (
     <S.Sidebar openSidebar={openSidebar}>
-      <div className="logo-box">{openSidebar ? "LOGO" : "L"}</div>
+      <div className="logo-box">
+        <div className="logo">{openSidebar ? "LOGO" : "L"} </div>
+        <div className="mobile-open-close-btn" onClick={() => toggleSidebar()}>
+          <RiArrowLeftSLine />
+        </div>
+      </div>
+
       <div className="menu-box">
         <div className="categories">
           {MENUS.map((item, index) => (

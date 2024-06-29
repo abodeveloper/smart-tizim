@@ -5,6 +5,7 @@ import Header from "./_components/Header";
 import Sidebar from "./_components/Sidebar";
 
 const DashboardLayout = () => {
+  
   const [openSidebar, setOpenSidebar] = useState(true);
 
   const toggleSidebar = () => {
@@ -13,7 +14,7 @@ const DashboardLayout = () => {
 
   return (
     <S.Layout openSidebar={openSidebar}>
-      <Sidebar openSidebar={openSidebar} />
+      <Sidebar openSidebar={openSidebar} toggleSidebar={toggleSidebar} />
       <div className="content-box">
         <Header openSidebar={openSidebar} toggleSidebar={toggleSidebar} />
         <Content />

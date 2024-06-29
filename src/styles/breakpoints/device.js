@@ -7,7 +7,7 @@ const size = {
   xxl: "1920px", // for big screens
 };
 
-export const device = {
+export const devices = {
   xs: `(max-width: ${size.xs})`,
   sm: `(max-width: ${size.sm})`,
   md: `(max-width: ${size.md})`,
