@@ -99,11 +99,14 @@ export const Sidebar = styled.div`
       }
     }};
 
+    .mobile-open-close-btn {
+      display: none;
+    }
+
     @media only screen and ${devices.md} {
       padding: 0px 15px;
       display: flex;
       justify-content: space-between;
-
       .mobile-open-close-btn {
         border: 1px solid ${(props) => props.theme.colors.borderNormal};
         height: 30px;
