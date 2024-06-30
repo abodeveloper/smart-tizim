@@ -1,8 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
-export const useCreateBreadcrumbItems = () => {
+export const useUpdateBreadcrumbItems = () => {
   const { t } = useTranslation();
+
+  const { id } = useParams();
 
   return [
     {
@@ -12,7 +14,10 @@ export const useCreateBreadcrumbItems = () => {
       title: <NavLink to={"/products/products"}>{t("Mahsulotlar")}</NavLink>,
     },
     {
-      title: t("Mahsulot qo'shish"),
+      title: t("Mahsulotni tahrirlash"),
+    },
+    {
+      title: id,
     },
   ];
 };

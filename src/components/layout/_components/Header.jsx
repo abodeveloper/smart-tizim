@@ -11,7 +11,7 @@ import {
 } from "@remixicon/react";
 import { Avatar, Button, Dropdown, Flex } from "antd";
 import * as S from "../Layout.styles";
-import { httpGetMe } from "@/services/api/auth.requests";
+import { httpGetMe } from "@/services/api/requests/auth.requests";
 import { useQuery } from "@tanstack/react-query";
 
 const Header = ({ openSidebar, toggleSidebar }) => {

@@ -4,7 +4,7 @@ import CustomDataTable from "@/components/molecules/custom-data-table/CustomData
 import GlobalSearchInput from "@/components/molecules/global-search-input/GlobalSearchInput";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import { useErrorNotification } from "@/hooks/helpers/useErrorNotification";
-import { httpGetProducts } from "@/services/api/products.requests";
+import { httpGetProducts } from "@/services/api/requests/products.requests";
 import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -53,6 +53,7 @@ const ProductsPage = () => {
         objectToQueryString(filters)
       ),
     select: (response) => response.data,
+    keepPreviousData: true,
   });
 
   useErrorNotification({

@@ -25,6 +25,9 @@ const ProductsPage = lazy(() =>
 const CreateProductsPage = lazy(() =>
   import("@/pages/products/products/CreateProductsPage")
 );
+const UpdateProductsPage = lazy(() =>
+  import("@/pages/products/products/UpdateProductsPage")
+);
 
 // Not found page
 const NotFoundPage = lazy(() => import("@/pages/admin/not-found/NotFoundPage"));
@@ -48,6 +51,10 @@ const Router = () => {
                 <Route
                   path={"products/create"}
                   element={<CreateProductsPage />}
+                />
+                <Route
+                  path={"products/update/:id"}
+                  element={<UpdateProductsPage />}
                 />
                 <Route path={"*"} element={<NotFoundPage />} />
               </Route>

@@ -1,5 +1,5 @@
-import { httpGetAllProductCategories } from "@/services/api/product-categories.requests";
-import { httpGetAllProductFormats } from "@/services/api/product-format.requests";
+import { httpGetAllProductCategories } from "@/services/api/requests/product-categories.requests";
+import { httpGetAllProductFormats } from "@/services/api/requests/product-format.requests";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 
@@ -22,6 +22,7 @@ const useProductCategories = (changeState) => {
     () =>
       data.map((option) => ({
         text: `${option.name}`,
+        label: `${option.name}`,
         value: option.id,
       })),
     [data]

@@ -1,4 +1,4 @@
-import { httpGetAllProductFormats } from "@/services/api/product-format.requests";
+import { httpGetAllProductFormats } from "@/services/api/requests/product-format.requests";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 
@@ -21,6 +21,7 @@ const useProductFormats = (changeState) => {
     () =>
       data.map((option) => ({
         text: `${option.name}`,
+        label: `${option.name}`,
         value: option.id,
       })),
     [data]

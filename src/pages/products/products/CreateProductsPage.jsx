@@ -1,24 +1,40 @@
+import BackButton from "@/components/molecules/back-button/BackButton";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
+import { httpPostProduct } from "@/services/api/requests/products.requests";
+import {
+  handleErrorNotification,
+  handleSuccessNotification,
+  scrollToTop,
+} from "@/utils/helpers";
+import { useMutation } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import ProductForm from "./_components/ProductForm";
 import { useCreateBreadcrumbItems } from "./breadcrumbs/useCreateBreadcrumb";
-import BackButton from "@/components/molecules/back-button/BackButton";
+import { useParams } from "react-router-dom";
 
 const CreateProductsPage = () => {
   const { t } = useTranslation();
 
-  //   const mutation = useMutation(httpPostProduct, {
-  //     onSuccess: scrollToTop,
-  //     onError: scrollToTop,
-  //   });
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: httpPostProduct,
+    onSuccess: () => {
+      scrollToTop();
+      handleSuccessNotification();
+    },
+    onError: (error) => {
+      scrollToTop();
+      handleErrorNotification(error);
+    },
+  });
 
   const handleSubmit = async (values, reset) => {
-    // const response = await mutation.mutateAsync(values);
-    // if (response?.status === 201) {
-    //   reset();
-    // }
+    const response = await mutateAsync(values);
+
+    if (response?.status === 201) {
+      reset();
+    }
   };
 
   const BREADCRUMB_ITEMS = useCreateBreadcrumbItems();
@@ -42,7 +58,7 @@ const CreateProductsPage = () => {
           <ProductForm
             handleSubmit={handleSubmit}
             defaultValues={{}}
-            // actionLoading={isLoading}
+            actionLoading={isPending}
           />
         </Col>
       </Row>

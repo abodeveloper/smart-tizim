@@ -1,4 +1,4 @@
-import request from "./request";
+import request from "../request";
 
 function httpGetAllProductFormats() {
   return request.get(`/api/all_formats/`);

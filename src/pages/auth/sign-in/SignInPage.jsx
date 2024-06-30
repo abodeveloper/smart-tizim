@@ -1,17 +1,18 @@
-import { httpPostSignIn } from "@/services/api/auth.requests";
+import CustomPasswordInput from "@/components/atoms/form-elements/custom-password-input/CustomPasswordInput";
+import { httpPostSignIn } from "@/services/api/requests/auth.requests";
 import useAuthStore from "@/store/useAuthStore";
 import useUserStore from "@/store/useUserStore";
-import { LockFilled, UserOutlined } from "@ant-design/icons";
+import { handleErrorNotification } from "@/utils/helpers";
+import { UserOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Card, Col, Flex, Form, Input, Row, Typography } from "antd";
-import { useForm, Controller } from "react-hook-form";
+import { get } from "lodash";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import { object, string } from "yup";
 import { StyledSignInPage } from "./SignInPage.styles";
-import toast from "@/services/notification/notification";
-import { get } from "lodash";
 
 const { Title, Text } = Typography;
 
@@ -27,18 +28,15 @@ const SignInPage = () => {
     password: string().required("Password is required !!!"),
   });
 
-  const { mutate, isLoading } = useMutation({
-    mutationFn: httpPostSignIn,
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["login"],
+    mutationFn: httpPostSignIn,
     onSuccess: (data) => {
       setAccessToken(get(data, "data.token"));
       navigate("/");
     },
     onError: (error) => {
-      toast
-        .setMessage(get(error.response.data.error, "message", "Error"))
-        .setDesc(get(error, "message"))
-        .error();
+      handleErrorNotification(error);
     },
   });
 
@@ -52,7 +50,7 @@ const SignInPage = () => {
   });
 
   const onSubmit = (values) => {
-    mutate(values);
+    mutateAsync(values);
   };
 
   return (
@@ -66,11 +64,10 @@ const SignInPage = () => {
           </Col>
           <Col span={24}>
             <Flex align="center" justify="center" vertical>
-              <Title level={2}>{t("Kirish", { ns: "auth" })}</Title>
+              <Title level={2}>{t("Kirish")}</Title>
               <Text>
                 {t(
-                  "Iltimos, tizimga kirish uchun hisob ma'lumotlarini kiriting.",
-                  { ns: "auth" }
+                  "Iltimos, tizimga kirish uchun hisob ma'lumotlarini kiriting."
                 )}
               </Text>
             </Flex>
@@ -96,7 +93,7 @@ const SignInPage = () => {
                     render={({ field }) => (
                       <Input
                         {...field}
-                        placeholder="Enter your username"
+                        placeholder="Username ni kiriting"
                         prefix={<UserOutlined />}
                       />
                     )}
@@ -113,33 +110,33 @@ const SignInPage = () => {
                     name="password"
                     control={control}
                     render={({ field }) => (
-                      <Input.Password
+                      <CustomPasswordInput
                         {...field}
-                        placeholder="Enter your password"
-                        prefix={<LockFilled />}
+                        placeholder={t("Parolni kiriting")}
                       />
                     )}
                   />
                 </Form.Item>
-
                 <Form.Item>
                   <Button
                     style={{ width: "100%" }}
                     type="primary"
                     htmlType="submit"
-                    loading={isLoading}
-                    disabled={isLoading}
+                    loading={isPending}
+                    disabled={isPending}
                   >
-                    Tizimga kirish
+                    {t("Tizimga kirish")}
                   </Button>
                 </Form.Item>
                 <Form.Item>
                   <Flex align="center" justify="center">
                     <Text>
                       <span style={{ marginRight: "5px" }}>
-                        Akkauntingiz bo'lmasa:
+                        {t("Akkauntingiz bo'lmasa")}:
                       </span>
-                      <NavLink to={"/auth/sign-up"}>Ro'yxatdan o'ting</NavLink>
+                      <NavLink to={"/auth/sign-up"}>
+                        {t("Ro'yxatdan o'ting")}
+                      </NavLink>
                     </Text>
                   </Flex>
                 </Form.Item>

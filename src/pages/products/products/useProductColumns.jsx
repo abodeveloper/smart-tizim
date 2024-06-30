@@ -5,11 +5,47 @@ import { RiListSettingsFill } from "@remixicon/react";
 import useProductFormats from "@/hooks/api/useProductFormats";
 import useProductCategories from "@/hooks/api/useProductCategories";
 import useProductTypes from "@/hooks/useProductTypes";
+import { useNavigate } from "react-router-dom";
+import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { httpDeleteProduct } from "@/services/api/requests/products.requests";
+import {
+  handleErrorNotification,
+  handleSuccessNotification,
+} from "@/utils/helpers";
 
 export const useProductColumns = (pagination, filters, setFilters) => {
+  const navigate = useNavigate();
+
   const { productFormatsOptions } = useProductFormats();
   const { productCategoriesOptions } = useProductCategories();
   const productTypes = useProductTypes();
+
+  const queryClient = useQueryClient();
+
+  const deleteMutate = useMutation({
+    mutationFn: httpDeleteProduct,
+    onSuccess: () => {
+      handleSuccessNotification();
+      queryClient.invalidateQueries({
+        queryKey: [
+          "products",
+          {
+            page: pagination.current,
+            pageSize: pagination.pageSize,
+            filters: filters,
+          },
+        ],
+      });
+    },
+    onError: (error) => {
+      handleErrorNotification(error);
+    },
+  });
+
+  const handleDelete = (id) => {
+    deleteMutate.mutate(id);
+  };
 
   return [
     {
@@ -75,14 +111,22 @@ export const useProductColumns = (pagination, filters, setFilters) => {
     },
     {
       title: <RiListSettingsFill size={15} />,
+      dataIndex: "id",
       key: "operation",
       align: "center",
       width: 100,
-      render: () => (
+      render: (id) => (
         <Flex align="center" justify="space-between" gap={"middle"}>
           <Button type="primary" icon={<EyeFilled />} />
-          <Button icon={<EditFilled />} />
-          <Button danger icon={<DeleteFilled />} />
+
+          <Button
+            onClick={() => navigate(`/products/products/update/${id}`)}
+            icon={<EditFilled />}
+          />
+          <CustomModalConfirm
+            trigger={<Button danger icon={<DeleteFilled />} />}
+            onOk={() => handleDelete(id)}
+          />
         </Flex>
       ),
     },
