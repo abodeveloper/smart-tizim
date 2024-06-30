@@ -7,13 +7,15 @@ import { useErrorNotification } from "@/hooks/helpers/useErrorNotification";
 import { httpGetProducts } from "@/services/api/requests/products.requests";
 import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Col, Flex, Row } from "antd";
+import { Breadcrumb, Button, Col, Flex, Row } from "antd";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useProductColumns } from "./useProductColumns";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useListBreadcrumbItems } from "./breadcrumbs/useListBreadcrumb";
+import UploadModal from "@/components/molecules/upload-modal/UploadModal";
+import UploadButton from "@/components/molecules/upload-button/UploadButton";
 
 const ProductsPage = () => {
   const { t } = useTranslation();
@@ -121,12 +123,9 @@ const ProductsPage = () => {
             </Col>
             <Col xs={24} sm={24} md={24} lg={18} xl={18}>
               <Flex align="center" justify="end" gap="middle">
-                <ClearFilterButton onClick={clearFilters}>
-                  {t("Filterni tozlash")}
-                </ClearFilterButton>
-                <CreateButton onClick={() => navigate("create")}>
-                  {t("Mahsulot qo'shish")}
-                </CreateButton>
+                <UploadButton />
+                <ClearFilterButton onClick={clearFilters} />
+                <CreateButton onClick={() => navigate("create")} />
               </Flex>
             </Col>
             <Col span={24}>

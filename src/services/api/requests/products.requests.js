@@ -12,6 +12,14 @@ function httpGetProductOne(id) {
   return request.get(`/api/products/${id}/`);
 }
 
+function httpImportProducts(data) {
+  return request.post(`/api/import_products/`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
 function httpPostProduct(data) {
   return request.post(`/api/product_create/`, data);
 }
@@ -27,6 +35,7 @@ function httpDeleteProduct(id) {
 export {
   httpGetProducts,
   httpGetProductOne,
+  httpImportProducts,
   httpPostProduct,
   httpUpdateProduct,
   httpDeleteProduct,

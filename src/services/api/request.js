@@ -3,7 +3,6 @@ import axios from "axios";
 import { get } from "lodash";
 
 const request = axios.create({
-  // ? base url should be moved to the env ?
   baseURL: config.API_ROOT,
 });
 

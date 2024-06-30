@@ -43,7 +43,7 @@ const ProductForm = ({
     watch,
     ...rest
   } = useForm({
-    defaultValues: { ...defaultValues },
+    defaultValues,
     resolver,
   });
 
@@ -51,7 +51,7 @@ const ProductForm = ({
     reset(defaultValues);
   }, [defaultValues]);
 
-  const handleReset = () => reset();
+  const handleReset = () => reset({});
 
   const onSubmit = rest.handleSubmit((values) => {
     handleSubmit(values, handleReset);
