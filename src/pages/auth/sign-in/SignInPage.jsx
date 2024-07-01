@@ -36,7 +36,7 @@ const SignInPage = () => {
       navigate("/");
     },
     onError: (error) => {
-      handleErrorNotification(error);
+      console.log(error);
     },
   });
 

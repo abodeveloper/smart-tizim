@@ -1,6 +1,7 @@
 import config from "@/utils/config";
+import { handleErrorNotification } from "@/utils/helpers";
 import axios from "axios";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 
 const request = axios.create({
   baseURL: config.API_ROOT,
@@ -18,12 +19,6 @@ request.interceptors.request.use(
         config.headers["Authorization"] = `token ${accessToken}`;
       }
     }
-
-    // config.headers["Authorization"] = `token ${accessToken}`;
-
-    // config.headers[
-    //   "Authorization"
-    // ] = `token 48837c6a139e938f36bc42fc23f0dded4a4a926c`;
     return config;
   },
   (error) => {
@@ -41,6 +36,10 @@ request.interceptors.response.use(
     return response;
   },
   async (error) => {
+    if (!isEmpty(error)) {
+      handleErrorNotification(error);
+    }
+
     // if (
     //   error.response?.status === 401 &&
     //   window.location.pathname !== "auth/sign-in"

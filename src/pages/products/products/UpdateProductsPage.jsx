@@ -1,16 +1,13 @@
-import BackButton from "@/components/molecules/back-button/BackButton";
+import BackButton from "@/components/atoms/back-button/BackButton";
 import ErrorResult from "@/components/molecules/error-result/ErrorResult";
+import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import { prepareProductForEdit } from "@/services/api/prepare-data/products";
 import {
   httpGetProductOne,
   httpUpdateProduct,
 } from "@/services/api/requests/products.requests";
-import {
-  handleErrorNotification,
-  handleSuccessNotification,
-  scrollToTop,
-} from "@/utils/helpers";
+import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
 import { get } from "lodash";
@@ -19,7 +16,6 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import ProductForm from "./_components/ProductForm";
 import { useUpdateBreadcrumbItems } from "./breadcrumbs/useUpdateBreadcrumb";
-import PageLoader from "@/components/molecules/page-loader/PageLoader";
 
 const UpdateProductsPage = () => {
   const { t } = useTranslation();
@@ -40,15 +36,13 @@ const UpdateProductsPage = () => {
     queryClient.invalidateQueries({ queryKey: ["product-one", id] });
   };
 
-  const handleError = (error) => {
-    scrollToTop();
-    handleErrorNotification(error);
-  };
-
   const { isPending, mutateAsync } = useMutation({
     mutationFn: httpUpdateProduct,
     onSuccess: handleSuccess,
-    onError: (error) => handleError(error),
+    onError: (error) => {
+      scrollToTop();
+      console.log(error);
+    },
   });
 
   const handleSubmit = async (values, reset) => {

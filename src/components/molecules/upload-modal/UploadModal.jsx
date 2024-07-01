@@ -1,4 +1,8 @@
 import { httpImportProducts } from "@/services/api/requests/products.requests";
+import {
+  handleErrorNotification,
+  handleSuccessNotification,
+} from "@/utils/helpers";
 import { UploadOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
@@ -11,7 +15,7 @@ const schema = yup.object().shape({
   file: yup.mixed().required("Fayl kerak"),
 });
 
-const UploadModal = ({ isModalVisible, handleCancel, handleOk }) => {
+const UploadModal = ({ isModalVisible, handleCancel, uploadRequest }) => {
   const { t } = useTranslation();
 
   const { control, handleSubmit, setValue, reset } = useForm({
@@ -19,17 +23,19 @@ const UploadModal = ({ isModalVisible, handleCancel, handleOk }) => {
   });
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: httpImportProducts,
-    onSuccess: () => {},
+    mutationFn: uploadRequest,
+    onSuccess: () => {
+      handleSuccessNotification();
+      handleCancel();
+      reset();
+    },
     onError: (error) => {
-      alert("Error uploading file: " + error.message);
+      console.log(error);
     },
   });
 
   const onSubmit = (data) => {
-    let { uid, ...rest } = data.file[0];
-    console.log({ file: rest.originFileObj });
-    mutateAsync({ file: rest.originFileObj });
+    mutateAsync({ file: data.file[0].originFileObj });
   };
 
   const normFile = (e) => {
@@ -42,9 +48,8 @@ const UploadModal = ({ isModalVisible, handleCancel, handleOk }) => {
   return (
     <Modal
       title={t("Excel faylini yuklash")}
-      open={isModalVisible} // Correct prop name
+      open={isModalVisible}
       onCancel={handleCancel}
-      centered={true}
       okText={t("Yuborish")}
       cancelText={t("Bekor qilish")}
       onOk={handleSubmit(onSubmit)}

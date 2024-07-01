@@ -1,24 +1,23 @@
-import { get } from "lodash";
-import { Tag, Button, Flex } from "antd";
-import { EyeFilled, EditFilled, DeleteFilled } from "@ant-design/icons";
-import { RiListSettingsFill } from "@remixicon/react";
-import useProductFormats from "@/hooks/api/useProductFormats";
-import useProductCategories from "@/hooks/api/useProductCategories";
-import useProductTypes from "@/hooks/useProductTypes";
-import { useNavigate } from "react-router-dom";
 import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useProductCategories from "@/hooks/api/useProductCategories";
+import useProductFormats from "@/hooks/api/useProductFormats";
+import useStorages from "@/hooks/api/useStorages";
+import useProductTypes from "@/hooks/useProductTypes";
 import { httpDeleteProduct } from "@/services/api/requests/products.requests";
-import {
-  handleErrorNotification,
-  handleSuccessNotification,
-} from "@/utils/helpers";
+import { handleSuccessNotification } from "@/utils/helpers";
+import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
+import { RiListSettingsFill } from "@remixicon/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button, Flex, Tag } from "antd";
+import { get } from "lodash";
+import { useNavigate } from "react-router-dom";
 
 export const useProductColumns = (pagination, filters, setFilters) => {
   const navigate = useNavigate();
 
   const { productFormatsOptions } = useProductFormats();
   const { productCategoriesOptions } = useProductCategories();
+  const { storagesOptions } = useStorages();
   const productTypes = useProductTypes();
 
   const queryClient = useQueryClient();
@@ -39,7 +38,7 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       });
     },
     onError: (error) => {
-      handleErrorNotification(error);
+      console.log(error);
     },
   });
 
@@ -92,6 +91,16 @@ export const useProductColumns = (pagination, filters, setFilters) => {
           case "Sanalmaydigan":
             return <Tag color={"red"}>{product_type}</Tag>;
         }
+      },
+    },
+    {
+      title: "Ombor",
+      dataIndex: "storage",
+      filters: [...storagesOptions],
+      filteredValue: filters.storage_id || null,
+      filterSearch: true,
+      render: (storage) => {
+        return <>{get(storage, "name", "")}</>;
       },
     },
     {

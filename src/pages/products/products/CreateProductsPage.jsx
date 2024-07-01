@@ -1,4 +1,4 @@
-import BackButton from "@/components/molecules/back-button/BackButton";
+import BackButton from "@/components/atoms/back-button/BackButton";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import { httpPostProduct } from "@/services/api/requests/products.requests";
 import {
@@ -12,7 +12,6 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import ProductForm from "./_components/ProductForm";
 import { useCreateBreadcrumbItems } from "./breadcrumbs/useCreateBreadcrumb";
-import { useParams } from "react-router-dom";
 
 const CreateProductsPage = () => {
   const { t } = useTranslation();
@@ -25,7 +24,7 @@ const CreateProductsPage = () => {
     },
     onError: (error) => {
       scrollToTop();
-      handleErrorNotification(error);
+      console.log(error);
     },
   });
 
