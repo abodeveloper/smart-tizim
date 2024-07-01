@@ -1,5 +1,6 @@
 import toast from "@/services/notification/notification";
 import { get } from "lodash";
+import { useTranslation } from "react-i18next";
 
 export function objectToQueryString(obj) {
   return Object.keys(obj)
@@ -20,14 +21,15 @@ export function getValidationStatus(errors, fieldName) {
 }
 
 export function handleErrorNotification(error) {
+  const { t } = useTranslation();
   toast
     .setDuration(4)
-    // .setMessage(get(error?.response?.data?.error, "message", "Error"))
-    .setMessage(get(error?.response?.data, "error", "Error"))
-    .setDesc(get(error, "message"))
+    .setDesc(get(error?.response?.data, "message", get(error, "message")))
+    .setMessage(t("Xatolik"))
     .error();
 }
 
 export function handleSuccessNotification() {
-  toast.setDuration(4).setMessage("Muvaffaqiyatli bajarildi !").success();
+  const { t } = useTranslation();
+  toast.setDuration(4).setMessage(t("Muvaffaqiyatli bajarildi !")).success();
 }
