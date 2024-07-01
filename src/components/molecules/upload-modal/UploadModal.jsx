@@ -1,28 +1,38 @@
 import {
-  handleSuccessNotification
+  getValidationStatus,
+  handleSuccessNotification,
 } from "@/utils/helpers";
-import { UploadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, UploadOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
-import { Button, Col, Form, Modal, Row, Upload } from "antd";
+import { Button, Col, Flex, Form, Modal, Row, Upload } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
-
-const schema = yup.object().shape({
-  file: yup.mixed().required("Fayl kerak"),
-});
 
 const UploadModal = ({
   isModalVisible,
   handleCancel,
   uploadRequest,
   refetch,
+  ExampleFileUrl,
 }) => {
   const { t } = useTranslation();
 
-  const { control, handleSubmit, setValue, reset } = useForm({
-    resolver: yupResolver(schema),
+  const schema = yup.object().shape({
+    file: yup.mixed().required("Fayl kerak"),
+  });
+
+  const resolver = yupResolver(schema);
+
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+    reset,
+  } = useForm({
+    resolver,
   });
 
   const { isPending, mutateAsync } = useMutation({
@@ -54,14 +64,45 @@ const UploadModal = ({
       title={t("Excel faylini yuklash")}
       open={isModalVisible}
       onCancel={handleCancel}
-      okText={t("Yuborish")}
-      cancelText={t("Bekor qilish")}
-      onOk={handleSubmit(onSubmit)}
+      footer={[
+        <Flex align="center" justify="space-between">
+          <Button
+            key="example"
+            type="primary"
+            icon={<DownloadOutlined />}
+            href={ExampleFileUrl}
+            download
+          >
+            {t("Namuna uchun")}
+          </Button>
+          <Flex align="center" gap="middle">
+            <Button key="cancel" onClick={handleCancel}>
+              {t("Bekor qilish")}
+            </Button>
+
+            <Button
+              key="submit"
+              type="primary"
+              onClick={handleSubmit(onSubmit)}
+            >
+              {t("Yuborish")}
+            </Button>
+          </Flex>
+        </Flex>,
+      ]}
     >
-      <Form onFinish={handleSubmit(onSubmit)} style={{ marginTop: "20px" }}>
+      <Form
+        layout="vertical"
+        onFinish={handleSubmit(onSubmit)}
+        style={{ margin: "30px 0px" }}
+      >
         <Row gutter={[20, 20]}>
           <Col span={24}>
-            <Form.Item label={t("Fayl")}>
+            <Form.Item
+              label={t("Fayl")}
+              {...getValidationStatus(errors, "file")}
+              required={true}
+            >
               <Controller
                 name="file"
                 control={control}

@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useListBreadcrumbItems } from "./breadcrumbs/useListBreadcrumb";
 import { useProductColumns } from "./useProductColumns";
+import ExampleFileUrl from "@/assets/file/example_products_import.xlsx";
 
 const ProductsPage = () => {
   const { t } = useTranslation();
@@ -122,6 +123,7 @@ const ProductsPage = () => {
                 <UploadButton
                   uploadRequest={httpImportProducts}
                   refetch={refetch}
+                  ExampleFileUrl={ExampleFileUrl}
                 />
                 <ClearFilterButton onClick={clearFilters} />
                 <CreateButton onClick={() => navigate("create")} />

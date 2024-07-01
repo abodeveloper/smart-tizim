@@ -1,6 +1,6 @@
 import toast from "@/services/notification/notification";
 import { get } from "lodash";
-import { useTranslation } from "react-i18next";
+import { NumericFormat } from "react-number-format";
 
 export function objectToQueryString(obj) {
   return Object.keys(obj)
@@ -32,4 +32,16 @@ export function handleErrorNotification(error) {
 export function handleSuccessNotification() {
   // const { t } = useTranslation();
   toast.setDuration(4).setMessage("Muvaffaqiyatli bajarildi !").success();
+}
+
+export function NumberToThousandFormat(number, suffixText = "") {
+  return (
+    <NumericFormat
+      value={number}
+      displayType={"text"}
+      thousandSeparator={" "}
+      suffix={` ${suffixText}`}
+      renderText={(formattedValue) => <>{formattedValue}</>}
+    />
+  );
 }

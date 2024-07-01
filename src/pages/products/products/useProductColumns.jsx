@@ -4,7 +4,10 @@ import useProductFormats from "@/hooks/api/useProductFormats";
 import useStorages from "@/hooks/api/useStorages";
 import useProductTypes from "@/hooks/useProductTypes";
 import { httpDeleteProduct } from "@/services/api/requests/products.requests";
-import { handleSuccessNotification } from "@/utils/helpers";
+import {
+  NumberToThousandFormat,
+  handleSuccessNotification,
+} from "@/utils/helpers.jsx";
 import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
 import { RiListSettingsFill } from "@remixicon/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -66,6 +69,9 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       title: "Narxi",
       dataIndex: "price",
       key: "price",
+      render: (price) => {
+        return <>{NumberToThousandFormat(price, "")}</>;
+      },
     },
     {
       title: "Kategoriya",
@@ -110,7 +116,10 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       render: (current_total_count, item) => {
         return (
           <>
-            {current_total_count} {get(item, "format.name", "")}
+            {NumberToThousandFormat(
+              current_total_count,
+              get(item, "format.name", "")
+            )}
           </>
         );
       },

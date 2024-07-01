@@ -6,7 +6,7 @@ import { UploadOutlined } from "@ant-design/icons";
 
 export const StyledUploadButton = styled(Button)``;
 
-const UploadButton = ({ uploadRequest, refetch, ...rest }) => {
+const UploadButton = ({ uploadRequest, refetch, ExampleFileUrl, ...rest }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -36,6 +36,7 @@ const UploadButton = ({ uploadRequest, refetch, ...rest }) => {
         handleOk={handleOk}
         uploadRequest={uploadRequest}
         refetch={refetch}
+        ExampleFileUrl={ExampleFileUrl}
       />
     </>
   );
