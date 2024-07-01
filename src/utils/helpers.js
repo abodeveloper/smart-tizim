@@ -21,15 +21,15 @@ export function getValidationStatus(errors, fieldName) {
 }
 
 export function handleErrorNotification(error) {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   toast
     .setDuration(4)
-    .setDesc(get(error?.response?.data, "message", get(error, "message")))
-    .setMessage(t("Xatolik"))
+    .setDesc(get(error?.response?.data, "message", get(error, "message", "")))
+    .setMessage("Xatolik")
     .error();
 }
 
 export function handleSuccessNotification() {
-  const { t } = useTranslation();
-  toast.setDuration(4).setMessage(t("Muvaffaqiyatli bajarildi !")).success();
+  // const { t } = useTranslation();
+  toast.setDuration(4).setMessage("Muvaffaqiyatli bajarildi !").success();
 }
