@@ -15,7 +15,12 @@ const schema = yup.object().shape({
   file: yup.mixed().required("Fayl kerak"),
 });
 
-const UploadModal = ({ isModalVisible, handleCancel, uploadRequest }) => {
+const UploadModal = ({
+  isModalVisible,
+  handleCancel,
+  uploadRequest,
+  refetch,
+}) => {
   const { t } = useTranslation();
 
   const { control, handleSubmit, setValue, reset } = useForm({
@@ -28,6 +33,7 @@ const UploadModal = ({ isModalVisible, handleCancel, uploadRequest }) => {
       handleSuccessNotification();
       handleCancel();
       reset();
+      refetch();
     },
     onError: (error) => {
       console.log(error);

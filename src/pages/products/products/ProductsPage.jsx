@@ -119,7 +119,10 @@ const ProductsPage = () => {
             </Col>
             <Col xs={24} sm={24} md={24} lg={18} xl={18}>
               <Flex align="center" justify="end" gap="middle">
-                <UploadButton uploadRequest={httpImportProducts} />
+                <UploadButton
+                  uploadRequest={httpImportProducts}
+                  refetch={refetch}
+                />
                 <ClearFilterButton onClick={clearFilters} />
                 <CreateButton onClick={() => navigate("create")} />
               </Flex>
