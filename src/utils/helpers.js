@@ -22,7 +22,8 @@ export function getValidationStatus(errors, fieldName) {
 export function handleErrorNotification(error) {
   toast
     .setDuration(4)
-    .setMessage(get(error?.response?.data?.error, "message", "Error"))
+    // .setMessage(get(error?.response?.data?.error, "message", "Error"))
+    .setMessage(get(error?.response?.data, "error", "Error"))
     .setDesc(get(error, "message"))
     .error();
 }
