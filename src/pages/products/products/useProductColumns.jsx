@@ -13,9 +13,11 @@ import { RiListSettingsFill } from "@remixicon/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
 import { get } from "lodash";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 export const useProductColumns = (pagination, filters, setFilters) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { productFormatsOptions } = useProductFormats();
@@ -61,12 +63,12 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       },
     },
     {
-      title: "Nomi",
+      title: t("Nomi"),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Narxi",
+      title: t("Narxi"),
       dataIndex: "price",
       key: "price",
       render: (price) => {
@@ -74,7 +76,7 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       },
     },
     {
-      title: "Kategoriya",
+      title: t("Kategoriya"),
       dataIndex: "category",
       key: "category_id",
       render: (category) => {
@@ -85,7 +87,7 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       filterSearch: true,
     },
     {
-      title: "Mahsulot turi",
+      title: t("Mahsulot turi"),
       dataIndex: "product_type",
       filters: [...productTypes],
       filteredValue: filters.product_type || null,
@@ -100,7 +102,7 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       },
     },
     {
-      title: "Ombor",
+      title: t("Ombor"),
       dataIndex: "storage",
       filters: [...storagesOptions],
       filteredValue: filters.storage_id || null,
@@ -110,7 +112,7 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       },
     },
     {
-      title: "Omboragi joriy miqdori",
+      title: t("Omboragi joriy miqdori"),
       dataIndex: "current_total_count",
       key: "format_id",
       render: (current_total_count, item) => {

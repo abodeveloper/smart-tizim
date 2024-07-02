@@ -18,10 +18,14 @@ export const useUpdateBreadcrumbItems = () => {
       ),
     },
     {
-      title: <NavLink to={"/products/products"}>{t("Mahsulotlar")}</NavLink>,
+      title: (
+        <NavLink to={"/products/category"}>
+          {t("Mahsulot kategoriyalari")}
+        </NavLink>
+      ),
     },
     {
-      title: t("Mahsulotni tahrirlash"),
+      title: t("Tahrirlash"),
     },
     {
       title: id,

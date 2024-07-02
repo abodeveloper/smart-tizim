@@ -20,7 +20,7 @@ const UploadModal = ({
   const { t } = useTranslation();
 
   const schema = yup.object().shape({
-    file: yup.mixed().required("Fayl kerak"),
+    file: yup.mixed().required(t("Fayl kerak")),
   });
 
   const resolver = yupResolver(schema);
@@ -38,7 +38,7 @@ const UploadModal = ({
   const { isPending, mutateAsync } = useMutation({
     mutationFn: uploadRequest,
     onSuccess: () => {
-      handleSuccessNotification();
+      handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
       handleCancel();
       reset();
       refetch();

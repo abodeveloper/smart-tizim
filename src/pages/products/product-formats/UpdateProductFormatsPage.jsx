@@ -2,42 +2,40 @@ import BackButton from "@/components/atoms/back-button/BackButton";
 import ErrorResult from "@/components/molecules/error-result/ErrorResult";
 import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
-import { prepareProductForEdit } from "@/services/api/prepare-data/products";
+import { prepareProductFormatForEdit } from "@/services/api/prepare-data/product-formats";
 import {
-  httpGetProductOne,
-  httpUpdateProduct,
-} from "@/services/api/requests/products.requests";
+  httpGetProductFormatOne,
+  httpUpdateProductFormat,
+} from "@/services/api/requests/product-formats.requests";
 import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
 import { get } from "lodash";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import ProductForm from "./_components/ProductForm";
+import FormatForm from "./_components/FormatForm";
 import { useUpdateBreadcrumbItems } from "./breadcrumbs/useUpdateBreadcrumb";
 
-const UpdateProductsPage = () => {
+const UpdateProductFormatsPage = () => {
   const { t } = useTranslation();
 
   const { id } = useParams();
 
-  const queryClient = useQueryClient();
-
   const updateElementState = useQuery({
-    queryKey: ["product-one", id],
-    queryFn: () => httpGetProductOne(id),
-    select: (response) => prepareProductForEdit(response.data),
+    queryKey: ["product-format-one", id],
+    queryFn: () => httpGetProductFormatOne(id),
+    select: (response) => prepareProductFormatForEdit(response.data),
   });
 
   const handleSuccess = () => {
     scrollToTop();
     handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
-    queryClient.invalidateQueries({ queryKey: ["product-one", id] });
+    updateElementState.refetch();
   };
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: httpUpdateProduct,
+    mutationFn: httpUpdateProductFormat,
     onSuccess: handleSuccess,
     onError: (error) => {
       scrollToTop();
@@ -54,12 +52,12 @@ const UpdateProductsPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Mahsulotni tahrirlash")}</title>
+        <title>{t("Formatni tahrirlash")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Mahsulotni tahrirlash")}</PageTitle>
+            <PageTitle>{t("Formatni tahrirlash")}</PageTitle>
             <BackButton />
           </Flex>
         </Col>
@@ -74,7 +72,7 @@ const UpdateProductsPage = () => {
               {updateElementState.error ? (
                 <ErrorResult error={updateElementState.error} />
               ) : (
-                <ProductForm
+                <FormatForm
                   handleSubmit={handleSubmit}
                   defaultValues={get(updateElementState, "data", [])}
                   actionLoading={isPending}
@@ -88,4 +86,4 @@ const UpdateProductsPage = () => {
   );
 };
 
-export default UpdateProductsPage;
+export default UpdateProductFormatsPage;

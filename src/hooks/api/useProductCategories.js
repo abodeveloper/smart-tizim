@@ -1,5 +1,5 @@
 import { httpGetAllProductCategories } from "@/services/api/requests/product-categories.requests";
-import { httpGetAllProductFormats } from "@/services/api/requests/product-format.requests";
+import { httpGetAllProductFormats } from "@/services/api/requests/product-formats.requests";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 

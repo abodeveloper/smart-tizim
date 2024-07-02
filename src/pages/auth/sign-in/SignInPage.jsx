@@ -1,12 +1,13 @@
+import CustomInput from "@/components/atoms/form-elements/custom-input/CustomInput";
 import CustomPasswordInput from "@/components/atoms/form-elements/custom-password-input/CustomPasswordInput";
 import { httpPostSignIn } from "@/services/api/requests/auth.requests";
 import useAuthStore from "@/store/useAuthStore";
 import useUserStore from "@/store/useUserStore";
-import { handleErrorNotification } from "@/utils/helpers";
+import { getValidationStatus } from "@/utils/helpers";
 import { UserOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
-import { Button, Card, Col, Flex, Form, Input, Row, Typography } from "antd";
+import { Button, Card, Col, Flex, Form, Row, Typography } from "antd";
 import { get } from "lodash";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -24,8 +25,8 @@ const SignInPage = () => {
   const { setMe } = useUserStore();
 
   const schema = object().shape({
-    username: string().required("Username is required !!!"),
-    password: string().required("Password is required !!!"),
+    username: string().required(t("Username kiritilishi kerak !")),
+    password: string().required(t("Password kiritilishi kerak !")),
   });
 
   const { mutateAsync, isPending } = useMutation({
@@ -82,18 +83,17 @@ const SignInPage = () => {
             >
               <Flex justify="center" vertical gap={"15px"}>
                 <Form.Item
-                  label="Username"
-                  validateStatus={errors.username ? "error" : ""}
-                  help={errors.username?.message}
+                  label={t("Username")}
+                  {...getValidationStatus(errors, "username")}
                   required={true}
                 >
                   <Controller
                     name="username"
                     control={control}
                     render={({ field }) => (
-                      <Input
+                      <CustomInput
                         {...field}
-                        placeholder="Username ni kiriting"
+                        placeholder={t("Username ni kiriting")}
                         prefix={<UserOutlined />}
                       />
                     )}
@@ -101,9 +101,8 @@ const SignInPage = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label="Password"
-                  validateStatus={errors.password ? "error" : ""}
-                  help={errors.password?.message}
+                  label={t("Parol")}
+                  {...getValidationStatus(errors, "password")}
                   required={true}
                 >
                   <Controller

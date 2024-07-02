@@ -29,6 +29,28 @@ const UpdateProductsPage = lazy(() =>
   import("@/pages/products/products/UpdateProductsPage")
 );
 
+//Product category
+const ProductCategoriesPage = lazy(() =>
+  import("@/pages/products/product-categories/ProductCategoriesPage")
+);
+const CreateProductCategoryPage = lazy(() =>
+  import("@/pages/products/product-categories/CreateProductCategoryPage")
+);
+const UpdateProductCategoryPage = lazy(() =>
+  import("@/pages/products/product-categories/UpdateProductCategoryPage")
+);
+
+//Product format
+const ProductFormatsPage = lazy(() =>
+  import("@/pages/products/product-formats/ProductFormatsPage")
+);
+const CreateProductFormatsPage = lazy(() =>
+  import("@/pages/products/product-formats/CreateProductFormatsPage")
+);
+const UpdateProductFormatsPage = lazy(() =>
+  import("@/pages/products/product-formats/UpdateProductFormatsPage")
+);
+
 // Not found page
 const NotFoundPage = lazy(() => import("@/pages/admin/not-found/NotFoundPage"));
 
@@ -47,16 +69,38 @@ const Router = () => {
               </Route>
               <Route path="products">
                 <Route index element={<Navigate to="products" />} />
-                <Route path={"products"} element={<ProductsPage />} />
-                <Route
-                  path={"products/create"}
-                  element={<CreateProductsPage />}
-                />
-                <Route
-                  path={"products/update/:id"}
-                  element={<UpdateProductsPage />}
-                />
-                <Route path={"*"} element={<NotFoundPage />} />
+                <Route path="products">
+                  <Route index element={<ProductsPage />} />
+                  <Route path={`create`} element={<CreateProductsPage />} />
+                  <Route
+                    path={`update/:id/`}
+                    element={<UpdateProductsPage />}
+                  />
+                </Route>
+
+                <Route path="formats">
+                  <Route index element={<ProductFormatsPage />} />
+                  <Route
+                    path={`create`}
+                    element={<CreateProductFormatsPage />}
+                  />
+                  <Route
+                    path={`update/:id/`}
+                    element={<UpdateProductFormatsPage />}
+                  />
+                </Route>
+
+                <Route path="category">
+                  <Route index element={<ProductCategoriesPage />} />
+                  <Route
+                    path={`create`}
+                    element={<CreateProductCategoryPage />}
+                  />
+                  <Route
+                    path={`update/:id/`}
+                    element={<UpdateProductCategoryPage />}
+                  />
+                </Route>
               </Route>
             </Route>
           </Routes>

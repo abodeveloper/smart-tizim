@@ -1,12 +1,10 @@
 import { RiProductHuntFill } from "@remixicon/react";
 import { Flex } from "antd";
 import { useTranslation } from "react-i18next";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-export const useUpdateBreadcrumbItems = () => {
+export const useCreateBreadcrumbItems = () => {
   const { t } = useTranslation();
-
-  const { id } = useParams();
 
   return [
     {
@@ -18,13 +16,14 @@ export const useUpdateBreadcrumbItems = () => {
       ),
     },
     {
-      title: <NavLink to={"/products/products"}>{t("Mahsulotlar")}</NavLink>,
+      title: (
+        <NavLink to={"/products/category"}>
+          {t("Mahsulot kategoriyalari")}
+        </NavLink>
+      ),
     },
     {
-      title: t("Mahsulotni tahrirlash"),
-    },
-    {
-      title: id,
+      title: t("Kategoriya qo'shish"),
     },
   ];
 };

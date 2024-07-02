@@ -1,5 +1,6 @@
 import toast from "@/services/notification/notification";
 import { get } from "lodash";
+import { useTranslation } from "react-i18next";
 import { NumericFormat } from "react-number-format";
 
 export function objectToQueryString(obj) {
@@ -21,7 +22,6 @@ export function getValidationStatus(errors, fieldName) {
 }
 
 export function handleErrorNotification(error) {
-  // const { t } = useTranslation();
   toast
     .setDuration(4)
     .setDesc(get(error?.response?.data, "message", get(error, "message", "")))
@@ -29,9 +29,10 @@ export function handleErrorNotification(error) {
     .error();
 }
 
-export function handleSuccessNotification() {
-  // const { t } = useTranslation();
-  toast.setDuration(4).setMessage("Muvaffaqiyatli bajarildi !").success();
+export function handleSuccessNotification(
+  successMessage = "Muvaffaqiyatli bajarildi !"
+) {
+  toast.setDuration(4).setMessage(successMessage).success();
 }
 
 export function NumberToThousandFormat(number, suffixText = "") {

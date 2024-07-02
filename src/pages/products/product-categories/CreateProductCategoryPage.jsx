@@ -1,22 +1,19 @@
 import BackButton from "@/components/atoms/back-button/BackButton";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
-import { httpPostProduct } from "@/services/api/requests/products.requests";
-import {
-  handleSuccessNotification,
-  scrollToTop
-} from "@/utils/helpers";
+import { httpPostProductCategory } from "@/services/api/requests/product-categories.requests";
+import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
 import { useMutation } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
-import ProductForm from "./_components/ProductForm";
+import CategoryForm from "./_components/CategoryForm";
 import { useCreateBreadcrumbItems } from "./breadcrumbs/useCreateBreadcrumb";
 
-const CreateProductsPage = () => {
+const CreateProductCategoryPage = () => {
   const { t } = useTranslation();
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: httpPostProduct,
+    mutationFn: httpPostProductCategory,
     onSuccess: () => {
       scrollToTop();
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
@@ -40,12 +37,12 @@ const CreateProductsPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Mahsulot qo'shish")}</title>
+        <title>{t("Kategoriya qo'shish")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Mahsulot qo'shish")}</PageTitle>
+            <PageTitle>{t("Kategoriya qo'shish")}</PageTitle>
             <BackButton />
           </Flex>
         </Col>
@@ -53,7 +50,7 @@ const CreateProductsPage = () => {
           <Breadcrumb items={BREADCRUMB_ITEMS} />
         </Col>
         <Col span={24}>
-          <ProductForm
+          <CategoryForm
             handleSubmit={handleSubmit}
             defaultValues={{}}
             actionLoading={isPending}
@@ -64,4 +61,4 @@ const CreateProductsPage = () => {
   );
 };
 
-export default CreateProductsPage;
+export default CreateProductCategoryPage;
