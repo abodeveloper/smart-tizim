@@ -1,14 +1,15 @@
-import ExampleFileUrl from "@/assets/file/Client_example.xlsx";
+import ExampleFileUrl from "@/assets/file/Supplier_example.xlsx";
 import ClearFilterButton from "@/components/atoms/clear-filter-button/ClearFilterButton";
 import CreateButton from "@/components/atoms/create-button/CreateButton";
 import CustomDataTable from "@/components/molecules/custom-data-table/CustomDataTable";
 import GlobalSearchInput from "@/components/molecules/global-search-input/GlobalSearchInput";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import UploadButton from "@/components/molecules/upload-button/UploadButton";
+import { httpImportServices } from "@/services/api/requests/services.requests";
 import {
-  httpGetClients,
-  httpImportClients,
-} from "@/services/api/requests/clients.requests";
+  httpGetSuppliers,
+  httpImportSuppliers,
+} from "@/services/api/requests/suppliers.requests";
 import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -17,9 +18,9 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useListBreadcrumbItems } from "./breadcrumbs/useListBreadcrumb";
-import { useClientColumns } from "./useClientColumns";
+import { useSupplierColumns } from "./useSupplierColumns";
 
-const ClientsPage = () => {
+const SuppliersPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -43,7 +44,7 @@ const ClientsPage = () => {
     ...rest
   } = useQuery({
     queryKey: [
-      "clients",
+      "suppliers",
       {
         page: pagination.current,
         pageSize: pagination.pageSize,
@@ -51,7 +52,7 @@ const ClientsPage = () => {
       },
     ],
     queryFn: () =>
-      httpGetClients(
+      httpGetSuppliers(
         pagination.current,
         pagination.pageSize,
         objectToQueryString(filters)
@@ -90,7 +91,7 @@ const ClientsPage = () => {
     setSearch(e.target.value);
   };
 
-  const TABLE_COLUMNS = useClientColumns(
+  const TABLE_COLUMNS = useSupplierColumns(
     pagination,
     filters,
     setFilters,
@@ -101,12 +102,12 @@ const ClientsPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Mijozlar")}</title>
+        <title>{t("Ta'minotchilar")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Mijozlar")}</PageTitle>
+            <PageTitle>{t("Ta'minotchilar")}</PageTitle>
           </Flex>
         </Col>
         <Col span={24}>
@@ -117,7 +118,6 @@ const ClientsPage = () => {
             <Col xs={24} sm={24} md={24} lg={6} xl={6}>
               <GlobalSearchInput
                 value={search}
-                placeholder={t("Qidiruv")}
                 enterButton
                 onSearch={handleOnSearch}
                 onChange={handleChangeSearch}
@@ -126,7 +126,7 @@ const ClientsPage = () => {
             <Col xs={24} sm={24} md={24} lg={18} xl={18}>
               <Flex align="center" justify="end" gap="middle">
                 <UploadButton
-                  uploadRequest={httpImportClients}
+                  uploadRequest={httpImportSuppliers}
                   refetch={refetch}
                   ExampleFileUrl={ExampleFileUrl}
                 />
@@ -150,4 +150,4 @@ const ClientsPage = () => {
   );
 };
 
-export default ClientsPage;
+export default SuppliersPage;

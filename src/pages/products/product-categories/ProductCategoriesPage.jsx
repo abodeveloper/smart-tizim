@@ -139,7 +139,7 @@ const ProductCategoriesPage = () => {
                 columns={TABLE_COLUMNS}
                 data={data?.results || []}
                 pagination={pagination}
-                loading={isLoading}
+                loading={isLoading || isRefetching}
                 onChange={handleTableChange}
               />
             </Col>

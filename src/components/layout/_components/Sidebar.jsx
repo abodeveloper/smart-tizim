@@ -71,8 +71,13 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           icon: <RiTeamFill />,
         },
         {
-          title: "Services",
+          title: "Xizmatlar",
           path: "/admin/services",
+          icon: <RiShakeHandsFill />,
+        },
+        {
+          title: "Ta'minotchilar",
+          path: "/admin/suppliers",
           icon: <RiShakeHandsFill />,
         },
       ],

@@ -2,11 +2,11 @@ import BackButton from "@/components/atoms/back-button/BackButton";
 import ErrorResult from "@/components/molecules/error-result/ErrorResult";
 import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
-import { prepareServiceForEdit } from "@/services/api/prepare-data/services";
+import { prepareSupplierForEdit } from "@/services/api/prepare-data/suppliers";
 import {
-  httpGetServiceOne,
-  httpUpdateService,
-} from "@/services/api/requests/services.requests";
+  httpGetSupplierOne,
+  httpUpdateSupplier,
+} from "@/services/api/requests/suppliers.requests";
 import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -14,18 +14,18 @@ import { get } from "lodash";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import ServiceForm from "./_components/ServiceForm";
+import SupplierForm from "./_components/SupplierForm";
 import { useUpdateBreadcrumbItems } from "./breadcrumbs/useUpdateBreadcrumb";
 
-const UpdateServicesPage = () => {
+const UpdateSuppliersPage = () => {
   const { t } = useTranslation();
 
   const { id } = useParams();
 
   const updateElementState = useQuery({
-    queryKey: ["service-one", id],
-    queryFn: () => httpGetServiceOne(id),
-    select: (response) => prepareServiceForEdit(response.data),
+    queryKey: ["supplier-one", id],
+    queryFn: () => httpGetSupplierOne(id),
+    select: (response) => prepareSupplierForEdit(response.data),
   });
 
   const handleSuccess = () => {
@@ -35,7 +35,7 @@ const UpdateServicesPage = () => {
   };
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: httpUpdateService,
+    mutationFn: httpUpdateSupplier,
     onSuccess: handleSuccess,
     onError: (error) => {
       scrollToTop();
@@ -52,12 +52,12 @@ const UpdateServicesPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Xizmatni tahrirlash")}</title>
+        <title>{t("Ta'minotchini tahrirlash")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Xizmatni tahrirlash")}</PageTitle>
+            <PageTitle>{t("Ta'minotchini tahrirlash")}</PageTitle>
             <BackButton />
           </Flex>
         </Col>
@@ -72,7 +72,7 @@ const UpdateServicesPage = () => {
               {updateElementState.error ? (
                 <ErrorResult error={updateElementState.error} />
               ) : (
-                <ServiceForm
+                <SupplierForm
                   handleSubmit={handleSubmit}
                   defaultValues={get(updateElementState, "data", [])}
                   actionLoading={isPending}
@@ -86,4 +86,4 @@ const UpdateServicesPage = () => {
   );
 };
 
-export default UpdateServicesPage;
+export default UpdateSuppliersPage;
