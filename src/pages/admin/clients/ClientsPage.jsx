@@ -1,3 +1,4 @@
+import ExampleFileUrl from "@/assets/file/Client_example.xlsx";
 import ClearFilterButton from "@/components/atoms/clear-filter-button/ClearFilterButton";
 import CreateButton from "@/components/atoms/create-button/CreateButton";
 import CustomDataTable from "@/components/molecules/custom-data-table/CustomDataTable";
@@ -5,9 +6,9 @@ import GlobalSearchInput from "@/components/molecules/global-search-input/Global
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import UploadButton from "@/components/molecules/upload-button/UploadButton";
 import {
-  httpGetProducts,
-  httpImportProducts,
-} from "@/services/api/requests/products.requests";
+  httpGetClients,
+  httpImportClients,
+} from "@/services/api/requests/clients.requests";
 import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -16,10 +17,9 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useListBreadcrumbItems } from "./breadcrumbs/useListBreadcrumb";
-import { useProductColumns } from "./useProductColumns";
-import ExampleFileUrl from "@/assets/file/example_products_import.xlsx";
+import { useClientColumns } from "./useClientColumns";
 
-const ProductsPage = () => {
+const ClientsPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ const ProductsPage = () => {
     ...rest
   } = useQuery({
     queryKey: [
-      "products",
+      "clients",
       {
         page: pagination.current,
         pageSize: pagination.pageSize,
@@ -51,7 +51,7 @@ const ProductsPage = () => {
       },
     ],
     queryFn: () =>
-      httpGetProducts(
+      httpGetClients(
         pagination.current,
         pagination.pageSize,
         objectToQueryString(filters)
@@ -90,18 +90,23 @@ const ProductsPage = () => {
     setSearch(e.target.value);
   };
 
-  const TABLE_COLUMNS = useProductColumns(pagination, filters, setFilters);
+  const TABLE_COLUMNS = useClientColumns(
+    pagination,
+    filters,
+    setFilters,
+    refetch
+  );
   const BREADCRUMB_ITEMS = useListBreadcrumbItems();
 
   return (
     <>
       <Helmet>
-        <title>{t("Mahsulotlar")}</title>
+        <title>{t("Mijozlar")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Mahsulotlar")}</PageTitle>
+            <PageTitle>{t("Mijozlar")}</PageTitle>
           </Flex>
         </Col>
         <Col span={24}>
@@ -121,7 +126,7 @@ const ProductsPage = () => {
             <Col xs={24} sm={24} md={24} lg={18} xl={18}>
               <Flex align="center" justify="end" gap="middle">
                 <UploadButton
-                  uploadRequest={httpImportProducts}
+                  uploadRequest={httpImportClients}
                   refetch={refetch}
                   ExampleFileUrl={ExampleFileUrl}
                 />
@@ -145,4 +150,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default ClientsPage;

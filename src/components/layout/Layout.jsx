@@ -5,7 +5,7 @@ import Header from "./_components/Header";
 import Sidebar from "./_components/Sidebar";
 
 const DashboardLayout = () => {
-  const [openSidebar, setOpenSidebar] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(true);
 
   const toggleSidebar = () => {
     setOpenSidebar((prev) => !prev);

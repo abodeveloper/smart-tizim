@@ -104,6 +104,7 @@ export const useProductColumns = (pagination, filters, setFilters) => {
     {
       title: t("Ombor"),
       dataIndex: "storage",
+      key: "storage_id",
       filters: [...storagesOptions],
       filteredValue: filters.storage_id || null,
       filterSearch: true,

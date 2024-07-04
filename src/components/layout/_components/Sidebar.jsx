@@ -11,6 +11,16 @@ import {
   RiUserSettingsFill,
   RiSettings6Fill,
   RiArrowLeftSLine,
+  RiBarChartHorizontalFill,
+  RiColorFilterFill,
+  RiServiceFill,
+  RiShakeHandsFill,
+  RiStackFill,
+  RiBubbleChartFill,
+  RiShapesFill,
+  RiAlignItemBottomFill,
+  RiContactsBookFill,
+  RiGroupFill,
 } from "@remixicon/react";
 import * as S from "../Layout.styles";
 import Category from "./Category";
@@ -63,6 +73,101 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       ],
     },
     {
+      label: "MAHSULOT",
+      icon: <RiProductHuntFill />,
+      children: [
+        {
+          title: "Mahsulot",
+          path: "/products/products",
+          icon: <RiStackFill />,
+        },
+        // {
+        //   title: "Omborga mahsulot",
+        //   path: "/products/products-add",
+        //   icon: <RiCopperCoinFill />,
+        // },
+        {
+          title: "Kategoriya",
+          path: "/products/category",
+          icon: <RiBarChartHorizontalFill />,
+        },
+        {
+          title: "Format",
+          path: "/products/formats",
+          icon: <RiShapesFill />,
+        },
+      ],
+    },
+    {
+      label: "MIJOZLAR",
+      icon: <RiTeamFill />,
+      children: [
+        {
+          title: "Mijozlar",
+          path: "/clients/clients",
+          icon: <RiGroupFill />,
+        },
+      ],
+    },
+    {
+      label: "MOLIYA",
+      icon: <RiBankFill />,
+      children: [
+        {
+          title: "Kirim",
+          path: "/payments/kirim",
+          icon: <RiGroupFill />,
+        },
+        {
+          title: "Chiqim",
+          path: "/payments/chiqim",
+          icon: <RiGroupFill />,
+        },
+        {
+          title: "Tranzaktsiya",
+          path: "/payments/tranzaktsiya",
+          icon: <RiGroupFill />,
+        },
+      ],
+    },
+    {
+      label: "XIZMATLAR",
+      icon: <RiShakeHandsFill />,
+      children: [
+        {
+          title: "Xizmatlar",
+          path: "/services/services",
+          icon: <RiServiceFill />,
+        },
+      ],
+    },
+    {
+      label: "STATISTIKA",
+      icon: <RiBarChartBoxFill />,
+      children: [
+        {
+          title: "Savdo statistikasi",
+          path: "/statistics/orders-statistic",
+          icon: <RiAlignItemBottomFill />,
+        },
+        {
+          title: "Ombor statistikasi",
+          path: "/statistics/stores-statistic",
+          icon: <RiColorFilterFill />,
+        },
+        {
+          title: "Mijoz statistikasi",
+          path: "/statistics/clients-statistic",
+          icon: <RiContactsBookFill />,
+        },
+        {
+          title: "Xizmatlar statistikasi",
+          path: "/statistics/services-statistic",
+          icon: <RiBubbleChartFill />,
+        },
+      ],
+    },
+    {
       label: "BOSHQA",
       icon: <RiSettings6Fill />,
       children: [
@@ -75,37 +180,6 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           title: "Sozlamalar",
           path: "/admin/settings",
           icon: <RiUserSettingsFill />,
-        },
-      ],
-    },
-    {
-      label: "MAHSULOT",
-      icon: <RiSettings6Fill />,
-      children: [
-        {
-          title: "Mahsulot",
-          path: "/products/products",
-          icon: <RiCopperCoinFill />,
-        },
-        {
-          title: "Omborga mahsulot",
-          path: "/products/products-add",
-          icon: <RiCopperCoinFill />,
-        },
-        {
-          title: "Kategoriya",
-          path: "/products/category",
-          icon: <RiCopperCoinFill />,
-        },
-        {
-          title: "Format",
-          path: "/products/formats",
-          icon: <RiCopperCoinFill />,
-        },
-        {
-          title: "O'chirilgan mahsulotlar",
-          path: "/products/deleted-products",
-          icon: <RiCopperCoinFill />,
         },
       ],
     },

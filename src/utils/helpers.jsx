@@ -1,6 +1,6 @@
 import toast from "@/services/notification/notification";
+import dayjs from "dayjs";
 import { get } from "lodash";
-import { useTranslation } from "react-i18next";
 import { NumericFormat } from "react-number-format";
 
 export function objectToQueryString(obj) {
@@ -32,7 +32,7 @@ export function handleErrorNotification(error) {
 export function handleSuccessNotification(
   successMessage = "Muvaffaqiyatli bajarildi !"
 ) {
-  toast.setDuration(4).setMessage(successMessage).success();
+  toast.setDuration(4).setMessage(successMessage).setDesc("").success();
 }
 
 export function NumberToThousandFormat(number, suffixText = "") {
@@ -45,4 +45,20 @@ export function NumberToThousandFormat(number, suffixText = "") {
       renderText={(formattedValue) => <>{formattedValue}</>}
     />
   );
+}
+
+export function formatTimeForApi(date) {
+  if (!date) {
+    return;
+  }
+
+  return dayjs(date);
+}
+
+export function formatTimeForUI(date) {
+  if (!date) {
+    return;
+  }
+
+  return dayjs(date).format("YYYY-MM-DD HH:mm");
 }
