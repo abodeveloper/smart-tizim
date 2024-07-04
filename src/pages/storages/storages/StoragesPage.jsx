@@ -1,4 +1,4 @@
-import ExampleFileUrl from "@/assets/file/Supplier_example.xlsx";
+import ExampleFileUrl from "@/assets/file/Storage_example.xlsx";
 import ClearFilterButton from "@/components/atoms/clear-filter-button/ClearFilterButton";
 import CreateButton from "@/components/atoms/create-button/CreateButton";
 import CustomDataTable from "@/components/molecules/custom-data-table/CustomDataTable";
@@ -6,9 +6,9 @@ import GlobalSearchInput from "@/components/molecules/global-search-input/Global
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import UploadButton from "@/components/molecules/upload-button/UploadButton";
 import {
-  httpGetSuppliers,
-  httpImportSuppliers,
-} from "@/services/api/requests/suppliers.requests";
+  httpGetStorages,
+  httpImportStorages,
+} from "@/services/api/requests/storages.requests";
 import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -17,9 +17,9 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useListBreadcrumbItems } from "./breadcrumbs/useListBreadcrumb";
-import { useSupplierColumns } from "./useSupplierColumns";
+import { useStorageColumns } from "./useStorageColumns";
 
-const SuppliersPage = () => {
+const StoragesPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ const SuppliersPage = () => {
     ...rest
   } = useQuery({
     queryKey: [
-      "suppliers",
+      "storages",
       {
         page: pagination.current,
         pageSize: pagination.pageSize,
@@ -51,7 +51,7 @@ const SuppliersPage = () => {
       },
     ],
     queryFn: () =>
-      httpGetSuppliers(
+      httpGetStorages(
         pagination.current,
         pagination.pageSize,
         objectToQueryString(filters)
@@ -90,7 +90,7 @@ const SuppliersPage = () => {
     setSearch(e.target.value);
   };
 
-  const TABLE_COLUMNS = useSupplierColumns(
+  const TABLE_COLUMNS = useStorageColumns(
     pagination,
     filters,
     setFilters,
@@ -101,12 +101,12 @@ const SuppliersPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Ta'minotchilar")}</title>
+        <title>{t("Omborxonalar")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Ta'minotchilar")}</PageTitle>
+            <PageTitle>{t("Omborxonalar")}</PageTitle>
           </Flex>
         </Col>
         <Col span={24}>
@@ -125,7 +125,7 @@ const SuppliersPage = () => {
             <Col xs={24} sm={24} md={24} lg={18} xl={18}>
               <Flex align="center" justify="end" gap="middle">
                 <UploadButton
-                  uploadRequest={httpImportSuppliers}
+                  uploadRequest={httpImportStorages}
                   refetch={refetch}
                   ExampleFileUrl={ExampleFileUrl}
                 />
@@ -149,4 +149,4 @@ const SuppliersPage = () => {
   );
 };
 
-export default SuppliersPage;
+export default StoragesPage;

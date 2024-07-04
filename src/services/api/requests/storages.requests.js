@@ -12,6 +12,14 @@ function httpGetStorages(page, page_size, filters) {
   );
 }
 
+function httpImportStorages(data) {
+  return request.post(`/api/import_storages/`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
 function httpGetStorageOne(id) {
   return request.get(`/api/storages/${id}/`);
 }
@@ -30,6 +38,7 @@ function httpDeleteStorage(id) {
 
 export {
   httpGetAllStorages,
+  httpImportStorages,
   httpGetStorages,
   httpGetStorageOne,
   httpPostStorage,

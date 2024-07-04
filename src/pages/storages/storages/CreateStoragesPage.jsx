@@ -1,19 +1,19 @@
 import BackButton from "@/components/atoms/back-button/BackButton";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
-import { httpPostService } from "@/services/api/requests/services.requests";
+import { httpPostStorage } from "@/services/api/requests/storages.requests";
 import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
 import { useMutation } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
-import ServiceForm from "./_components/ServiceForm";
+import StorageForm from "./_components/StorageForm";
 import { useCreateBreadcrumbItems } from "./breadcrumbs/useCreateBreadcrumb";
 
-const CreateServicesPage = () => {
+const CreateStoragesPage = () => {
   const { t } = useTranslation();
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: httpPostService,
+    mutationFn: httpPostStorage,
     onSuccess: () => {
       scrollToTop();
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
@@ -37,12 +37,12 @@ const CreateServicesPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Xizmat qo'shish")}</title>
+        <title>{t("Omborxona qo'shish")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Xizmat qo'shish")}</PageTitle>
+            <PageTitle>{t("Omborxona qo'shish")}</PageTitle>
             <BackButton />
           </Flex>
         </Col>
@@ -50,7 +50,7 @@ const CreateServicesPage = () => {
           <Breadcrumb items={BREADCRUMB_ITEMS} />
         </Col>
         <Col span={24}>
-          <ServiceForm
+          <StorageForm
             handleSubmit={handleSubmit}
             defaultValues={{}}
             actionLoading={isPending}
@@ -61,4 +61,4 @@ const CreateServicesPage = () => {
   );
 };
 
-export default CreateServicesPage;
+export default CreateStoragesPage;

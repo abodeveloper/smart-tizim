@@ -120,6 +120,17 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       ],
     },
     {
+      label: "OMBORXONA",
+      icon: <RiShoppingBag3Fill />,
+      children: [
+        {
+          title: "Omborxonalar",
+          path: "/storages/storages",
+          icon: <RiShoppingBag3Fill />,
+        },
+      ],
+    },
+    {
       label: "MOLIYA",
       icon: <RiBankFill />,
       children: [
