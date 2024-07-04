@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import { get } from "lodash";
 
 export function prepareClientDto(item) {
-  alert(JSON.stringify(item));
   return {
     name: get(item, "name", ""),
     phone: get(item, "phone", ""),

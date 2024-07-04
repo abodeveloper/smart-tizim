@@ -70,6 +70,11 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           path: "/admin/clients",
           icon: <RiTeamFill />,
         },
+        {
+          title: "Services",
+          path: "/admin/services",
+          icon: <RiShakeHandsFill />,
+        },
       ],
     },
     {
