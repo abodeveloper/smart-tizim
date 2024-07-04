@@ -3,10 +3,11 @@ import ErrorResult from "@/components/molecules/error-result/ErrorResult";
 import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import { prepareServiceForEdit } from "@/services/api/prepare-data/services";
+import { httpGetClientOne } from "@/services/api/requests/clients.requests";
 import {
-  httpGetClientOne
-} from "@/services/api/requests/clients.requests";
-import { httpUpdateService } from "@/services/api/requests/services.requests";
+  httpGetServiceOne,
+  httpUpdateService,
+} from "@/services/api/requests/services.requests";
 import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -24,7 +25,7 @@ const UpdateServicesPage = () => {
 
   const updateElementState = useQuery({
     queryKey: ["service-one", id],
-    queryFn: () => httpGetClientOne(id),
+    queryFn: () => httpGetServiceOne(id),
     select: (response) => prepareServiceForEdit(response.data),
   });
 
