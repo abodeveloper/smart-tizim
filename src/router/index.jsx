@@ -27,7 +27,13 @@ const UpdateClientsPage = lazy(() =>
 );
 
 // SERVICES
-const ServicesPage = lazy(() => import("@/pages/admin/clients/ServicesPage"));
+const ServicesPage = lazy(() => import("@/pages/admin/services/ServicesPage"));
+const CreateServicesPage = lazy(() =>
+  import("@/pages/admin/services/CreateServicesPage")
+);
+const UpdateServicesPage = lazy(() =>
+  import("@/pages/admin/services/UpdateServicesPage")
+);
 
 //Product
 const ProductsPage = lazy(() =>
@@ -84,8 +90,11 @@ const Router = () => {
                 </Route>
                 <Route path="services">
                   <Route index element={<ServicesPage />} />
-                  <Route path={`create`} element={<CreateClientsPage />} />
-                  <Route path={`update/:id/`} element={<UpdateClientsPage />} />
+                  <Route path={`create`} element={<CreateServicesPage />} />
+                  <Route
+                    path={`update/:id/`}
+                    element={<UpdateServicesPage />}
+                  />
                 </Route>
 
                 <Route path={"*"} element={<NotFoundPage />} />

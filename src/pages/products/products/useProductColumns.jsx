@@ -30,7 +30,7 @@ export const useProductColumns = (pagination, filters, setFilters) => {
   const deleteMutate = useMutation({
     mutationFn: httpDeleteProduct,
     onSuccess: () => {
-      handleSuccessNotification();
+      handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
       queryClient.invalidateQueries({
         queryKey: [
           "products",

@@ -1,20 +1,20 @@
 import BackButton from "@/components/atoms/back-button/BackButton";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
-import { prepareClientDto } from "@/services/api/prepare-data/clients";
-import { httpPostClient } from "@/services/api/requests/clients.requests";
+import { prepareServiceDto } from "@/services/api/prepare-data/services";
+import { httpPostService } from "@/services/api/requests/services.requests";
 import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
 import { useMutation } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
-import ClientForm from "./_components/ClientForm";
+import ClientForm from "./_components/ServiceForm";
 import { useCreateBreadcrumbItems } from "./breadcrumbs/useCreateBreadcrumb";
 
-const CreateClientsPage = () => {
+const CreateServicesPage = () => {
   const { t } = useTranslation();
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: httpPostClient,
+    mutationFn: httpPostService,
     onSuccess: () => {
       scrollToTop();
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
@@ -26,7 +26,7 @@ const CreateClientsPage = () => {
   });
 
   const handleSubmit = async (values, reset) => {
-    const response = await mutateAsync(prepareClientDto(values));
+    const response = await mutateAsync(values);
 
     if (response?.status === 201) {
       reset();
@@ -38,12 +38,12 @@ const CreateClientsPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Mijoz qo'shish")}</title>
+        <title>{t("Xizmat qo'shish")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Mijoz qo'shish")}</PageTitle>
+            <PageTitle>{t("Xizmat qo'shish")}</PageTitle>
             <BackButton />
           </Flex>
         </Col>
@@ -62,4 +62,4 @@ const CreateClientsPage = () => {
   );
 };
 
-export default CreateClientsPage;
+export default CreateServicesPage;

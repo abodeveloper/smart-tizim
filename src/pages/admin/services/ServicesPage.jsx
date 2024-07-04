@@ -1,14 +1,15 @@
-import ExampleFileUrl from "@/assets/file/Client_example.xlsx";
+import ExampleFileUrl from "@/assets/file/Service_example.xlsx";
 import ClearFilterButton from "@/components/atoms/clear-filter-button/ClearFilterButton";
 import CreateButton from "@/components/atoms/create-button/CreateButton";
 import CustomDataTable from "@/components/molecules/custom-data-table/CustomDataTable";
 import GlobalSearchInput from "@/components/molecules/global-search-input/GlobalSearchInput";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import UploadButton from "@/components/molecules/upload-button/UploadButton";
+import { httpImportClients } from "@/services/api/requests/clients.requests";
 import {
-  httpGetClients,
-  httpImportClients,
-} from "@/services/api/requests/clients.requests";
+  httpGetServices,
+  httpImportServices,
+} from "@/services/api/requests/services.requests";
 import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -17,7 +18,7 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useListBreadcrumbItems } from "./breadcrumbs/useListBreadcrumb";
-import { useClientColumns } from "./useClientColumns";
+import { useServiceColumns } from "./useServiceColumns";
 
 const ServicesPage = () => {
   const { t } = useTranslation();
@@ -43,7 +44,7 @@ const ServicesPage = () => {
     ...rest
   } = useQuery({
     queryKey: [
-      "clients",
+      "services",
       {
         page: pagination.current,
         pageSize: pagination.pageSize,
@@ -51,7 +52,7 @@ const ServicesPage = () => {
       },
     ],
     queryFn: () =>
-      httpGetClients(
+      httpGetServices(
         pagination.current,
         pagination.pageSize,
         objectToQueryString(filters)
@@ -90,7 +91,7 @@ const ServicesPage = () => {
     setSearch(e.target.value);
   };
 
-  const TABLE_COLUMNS = useClientColumns(
+  const TABLE_COLUMNS = useServiceColumns(
     pagination,
     filters,
     setFilters,
@@ -98,15 +99,17 @@ const ServicesPage = () => {
   );
   const BREADCRUMB_ITEMS = useListBreadcrumbItems();
 
+  console.log(data);
+
   return (
     <>
       <Helmet>
-        <title>{t("Mijozlar")}</title>
+        <title>{t("Xizmatlar")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Mijozlar")}</PageTitle>
+            <PageTitle>{t("Xizmatlar")}</PageTitle>
           </Flex>
         </Col>
         <Col span={24}>
@@ -117,7 +120,6 @@ const ServicesPage = () => {
             <Col xs={24} sm={24} md={24} lg={6} xl={6}>
               <GlobalSearchInput
                 value={search}
-                placeholder={t("Qidiruv")}
                 enterButton
                 onSearch={handleOnSearch}
                 onChange={handleChangeSearch}
@@ -126,7 +128,7 @@ const ServicesPage = () => {
             <Col xs={24} sm={24} md={24} lg={18} xl={18}>
               <Flex align="center" justify="end" gap="middle">
                 <UploadButton
-                  uploadRequest={httpImportClients}
+                  uploadRequest={httpImportServices}
                   refetch={refetch}
                   ExampleFileUrl={ExampleFileUrl}
                 />

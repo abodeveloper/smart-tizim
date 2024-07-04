@@ -16,10 +16,10 @@ export const useCreateBreadcrumbItems = () => {
       ),
     },
     {
-      title: <NavLink to={"/admin/clients"}>{t("Mijozlar")}</NavLink>,
+      title: <NavLink to={"/admin/services"}>{t("Xizmatlar")}</NavLink>,
     },
     {
-      title: t("Mijoz qo'shish"),
+      title: t("Xizmat qo'shish"),
     },
   ];
 };

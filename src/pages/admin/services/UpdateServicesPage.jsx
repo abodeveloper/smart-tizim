@@ -2,14 +2,11 @@ import BackButton from "@/components/atoms/back-button/BackButton";
 import ErrorResult from "@/components/molecules/error-result/ErrorResult";
 import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
+import { prepareServiceForEdit } from "@/services/api/prepare-data/services";
 import {
-  prepareClientDto,
-  prepareClientForEdit,
-} from "@/services/api/prepare-data/clients";
-import {
-  httpGetClientOne,
-  httpUpdateClient,
+  httpGetClientOne
 } from "@/services/api/requests/clients.requests";
+import { httpUpdateService } from "@/services/api/requests/services.requests";
 import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -17,18 +14,18 @@ import { get } from "lodash";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import ClientForm from "./_components/ClientForm";
+import ServiceForm from "./_components/ServiceForm";
 import { useUpdateBreadcrumbItems } from "./breadcrumbs/useUpdateBreadcrumb";
 
-const UpdateClientsPage = () => {
+const UpdateServicesPage = () => {
   const { t } = useTranslation();
 
   const { id } = useParams();
 
   const updateElementState = useQuery({
-    queryKey: ["client-one", id],
+    queryKey: ["service-one", id],
     queryFn: () => httpGetClientOne(id),
-    select: (response) => prepareClientForEdit(response.data),
+    select: (response) => prepareServiceForEdit(response.data),
   });
 
   const handleSuccess = () => {
@@ -38,7 +35,7 @@ const UpdateClientsPage = () => {
   };
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: httpUpdateClient,
+    mutationFn: httpUpdateService,
     onSuccess: handleSuccess,
     onError: (error) => {
       scrollToTop();
@@ -47,7 +44,7 @@ const UpdateClientsPage = () => {
   });
 
   const handleSubmit = async (values, reset) => {
-    mutateAsync({ id, data: prepareClientDto(values) });
+    mutateAsync({ id, data: values });
   };
 
   const BREADCRUMB_ITEMS = useUpdateBreadcrumbItems();
@@ -55,12 +52,12 @@ const UpdateClientsPage = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Mijozni tahrirlash")}</title>
+        <title>{t("Xizmatni tahrirlash")}</title>
       </Helmet>
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <Flex align="center" justify="space-between">
-            <PageTitle>{t("Mijozni tahrirlash")}</PageTitle>
+            <PageTitle>{t("Xizmatni tahrirlash")}</PageTitle>
             <BackButton />
           </Flex>
         </Col>
@@ -75,7 +72,7 @@ const UpdateClientsPage = () => {
               {updateElementState.error ? (
                 <ErrorResult error={updateElementState.error} />
               ) : (
-                <ClientForm
+                <ServiceForm
                   handleSubmit={handleSubmit}
                   defaultValues={get(updateElementState, "data", [])}
                   actionLoading={isPending}
@@ -89,4 +86,4 @@ const UpdateClientsPage = () => {
   );
 };
 
-export default UpdateClientsPage;
+export default UpdateServicesPage;

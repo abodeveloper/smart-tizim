@@ -1,6 +1,5 @@
 import BackButton from "@/components/atoms/back-button/BackButton";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
-import { prepareClientDto } from "@/services/api/prepare-data/clients";
 import { httpPostClient } from "@/services/api/requests/clients.requests";
 import { handleSuccessNotification, scrollToTop } from "@/utils/helpers";
 import { useMutation } from "@tanstack/react-query";
@@ -26,7 +25,7 @@ const CreateClientsPage = () => {
   });
 
   const handleSubmit = async (values, reset) => {
-    const response = await mutateAsync(prepareClientDto(values));
+    const response = await mutateAsync(values);
 
     if (response?.status === 201) {
       reset();

@@ -15,7 +15,7 @@ export const useListBreadcrumbItems = () => {
       ),
     },
     {
-      title: t("Mijozlar"),
+      title: t("Xizmatlar"),
     },
   ];
 };

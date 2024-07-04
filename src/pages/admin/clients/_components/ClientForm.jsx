@@ -3,6 +3,7 @@ import CustomInput from "@/components/atoms/form-elements/custom-input/CustomInp
 import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
 import CustomTextarea from "@/components/atoms/form-elements/custom-textarea/CustomTextarea";
 import useClientTypes from "@/hooks/useClientTypes";
+import { prepareClientDto } from "@/services/api/prepare-data/clients";
 import { getValidationStatus } from "@/utils/helpers";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Col, Divider, Flex, Form, Row } from "antd";
@@ -48,7 +49,7 @@ const ClientForm = ({
   const handleReset = () => reset({});
 
   const onSubmit = rest.handleSubmit((values) => {
-    handleSubmit(values, handleReset);
+    handleSubmit(prepareClientDto(values), handleReset);
   });
 
   return (

@@ -21,7 +21,7 @@ export const useClientColumns = (pagination, filters, setFilters, refetch) => {
   const deleteMutate = useMutation({
     mutationFn: httpDeleteClient,
     onSuccess: () => {
-      handleSuccessNotification();
+      handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
       refetch();
     },
     onError: (error) => {

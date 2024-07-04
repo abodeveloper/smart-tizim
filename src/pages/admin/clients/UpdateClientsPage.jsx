@@ -3,8 +3,7 @@ import ErrorResult from "@/components/molecules/error-result/ErrorResult";
 import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import {
-  prepareClientDto,
-  prepareClientForEdit,
+  prepareClientForEdit
 } from "@/services/api/prepare-data/clients";
 import {
   httpGetClientOne,
@@ -47,7 +46,7 @@ const UpdateClientsPage = () => {
   });
 
   const handleSubmit = async (values, reset) => {
-    mutateAsync({ id, data: prepareClientDto(values) });
+    mutateAsync({ id, data: values });
   };
 
   const BREADCRUMB_ITEMS = useUpdateBreadcrumbItems();
