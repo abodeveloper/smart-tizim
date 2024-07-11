@@ -1,5 +1,5 @@
 import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
-import { httpDeleteProductCategory } from "@/services/api/requests/product-categories.requests";
+import { httpDeleteStorageProduct } from "@/services/api/requests/storage-products.requests";
 import { handleSuccessNotification } from "@/utils/helpers.jsx";
 import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
 import { RiListSettingsFill } from "@remixicon/react";
@@ -8,19 +8,14 @@ import { Button, Flex } from "antd";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-export const useProductCategoryColumns = (
-  pagination,
-  filters,
-  setFilters,
-  refetch
-) => {
+export const useStorageProductColumns = (pagination, filters, setFilters, refetch) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const deleteMutate = useMutation({
-    mutationFn: httpDeleteProductCategory,
+    mutationFn: httpDeleteStorageProduct,
     onSuccess: () => {
-      handleSuccessNotification();
+      handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
       refetch();
     },
     onError: (error) => {
@@ -37,7 +32,6 @@ export const useProductCategoryColumns = (
       title: "№",
       dataIndex: "id",
       key: "id",
-      width: "50px",
       render: (id, item, index) => {
         return (
           <>{(pagination.current - 1) * pagination.pageSize + index + 1}</>
@@ -54,14 +48,10 @@ export const useProductCategoryColumns = (
       dataIndex: "id",
       key: "operation",
       align: "center",
-      width: 90,
+      width: 100,
       render: (id) => (
-        <Flex align="center" justify="space-between" gap={"small"}>
-          <Button
-            type="primary"
-            onClick={() => navigate(`${id}`)}
-            icon={<EyeFilled />}
-          />
+        <Flex align="center" justify="space-between" gap={"middle"}>
+          <Button type="primary" icon={<EyeFilled />} />
           <Button
             onClick={() => navigate(`update/${id}`)}
             icon={<EditFilled />}

@@ -128,6 +128,11 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           path: "/storages/storages",
           icon: <RiShoppingBag3Fill />,
         },
+        {
+          title: "Omborga mahsulot",
+          path: "/storages/storage-products",
+          icon: <RiShoppingBag3Fill />,
+        },
       ],
     },
     {

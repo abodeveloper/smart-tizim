@@ -21,6 +21,18 @@ export function getValidationStatus(errors, fieldName) {
   };
 }
 
+export function getValidationStatusForArray(
+  errors,
+  arrayName,
+  index,
+  fieldName
+) {
+  return {
+    validateStatus: errors[arrayName]?.[index]?.[fieldName] ? "error" : "",
+    help: errors[arrayName]?.[index]?.[fieldName]?.message || "",
+  };
+}
+
 export function handleErrorNotification(error) {
   toast
     .setDuration(4)

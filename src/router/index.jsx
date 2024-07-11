@@ -68,9 +68,23 @@ const UpdateStoragesPage = lazy(() =>
   import("@/pages/storages/storages/UpdateStoragesPage")
 );
 
+// STORAGE PRODUCTS
+const StorageProductsPage = lazy(() =>
+  import("@/pages/storages/storage-products/StorageProductsPage")
+);
+const CreateStorageProductsPage = lazy(() =>
+  import("@/pages/storages/storage-products/CreateStorageProductsPage")
+);
+const UpdateStorageProductsPage = lazy(() =>
+  import("@/pages/storages/storage-products/CreateStorageProductsPage")
+);
+
 //Product category
 const ProductCategoriesPage = lazy(() =>
   import("@/pages/products/product-categories/ProductCategoriesPage")
+);
+const ProductCategoryDetailPage = lazy(() =>
+  import("@/pages/products/product-categories/ProductCategoryDetailPage")
 );
 const CreateProductCategoryPage = lazy(() =>
   import("@/pages/products/product-categories/CreateProductCategoryPage")
@@ -132,6 +146,7 @@ const Router = () => {
 
               <Route path="products">
                 <Route index element={<Navigate to="products" />} />
+
                 <Route path="products">
                   <Route index element={<ProductsPage />} />
                   <Route path={`create`} element={<CreateProductsPage />} />
@@ -155,6 +170,7 @@ const Router = () => {
 
                 <Route path="category">
                   <Route index element={<ProductCategoriesPage />} />
+                  <Route path={`:id`} element={<ProductCategoryDetailPage />} />
                   <Route
                     path={`create`}
                     element={<CreateProductCategoryPage />}
@@ -175,6 +191,18 @@ const Router = () => {
                   <Route
                     path={`update/:id/`}
                     element={<UpdateStoragesPage />}
+                  />
+                </Route>
+
+                <Route path="storage-products">
+                  <Route index element={<StorageProductsPage />} />
+                  <Route
+                    path={`create`}
+                    element={<CreateStorageProductsPage />}
+                  />
+                  <Route
+                    path={`update/:id/`}
+                    element={<UpdateStorageProductsPage />}
                   />
                 </Route>
 

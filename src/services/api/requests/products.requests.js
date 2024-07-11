@@ -1,5 +1,9 @@
 import request from "../request";
 
+function httpGetAllProducts() {
+  return request.get(`/api/all_products/`);
+}
+
 function httpGetProducts(page, page_size, filters) {
   return request.get(
     `/api/products/?page=${page}&page_size=${page_size}${
@@ -33,6 +37,7 @@ function httpDeleteProduct(id) {
 }
 
 export {
+  httpGetAllProducts,
   httpGetProducts,
   httpGetProductOne,
   httpImportProducts,
