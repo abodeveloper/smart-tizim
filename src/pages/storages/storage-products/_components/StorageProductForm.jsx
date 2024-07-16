@@ -1,7 +1,9 @@
+import CustomCascader from "@/components/atoms/form-elements/custom-cascader/CustomCascader";
+import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picker/CustomDatePicker";
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
-import CustomInput from "@/components/atoms/form-elements/custom-input/CustomInput";
 import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
 import useProducts from "@/hooks/api/useProducts";
+import useServices from "@/hooks/api/useServices";
 import useStorages from "@/hooks/api/useStorages";
 import useSuppliers from "@/hooks/api/useSuppliers";
 import useSizeType from "@/hooks/useSizeType";
@@ -10,16 +12,16 @@ import {
   getValidationStatus,
   getValidationStatusForArray,
 } from "@/utils/helpers";
+import { DeleteFilled, PlusOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Card, Col, Divider, Flex, Form, Row } from "antd";
+import { Button, Card, Cascader, Col, Divider, Flex, Form, Row } from "antd";
 import Typography from "antd/es/typography/Typography";
+import dayjs from "dayjs";
+import { isEmpty } from "lodash";
 import { useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { array, number, object, string } from "yup";
-import { DeleteFilled, PlusOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
-import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picker/CustomDatePicker";
 
 const StorageProductForm = ({
   defaultValues,
@@ -68,6 +70,7 @@ const StorageProductForm = ({
   const resolver = yupResolver(validationSchema);
 
   const { storagesOptions } = useStorages();
+  const { servicesOptions } = useServices();
   const { suppliersOptions } = useSuppliers();
   const { productsOptions, productsData } = useProducts();
   const SIZE_TYPE = useSizeType();
@@ -78,12 +81,13 @@ const StorageProductForm = ({
     reset,
     watch,
     setValue,
+    getValues,
     ...rest
   } = useForm({
     defaultValues: {
       added: dayjs(),
       products: [{ size_type: "O'lchovsiz" }],
-      services: [{}],
+      services: [],
       ...defaultValues,
     },
     resolver,
@@ -116,6 +120,54 @@ const StorageProductForm = ({
   const onSubmit = rest.handleSubmit((values) => {
     handleSubmit(prepareStorageProductDto(values), handleReset);
   });
+
+  const handleChange = (value) => {
+    const currentServices = watch("services") || [];
+
+    // Agar value bo'sh bo'lsa, barcha elementlarni o'chirish
+    if (value.length === 0) {
+      currentServices
+        .slice()
+        .reverse()
+        .forEach((_, index) =>
+          removeService(currentServices.length - 1 - index)
+        );
+      return;
+    }
+
+    const newServices = value.map((item) => item[0]);
+
+    // Yangi service ni qo'shish
+    value.forEach((item) => {
+      if (!currentServices.some((service) => service.service === item[0])) {
+        appendService({
+          service: item[0],
+          count: 1,
+        });
+      }
+    });
+
+    // Eskirgan service ni olib tashlash
+    currentServices.forEach((currentService, index) => {
+      if (!newServices.includes(currentService.service)) {
+        removeService(index);
+      }
+    });
+  };
+
+  const handleRemoveService = (index) => {
+    const currentServices = watch("services") || [];
+    const serviceToRemove = currentServices[index].service;
+    // Service ni services array dan o'chirish
+    removeService(index);
+    // Service ni services_types array dan o'chirish
+    setValue(
+      "service_types",
+      watch("service_types")?.filter(
+        (service) => service[0] !== serviceToRemove
+      )
+    );
+  };
 
   return (
     <Form
@@ -172,8 +224,133 @@ const StorageProductForm = ({
                     />
                   </Form.Item>
                 </Col>
+                <Col xs={24} md={6}>
+                  <Form.Item
+                    label={t("Xizmatlar")}
+                    {...getValidationStatus(errors, "service_types")}
+                    required={false}
+                  >
+                    <Controller
+                      name="service_types"
+                      control={control}
+                      render={({ field }) => (
+                        <CustomCascader
+                          {...field}
+                          options={servicesOptions}
+                          onChange={(value) => {
+                            field.onChange(value); // Controller qiymatni o'zlashtirish uchun
+                            handleChange(value); // Qo'shimcha logic
+                          }}
+                          multiple
+                        />
+                      )}
+                    />
+                  </Form.Item>
+                </Col>
               </Row>
             </Card>
+            {!isEmpty(serviceFields) && (
+              <Card>
+                <Flex
+                  horizontal
+                  align="center"
+                  justify="space-between"
+                  style={{ marginBottom: "20px" }}
+                >
+                  <Typography.Title level={5}>
+                    {t("Qo'shimcha xizmatlar")}
+                  </Typography.Title>
+                </Flex>
+                <Flex gap="large" vertical>
+                  {serviceFields.map((item, index) => (
+                    <>
+                      <Row gutter={[20, 20]}>
+                        <Col xs={24} md={22}>
+                          <Card hoverable={true}>
+                            <Row gutter={[20, 20]} key={item.id}>
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Xizmat")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "services",
+                                    index,
+                                    "service"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`services.${index}.service`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomSelect
+                                        {...field}
+                                        disabled={true}
+                                        options={servicesOptions}
+                                      />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Miqdori")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "services",
+                                    index,
+                                    "count"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`services.${index}.count`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomInputNumber {...field} />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Narxi")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "services",
+                                    index,
+                                    "price"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`services.${index}.price`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomInputNumber {...field} />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
+                            </Row>
+                          </Card>
+                        </Col>
+                        <Col xs={24} md={2}>
+                          <Button
+                            icon={<DeleteFilled />}
+                            danger
+                            onClick={() => handleRemoveService(index)}
+                          >
+                            {/* {t("O'chirish")} */}
+                          </Button>
+                        </Col>
+                      </Row>
+                    </>
+                  ))}
+                </Flex>
+              </Card>
+            )}
+
             <Card>
               <Flex
                 horizontal
@@ -196,7 +373,7 @@ const StorageProductForm = ({
                 {productFields.map((item, index) => (
                   <>
                     <Row gutter={[20, 20]}>
-                      <Col xs={24} md={23}>
+                      <Col xs={24} md={22}>
                         <Card hoverable={true}>
                           <Row gutter={[20, 20]} key={item.id}>
                             <Col xs={24} md={6}>
@@ -372,116 +549,11 @@ const StorageProductForm = ({
                           </Row>
                         </Card>
                       </Col>
-                      <Col xs={24} md={1}>
+                      <Col xs={24} md={2}>
                         <Button
                           icon={<DeleteFilled />}
                           danger
                           onClick={() => removeProduct(index)}
-                        >
-                          {/* {t("O'chirish")} */}
-                        </Button>
-                      </Col>
-                    </Row>
-                  </>
-                ))}
-              </Flex>
-            </Card>
-            <Card>
-              <Flex
-                horizontal
-                align="center"
-                justify="space-between"
-                style={{ marginBottom: "20px" }}
-              >
-                <Typography.Title level={5}>
-                  {t("Qo'shimcha xizmatlar")}
-                </Typography.Title>
-                <Button
-                  icon={<PlusOutlined />}
-                  type="primary"
-                  onClick={() => appendService({})}
-                >
-                  {t("XIZMAT")}
-                </Button>
-              </Flex>
-              <Flex gap="large" vertical>
-                {serviceFields.map((item, index) => (
-                  <>
-                    <Row gutter={[20, 20]}>
-                      <Col xs={24} md={23}>
-                        <Card hoverable={true}>
-                          <Row gutter={[20, 20]} key={item.id}>
-                            <Col xs={24} md={6}>
-                              <Form.Item
-                                label={t("Nomi")}
-                                {...getValidationStatusForArray(
-                                  errors,
-                                  "services",
-                                  index,
-                                  "name"
-                                )}
-                                required={true}
-                              >
-                                <Controller
-                                  name={`services.${index}.name`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <CustomInput {...field} />
-                                  )}
-                                />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={6}>
-                              <Form.Item
-                                label={t("Miqdori")}
-                                {...getValidationStatusForArray(
-                                  errors,
-                                  "services",
-                                  index,
-                                  "count"
-                                )}
-                                required={true}
-                              >
-                                <Controller
-                                  name={`services.${index}.count`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <CustomInputNumber
-                                      defaultValue={1}
-                                      {...field}
-                                    />
-                                  )}
-                                />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={6}>
-                              <Form.Item
-                                label={t("Narxi")}
-                                {...getValidationStatusForArray(
-                                  errors,
-                                  "services",
-                                  index,
-                                  "price"
-                                )}
-                                required={true}
-                              >
-                                <Controller
-                                  name={`services.${index}.price`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <CustomInputNumber {...field} />
-                                  )}
-                                />
-                              </Form.Item>
-                            </Col>
-                          </Row>
-                        </Card>
-                      </Col>
-                      <Col xs={24} md={1}>
-                        <Button
-                          icon={<DeleteFilled />}
-                          danger
-                          onClick={() => removeService(index)}
                         >
                           {/* {t("O'chirish")} */}
                         </Button>

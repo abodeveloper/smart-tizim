@@ -1,7 +1,7 @@
 import request from "../request";
 
 function httpGetAllServices() {
-  return request.get(`/api/all_clients/`);
+  return request.get(`/api/all_services/`);
 }
 
 function httpGetServices(page, page_size, filters) {

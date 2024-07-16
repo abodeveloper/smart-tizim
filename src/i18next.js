@@ -14,7 +14,7 @@ i18n
   .init({
     partialBundledLanguages: true,
     fallbackLng: "uz",
-    debug: true,
+    debug: false,
     supportedLngs: ["uz", "kr", "ru"],
     detection: {
       order: [
