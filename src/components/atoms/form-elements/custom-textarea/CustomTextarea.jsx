@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const { TextArea } = Input;
 
-export const StyledCustomTextarea = styled(TextArea)``;
+const StyledCustomTextarea = styled(TextArea)``;
 
 const CustomTextarea = ({ ...rest }) => {
   const { t } = useTranslation();

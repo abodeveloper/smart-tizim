@@ -2,6 +2,7 @@ import CustomCascader from "@/components/atoms/form-elements/custom-cascader/Cus
 import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picker/CustomDatePicker";
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
 import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
+import CustomTextarea from "@/components/atoms/form-elements/custom-textarea/CustomTextarea";
 import useProducts from "@/hooks/api/useProducts";
 import useServices from "@/hooks/api/useServices";
 import useStorages from "@/hooks/api/useStorages";
@@ -32,12 +33,15 @@ const StorageProductForm = ({
   const { t } = useTranslation();
 
   const validationSchema = object().shape({
-    name: string().required(t("Maydonni kiritishingiz shart !")),
+    storage: string().required(t("Maydonni kiritishingiz shart !")),
+    supplier: string().required(t("Maydonni kiritishingiz shart !")),
+    date: string().required(t("Maydonni kiritishingiz shart !")),
     products: array().of(
       object().shape({
         product: string().required(t("Maydonni kiritishingiz shart !")),
+        price: string().required(t("Maydonni kiritishingiz shart !")),
         size_type: string().required(t("Maydonni kiritishingiz shart !")),
-        storage_count: number()
+        count: number()
           .min(0, t("Miqdor noldan katta yoki teng bo'lishi kerak !"))
           .required(t("Maydonni kiritishingiz shart !")),
         part_size: string().when("size_type", {
@@ -56,7 +60,7 @@ const StorageProductForm = ({
     ),
     services: array().of(
       object().shape({
-        name: string().required(t("Maydonni kiritishingiz shart !")),
+        service: string().required(t("Maydonni kiritishingiz shart !")),
         count: number()
           .min(0, t("Miqdor noldan katta yoki teng bo'lishi kerak !"))
           .required(t("Maydonni kiritishingiz shart !")),
@@ -85,7 +89,7 @@ const StorageProductForm = ({
     ...rest
   } = useForm({
     defaultValues: {
-      added: dayjs(),
+      date: dayjs(),
       products: [{ size_type: "O'lchovsiz" }],
       services: [],
       ...defaultValues,
@@ -458,17 +462,17 @@ const StorageProductForm = ({
                             </Col>
                             <Col xs={24} md={6}>
                               <Form.Item
-                                label={t("Storage count")}
+                                label={t("Count")}
                                 {...getValidationStatusForArray(
                                   errors,
                                   "products",
                                   index,
-                                  "storage_count"
+                                  "count"
                                 )}
                                 required={true}
                               >
                                 <Controller
-                                  name={`products.${index}.storage_count`}
+                                  name={`products.${index}.count`}
                                   control={control}
                                   render={({ field }) => (
                                     <CustomInputNumber {...field} />
@@ -580,12 +584,51 @@ const StorageProductForm = ({
             <Row gutter={[20, 20]}>
               <Col xs={24} md={24}>
                 <Form.Item
-                  label={t("Qo'shilgan vaqti")}
-                  {...getValidationStatus(errors, "added")}
+                  label={t("Naqt")}
+                  {...getValidationStatus(errors, "cash")}
                   required={true}
                 >
                   <Controller
-                    name="added"
+                    name="cash"
+                    control={control}
+                    render={({ field }) => <CustomInputNumber {...field} />}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={24}>
+                <Form.Item
+                  label={t("Karta orqali")}
+                  {...getValidationStatus(errors, "card")}
+                  required={true}
+                >
+                  <Controller
+                    name="card"
+                    control={control}
+                    render={({ field }) => <CustomInputNumber {...field} />}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={24}>
+                <Form.Item
+                  label={t("Boshqa")}
+                  {...getValidationStatus(errors, "other")}
+                  required={true}
+                >
+                  <Controller
+                    name="other"
+                    control={control}
+                    render={({ field }) => <CustomInputNumber {...field} />}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={24}>
+                <Form.Item
+                  label={t("Qo'shilgan vaqti")}
+                  {...getValidationStatus(errors, "date")}
+                  required={true}
+                >
+                  <Controller
+                    name="date"
                     control={control}
                     render={({ field }) => <CustomDatePicker {...field} />}
                   />
@@ -593,14 +636,13 @@ const StorageProductForm = ({
               </Col>
               <Col xs={24} md={24}>
                 <Form.Item
-                  label={t("Narxi")}
-                  {...getValidationStatus(errors, "price")}
-                  required={true}
+                  label={t("Izoh")}
+                  {...getValidationStatus(errors, "desc")}
                 >
                   <Controller
-                    name="price"
+                    name="desc"
                     control={control}
-                    render={({ field }) => <CustomInputNumber {...field} />}
+                    render={({ field }) => <CustomTextarea {...field} />}
                   />
                 </Form.Item>
               </Col>
