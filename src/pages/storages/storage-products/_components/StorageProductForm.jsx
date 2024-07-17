@@ -10,17 +10,22 @@ import useSuppliers from "@/hooks/api/useSuppliers";
 import useSizeType from "@/hooks/useSizeType";
 import { prepareStorageProductDto } from "@/services/api/prepare-data/storage-products";
 import {
+  NumberToThousandFormat,
   getValidationStatus,
   getValidationStatusForArray,
 } from "@/utils/helpers";
-import { DeleteFilled, PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteFilled,
+  MoneyCollectOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Card, Cascader, Col, Divider, Flex, Form, Row } from "antd";
+import { Button, Card, Col, Divider, Flex, Form, Row } from "antd";
 import Typography from "antd/es/typography/Typography";
 import dayjs from "dayjs";
-import { isEmpty } from "lodash";
+import { get, isEmpty } from "lodash";
 import { useEffect } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { array, number, object, string } from "yup";
 
@@ -33,12 +38,20 @@ const StorageProductForm = ({
   const { t } = useTranslation();
 
   const validationSchema = object().shape({
-    storage: string().required(t("Maydonni kiritishingiz shart !")),
     supplier: string().required(t("Maydonni kiritishingiz shart !")),
     date: string().required(t("Maydonni kiritishingiz shart !")),
     products: array().of(
       object().shape({
         product: string().required(t("Maydonni kiritishingiz shart !")),
+        storage: string().when("product", {
+          is: (value) => {
+            const selectedProduct = productsData.find(
+              (item) => item.id == value
+            );
+            return selectedProduct?.product_type === "Sanaladigan";
+          },
+          then: () => string().required(t("Maydonni kiritishingiz shart !")),
+        }),
         price: string().required(t("Maydonni kiritishingiz shart !")),
         size_type: string().required(t("Maydonni kiritishingiz shart !")),
         count: number()
@@ -173,6 +186,21 @@ const StorageProductForm = ({
     );
   };
 
+  const services = useWatch({ control, name: "services" });
+  const products = useWatch({ control, name: "products" });
+
+  const totalServicePrice = services?.reduce(
+    (sum, item) => sum + (get(item, "price", 0) * get(item, "count", 0) || 0),
+    0
+  );
+
+  const totalProductPrice = products?.reduce(
+    (sum, item) => sum + (get(item, "price", 0) || 0),
+    0
+  );
+
+  const totalSumma = totalServicePrice || 0 + totalProductPrice || 0;
+
   return (
     <Form
       layout="vertical"
@@ -182,7 +210,6 @@ const StorageProductForm = ({
       onFinish={onSubmit}
     >
       <Divider />
-
       <Row gutter={[20, 20]}>
         <Col xs={24} md={18}>
           <Flex gap="large" vertical>
@@ -194,25 +221,10 @@ const StorageProductForm = ({
                 style={{ marginBottom: "20px" }}
               >
                 <Typography.Title level={5}>
-                  {t("Ombor va ta'minotchi")}
+                  {t("Ta'minotchi va xizmatlar")}
                 </Typography.Title>
               </Flex>
               <Row gutter={[20, 20]}>
-                <Col xs={24} md={6}>
-                  <Form.Item
-                    label={t("Ombor")}
-                    {...getValidationStatus(errors, "storage")}
-                    required={true}
-                  >
-                    <Controller
-                      name="storage"
-                      control={control}
-                      render={({ field }) => (
-                        <CustomSelect options={storagesOptions} {...field} />
-                      )}
-                    />
-                  </Form.Item>
-                </Col>
                 <Col xs={24} md={6}>
                   <Form.Item
                     label={t("Ta'minotchi")}
@@ -252,109 +264,115 @@ const StorageProductForm = ({
                   </Form.Item>
                 </Col>
               </Row>
+              {!isEmpty(serviceFields) && (
+                <>
+                  <Flex
+                    horizontal
+                    align="center"
+                    justify="space-between"
+                    style={{ marginBottom: "20px", marginTop: "20px" }}
+                  >
+                    <Typography.Title level={5}>
+                      {t("Qo'shimcha xizmatlar")}
+                    </Typography.Title>
+                  </Flex>
+                  <Flex gap="large" vertical>
+                    {serviceFields.map((item, index) => (
+                      <>
+                        <Row gutter={[20, 20]}>
+                          <Col xs={24} md={22}>
+                            <Card hoverable={true}>
+                              <Row gutter={[20, 20]} key={item.id}>
+                                <Col xs={24} md={6}>
+                                  <Form.Item
+                                    label={t("Xizmat")}
+                                    {...getValidationStatusForArray(
+                                      errors,
+                                      "services",
+                                      index,
+                                      "service"
+                                    )}
+                                    required={true}
+                                  >
+                                    <Controller
+                                      name={`services.${index}.service`}
+                                      control={control}
+                                      render={({ field }) => (
+                                        <CustomSelect
+                                          {...field}
+                                          disabled={true}
+                                          options={servicesOptions}
+                                        />
+                                      )}
+                                    />
+                                  </Form.Item>
+                                </Col>
+                                <Col xs={24} md={6}>
+                                  <Form.Item
+                                    label={t("Miqdori")}
+                                    {...getValidationStatusForArray(
+                                      errors,
+                                      "services",
+                                      index,
+                                      "count"
+                                    )}
+                                    required={true}
+                                  >
+                                    <Controller
+                                      name={`services.${index}.count`}
+                                      control={control}
+                                      render={({ field }) => (
+                                        <CustomInputNumber {...field} />
+                                      )}
+                                    />
+                                  </Form.Item>
+                                </Col>
+                                <Col xs={24} md={6}>
+                                  <Form.Item
+                                    label={t("Narxi")}
+                                    {...getValidationStatusForArray(
+                                      errors,
+                                      "services",
+                                      index,
+                                      "price"
+                                    )}
+                                    required={true}
+                                  >
+                                    <Controller
+                                      name={`services.${index}.price`}
+                                      control={control}
+                                      render={({ field }) => (
+                                        <CustomInputNumber {...field} />
+                                      )}
+                                    />
+                                  </Form.Item>
+                                </Col>
+                              </Row>
+                            </Card>
+                          </Col>
+                          <Col xs={24} md={2}>
+                            <Button
+                              icon={<DeleteFilled />}
+                              danger
+                              onClick={() => handleRemoveService(index)}
+                            >
+                              {/* {t("O'chirish")} */}
+                            </Button>
+                          </Col>
+                        </Row>
+                      </>
+                    ))}
+                    <Flex gap={"small"} align="center">
+                      <MoneyCollectOutlined style={{ fontSize: "20px" }} />
+                      <Typography.Text type="success">
+                        {t("Summa")}:{" "}
+                        {NumberToThousandFormat(totalServicePrice)}
+                      </Typography.Text>
+                    </Flex>
+                  </Flex>
+                </>
+              )}
             </Card>
-            {!isEmpty(serviceFields) && (
-              <Card>
-                <Flex
-                  horizontal
-                  align="center"
-                  justify="space-between"
-                  style={{ marginBottom: "20px" }}
-                >
-                  <Typography.Title level={5}>
-                    {t("Qo'shimcha xizmatlar")}
-                  </Typography.Title>
-                </Flex>
-                <Flex gap="large" vertical>
-                  {serviceFields.map((item, index) => (
-                    <>
-                      <Row gutter={[20, 20]}>
-                        <Col xs={24} md={22}>
-                          <Card hoverable={true}>
-                            <Row gutter={[20, 20]} key={item.id}>
-                              <Col xs={24} md={6}>
-                                <Form.Item
-                                  label={t("Xizmat")}
-                                  {...getValidationStatusForArray(
-                                    errors,
-                                    "services",
-                                    index,
-                                    "service"
-                                  )}
-                                  required={true}
-                                >
-                                  <Controller
-                                    name={`services.${index}.service`}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <CustomSelect
-                                        {...field}
-                                        disabled={true}
-                                        options={servicesOptions}
-                                      />
-                                    )}
-                                  />
-                                </Form.Item>
-                              </Col>
-                              <Col xs={24} md={6}>
-                                <Form.Item
-                                  label={t("Miqdori")}
-                                  {...getValidationStatusForArray(
-                                    errors,
-                                    "services",
-                                    index,
-                                    "count"
-                                  )}
-                                  required={true}
-                                >
-                                  <Controller
-                                    name={`services.${index}.count`}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <CustomInputNumber {...field} />
-                                    )}
-                                  />
-                                </Form.Item>
-                              </Col>
-                              <Col xs={24} md={6}>
-                                <Form.Item
-                                  label={t("Narxi")}
-                                  {...getValidationStatusForArray(
-                                    errors,
-                                    "services",
-                                    index,
-                                    "price"
-                                  )}
-                                  required={true}
-                                >
-                                  <Controller
-                                    name={`services.${index}.price`}
-                                    control={control}
-                                    render={({ field }) => (
-                                      <CustomInputNumber {...field} />
-                                    )}
-                                  />
-                                </Form.Item>
-                              </Col>
-                            </Row>
-                          </Card>
-                        </Col>
-                        <Col xs={24} md={2}>
-                          <Button
-                            icon={<DeleteFilled />}
-                            danger
-                            onClick={() => handleRemoveService(index)}
-                          >
-                            {/* {t("O'chirish")} */}
-                          </Button>
-                        </Col>
-                      </Row>
-                    </>
-                  ))}
-                </Flex>
-              </Card>
-            )}
-
             <Card>
               <Flex
                 horizontal
@@ -374,128 +392,94 @@ const StorageProductForm = ({
                 </Button>
               </Flex>
               <Flex gap="large" vertical>
-                {productFields.map((item, index) => (
-                  <>
-                    <Row gutter={[20, 20]}>
-                      <Col xs={24} md={22}>
-                        <Card hoverable={true}>
-                          <Row gutter={[20, 20]} key={item.id}>
-                            <Col xs={24} md={6}>
-                              <Form.Item
-                                label={t("Mahsulot")}
-                                {...getValidationStatusForArray(
-                                  errors,
-                                  "products",
-                                  index,
-                                  "product"
-                                )}
-                                required={true}
-                              >
-                                <Controller
-                                  name={`products.${index}.product`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <CustomSelect
-                                      {...field}
-                                      options={productsOptions}
-                                      onChange={(value) => {
-                                        field.onChange(value);
-                                        const selectedProduct =
-                                          productsData.find(
-                                            (item) => item.id === value
-                                          );
-                                        if (selectedProduct) {
-                                          setValue(
-                                            `products.${index}.price`,
-                                            selectedProduct.price
-                                          );
-                                        }
-                                      }}
-                                    />
-                                  )}
-                                />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={6}>
-                              <Form.Item
-                                label={t("Narxi")}
-                                {...getValidationStatusForArray(
-                                  errors,
-                                  "products",
-                                  index,
-                                  "price"
-                                )}
-                                required={true}
-                              >
-                                <Controller
-                                  name={`products.${index}.price`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <CustomInputNumber {...field} />
-                                  )}
-                                />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={6}>
-                              <Form.Item
-                                label={t("Size type")}
-                                {...getValidationStatusForArray(
-                                  errors,
-                                  "products",
-                                  index,
-                                  "size_type"
-                                )}
-                                required={true}
-                              >
-                                <Controller
-                                  name={`products.${index}.size_type`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <CustomSelect
-                                      options={SIZE_TYPE}
-                                      showSearch={false}
-                                      {...field}
-                                    />
-                                  )}
-                                />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={6}>
-                              <Form.Item
-                                label={t("Count")}
-                                {...getValidationStatusForArray(
-                                  errors,
-                                  "products",
-                                  index,
-                                  "count"
-                                )}
-                                required={true}
-                              >
-                                <Controller
-                                  name={`products.${index}.count`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <CustomInputNumber {...field} />
-                                  )}
-                                />
-                              </Form.Item>
-                            </Col>
+                {productFields.map((item, index) => {
+                  const productType = productsData.find(
+                    (product) =>
+                      product.id === watch(`products.${index}.product`)
+                  )?.product_type;
 
-                            {watch(`products.${index}.size_type`) ===
-                              "O'lchovli" && (
+                  return (
+                    <>
+                      <Row gutter={[20, 20]}>
+                        <Col xs={24} md={22}>
+                          <Card hoverable={true}>
+                            <Row gutter={[20, 20]} key={item.id}>
                               <Col xs={24} md={6}>
                                 <Form.Item
-                                  label={t("Part size")}
+                                  label={t("Mahsulot")}
                                   {...getValidationStatusForArray(
                                     errors,
                                     "products",
                                     index,
-                                    "part_size"
+                                    "product"
                                   )}
                                   required={true}
                                 >
                                   <Controller
-                                    name={`products.${index}.part_size`}
+                                    name={`products.${index}.product`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomSelect
+                                        {...field}
+                                        options={productsOptions}
+                                        onChange={(value) => {
+                                          field.onChange(value);
+                                          const selectedProduct =
+                                            productsData.find(
+                                              (item) => item.id === value
+                                            );
+                                          if (selectedProduct) {
+                                            setValue(
+                                              `products.${index}.price`,
+                                              selectedProduct.price
+                                            );
+                                          }
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
+
+                              {productType === "Sanaladigan" && (
+                                <Col xs={24} md={6}>
+                                  <Form.Item
+                                    label={t("Ombor")}
+                                    {...getValidationStatusForArray(
+                                      errors,
+                                      "products",
+                                      index,
+                                      "storage"
+                                    )}
+                                    required={true}
+                                  >
+                                    <Controller
+                                      name={`products.${index}.storage`}
+                                      control={control}
+                                      render={({ field }) => (
+                                        <CustomSelect
+                                          {...field}
+                                          options={storagesOptions}
+                                        />
+                                      )}
+                                    />
+                                  </Form.Item>
+                                </Col>
+                              )}
+
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Narxi")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "products",
+                                    index,
+                                    "price"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`products.${index}.price`}
                                     control={control}
                                     render={({ field }) => (
                                       <CustomInputNumber {...field} />
@@ -503,24 +487,66 @@ const StorageProductForm = ({
                                   />
                                 </Form.Item>
                               </Col>
-                            )}
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Size type")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "products",
+                                    index,
+                                    "size_type"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`products.${index}.size_type`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomSelect
+                                        options={SIZE_TYPE}
+                                        showSearch={false}
+                                        {...field}
+                                      />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Miqdori")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "products",
+                                    index,
+                                    "count"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`products.${index}.count`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomInputNumber {...field} />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
 
-                            {watch(`products.${index}.size_type`) ===
-                              "Formatli" && (
-                              <>
+                              {watch(`products.${index}.size_type`) ===
+                                "O'lchovli" && (
                                 <Col xs={24} md={6}>
                                   <Form.Item
-                                    label={t("Height")}
+                                    label={t("Part size")}
                                     {...getValidationStatusForArray(
                                       errors,
                                       "products",
                                       index,
-                                      "height"
+                                      "part_size"
                                     )}
                                     required={true}
                                   >
                                     <Controller
-                                      name={`products.${index}.height`}
+                                      name={`products.${index}.part_size`}
                                       control={control}
                                       render={({ field }) => (
                                         <CustomInputNumber {...field} />
@@ -528,43 +554,75 @@ const StorageProductForm = ({
                                     />
                                   </Form.Item>
                                 </Col>
-                                <Col xs={24} md={6}>
-                                  <Form.Item
-                                    label={t("Width")}
-                                    {...getValidationStatusForArray(
-                                      errors,
-                                      "products",
-                                      index,
-                                      "width"
-                                    )}
-                                    required={true}
-                                  >
-                                    <Controller
-                                      name={`products.${index}.width`}
-                                      control={control}
-                                      render={({ field }) => (
-                                        <CustomInputNumber {...field} />
+                              )}
+
+                              {watch(`products.${index}.size_type`) ===
+                                "Formatli" && (
+                                <>
+                                  <Col xs={24} md={6}>
+                                    <Form.Item
+                                      label={t("Height")}
+                                      {...getValidationStatusForArray(
+                                        errors,
+                                        "products",
+                                        index,
+                                        "height"
                                       )}
-                                    />
-                                  </Form.Item>
-                                </Col>
-                              </>
-                            )}
-                          </Row>
-                        </Card>
-                      </Col>
-                      <Col xs={24} md={2}>
-                        <Button
-                          icon={<DeleteFilled />}
-                          danger
-                          onClick={() => removeProduct(index)}
-                        >
-                          {/* {t("O'chirish")} */}
-                        </Button>
-                      </Col>
-                    </Row>
-                  </>
-                ))}
+                                      required={true}
+                                    >
+                                      <Controller
+                                        name={`products.${index}.height`}
+                                        control={control}
+                                        render={({ field }) => (
+                                          <CustomInputNumber {...field} />
+                                        )}
+                                      />
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={24} md={6}>
+                                    <Form.Item
+                                      label={t("Width")}
+                                      {...getValidationStatusForArray(
+                                        errors,
+                                        "products",
+                                        index,
+                                        "width"
+                                      )}
+                                      required={true}
+                                    >
+                                      <Controller
+                                        name={`products.${index}.width`}
+                                        control={control}
+                                        render={({ field }) => (
+                                          <CustomInputNumber {...field} />
+                                        )}
+                                      />
+                                    </Form.Item>
+                                  </Col>
+                                </>
+                              )}
+                            </Row>
+                          </Card>
+                        </Col>
+                        <Col xs={24} md={2}>
+                          <Button
+                            icon={<DeleteFilled />}
+                            danger
+                            onClick={() => removeProduct(index)}
+                          >
+                            {/* {t("O'chirish")} */}
+                          </Button>
+                        </Col>
+                      </Row>
+                    </>
+                  );
+                })}
+                <Flex gap={"small"} align="center">
+                  <MoneyCollectOutlined style={{ fontSize: "20px" }} />
+                  <Typography.Text type="success">
+                    {t("Summa")}: {NumberToThousandFormat(totalSumma)}
+                  </Typography.Text>
+                </Flex>
               </Flex>
             </Card>
           </Flex>
@@ -582,6 +640,31 @@ const StorageProductForm = ({
               </Typography.Title>
             </Flex>
             <Row gutter={[20, 20]}>
+              <Col xs={24} md={24}>
+                <Flex vertical gap={"middle"}>
+                  <Flex gap={"small"} align="center">
+                    <MoneyCollectOutlined style={{ fontSize: "20px" }} />
+                    <Typography.Text type="success">
+                      {t("Qo'shimcha xizmatlar")}:{" "}
+                      {NumberToThousandFormat(totalServicePrice)}
+                    </Typography.Text>
+                  </Flex>
+                  <Flex gap={"small"} align="center">
+                    <MoneyCollectOutlined style={{ fontSize: "20px" }} />
+                    <Typography.Text type="success">
+                      {t("Mahsulotlar")}:{" "}
+                      {NumberToThousandFormat(totalProductPrice)}
+                    </Typography.Text>
+                  </Flex>
+                  <Flex gap={"small"} align="center">
+                    <MoneyCollectOutlined style={{ fontSize: "20px" }} />
+                    <Typography.Text type="success">
+                      {t("Umumiy summa")}: {NumberToThousandFormat(totalSumma)}
+                    </Typography.Text>
+                  </Flex>
+                </Flex>
+              </Col>
+
               <Col xs={24} md={24}>
                 <Form.Item
                   label={t("Naqt")}

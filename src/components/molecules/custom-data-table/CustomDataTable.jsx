@@ -1,5 +1,7 @@
-import React, { useEffect, useState, useTransition } from "react";
-import { Empty, Space, Table } from "antd";
+import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
+import { Checkbox, Col, Divider, Flex, Row, Select, Space, Table } from "antd";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 export const StyledCustomDataTable = styled(Table)`
@@ -23,7 +25,8 @@ export const StyledCustomDataTable = styled(Table)`
       }
     }
 
-    .ant-table-footer {
+    .ant-table-title {
+      padding: 10px 10px;
     }
   }
 
@@ -33,25 +36,44 @@ export const StyledCustomDataTable = styled(Table)`
 `;
 
 const CustomDataTable = ({ columns, data, pagination, loading, onChange }) => {
+  const { t } = useTranslation();
+  // Filter out the columns with keys 'id' and 'operation' for selection
+  const selectableColumns = columns.filter(
+    (column) => column.key !== "id" && column.key !== "operation"
+  );
+
+  // Initially visible columns include all columns that are not hidden plus id and operation columns
+  const [visibleColumns, setVisibleColumns] = useState(
+    columns.filter(
+      (column) =>
+        !column.hidden || column.key === "id" || column.key === "operation"
+    )
+  );
+
+  const handleColumnChange = (selectedColumns) => {
+    const newColumns = columns
+      .map((column) => ({
+        ...column,
+        hidden:
+          !selectedColumns.includes(column.key) &&
+          column.key !== "id" &&
+          column.key !== "operation",
+      }))
+      .filter((column) => !column.hidden);
+    setVisibleColumns(newColumns);
+  };
+
   return (
     <Space direction="vertical" size="large" style={{ width: "100%" }}>
       <>
         <StyledCustomDataTable
           locale={{
-            // emptyText: (
-            //   <Empty description={"No data"} style={{ padding: "50px 0" }} />
-            // ),
-            // filterTitle: "Filter menu",
-            // filterConfirm: "Saqlash",
-            filterReset: "Tozalash",
-            // filterEmptyText: "Filtrlar yo'q",
-            // filterCheckall: "Barcha elementlarni tanlash",
-            // filterSearchPlaceholder: "Filtrlarda qidiruv",
+            filterReset: t("Tozalash"),
           }}
           bordered={true}
           style={{ maxWidth: "100%" }}
           scroll={{ x: true }}
-          columns={columns}
+          columns={visibleColumns}
           rowKey={(record) => record.id}
           dataSource={data}
           pagination={
@@ -68,6 +90,71 @@ const CustomDataTable = ({ columns, data, pagination, loading, onChange }) => {
           }
           loading={loading}
           onChange={onChange}
+          // title={() => (
+          //   <>
+          //     <Flex align="center" justify="end">
+          //       <CustomSelect
+          //         mode="multiple"
+          //         placeholder={t("Ustunlarni tanlang")}
+          //         defaultValue={selectableColumns
+          //           .filter((column) => !column.hidden)
+          //           .map((column) => column.key)}
+          //         onChange={handleColumnChange}
+          //         style={{ width: "150px" }}
+          //         // allowClear={false}
+          //         // autoClearSearchValue={false}
+          //       >
+          //         {selectableColumns.map((column) => (
+          //           <Option key={column.key} value={column.key}>
+          //             {column.title}
+          //           </Option>
+          //         ))}
+          //       </CustomSelect>
+          //     </Flex>
+          //   </>
+          // )}
+
+          title={() => (
+            <>
+              <Flex align="center" justify="end">
+                <Select
+                  mode="multiple"
+                  showSearch={false}
+                  placeholder={t("Ustunlarni tanlang")}
+                  onChange={handleColumnChange}
+                  style={{ width: "180px" }}
+                  dropdownRender={(menu) => (
+                    <div style={{ padding: "5px", cursor: "pointer" }}>
+                      <Checkbox.Group
+                        value={visibleColumns.map((column) => column.key)}
+                        onChange={(checkedValues) => {
+                          handleColumnChange(checkedValues);
+                        }}
+                      >
+                        {selectableColumns.map((column) => (
+                          <div style={{ width: "100%", margin: "3px 0" }}>
+                            <Checkbox
+                              key={column.key}
+                              value={column.key}
+                              style={{ lineHeight: "25px" }}
+                            >
+                              {column.title}
+                            </Checkbox>
+                          </div>
+                        ))}
+                      </Checkbox.Group>
+                    </div>
+                  )}
+                >
+                  {selectableColumns.map((column) => (
+                    <Option key={column.key} value={column.key}>
+                      {column.title}
+                    </Option>
+                  ))}
+                </Select>
+              </Flex>
+            </>
+          )}
         />
       </>
     </Space>

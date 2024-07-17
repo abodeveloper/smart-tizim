@@ -3,7 +3,6 @@ import CustomInput from "@/components/atoms/form-elements/custom-input/CustomInp
 import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
 import useProductCategories from "@/hooks/api/useProductCategories";
 import useProductFormats from "@/hooks/api/useProductFormats";
-import useStorages from "@/hooks/api/useStorages";
 import useProductTypes from "@/hooks/useProductTypes";
 import { getValidationStatus } from "@/utils/helpers";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,17 +28,12 @@ const ProductForm = ({
     price: number()
       .min(0, t("Narx noldan katta yoki teng bo'lishi kerak !"))
       .required(t("Maydonni kiritishingiz shart !")),
-    storage_id: string().when("product_type", {
-      is: "Sanaladigan",
-      then: () => string().required(t("Maydonni kiritishingiz shart !")),
-    }),
   });
 
   const resolver = yupResolver(validationSchema);
 
   const { productCategoriesOptions } = useProductCategories();
   const { productFormatsOptions } = useProductFormats();
-  const { storagesOptions } = useStorages();
   const productTypes = useProductTypes();
 
   const {
@@ -75,7 +69,7 @@ const ProductForm = ({
       <Row gutter={[20, 20]}>
         <Col xs={24} md={6}>
           <Form.Item
-            label={t("Name")}
+            label={t("Nomi")}
             {...getValidationStatus(errors, "name")}
             required={true}
           >
@@ -149,23 +143,6 @@ const ProductForm = ({
             />
           </Form.Item>
         </Col>
-        {watch("product_type") === "Sanaladigan" && (
-          <Col xs={24} md={6}>
-            <Form.Item
-              label={t("Ombor")}
-              {...getValidationStatus(errors, "storage_id")}
-              required={true}
-            >
-              <Controller
-                name="storage_id"
-                control={control}
-                render={({ field }) => (
-                  <CustomSelect options={storagesOptions} {...field} />
-                )}
-              />
-            </Form.Item>
-          </Col>
-        )}
 
         <Col xs={24} md={6}>
           <Form.Item

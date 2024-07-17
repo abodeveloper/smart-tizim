@@ -1,16 +1,29 @@
 import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
+import useSuppliers from "@/hooks/api/useSuppliers";
 import { httpDeleteStorageProduct } from "@/services/api/requests/storage-products.requests";
-import { handleSuccessNotification } from "@/utils/helpers.jsx";
+import {
+  NumberToThousandFormat,
+  formatTimeForUI,
+  handleSuccessNotification,
+} from "@/utils/helpers.jsx";
 import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
 import { RiListSettingsFill } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Flex } from "antd";
+import { get } from "lodash";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-export const useStorageProductColumns = (pagination, filters, setFilters, refetch) => {
+export const useStorageProductColumns = (
+  pagination,
+  filters,
+  setFilters,
+  refetch
+) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const { suppliersOptions } = useSuppliers();
 
   const deleteMutate = useMutation({
     mutationFn: httpDeleteStorageProduct,
@@ -39,9 +52,138 @@ export const useStorageProductColumns = (pagination, filters, setFilters, refetc
       },
     },
     {
-      title: t("Nomi"),
-      dataIndex: "name",
-      key: "name",
+      title: t("Ta'minotchi"),
+      dataIndex: "supplier",
+      key: "supplier",
+      render: (supplier) => {
+        return <>{get(supplier, "name", "")}</>;
+      },
+      filters: [...suppliersOptions],
+      filteredValue: filters.supplier || null,
+      filterSearch: true,
+      hidden: false,
+    },
+    {
+      title: "Mahsulotlar",
+      key: "products",
+      hidden: true,
+      children: [
+        {
+          title: t("#"),
+          dataIndex: "products",
+          key: "products",
+          render: (_, record) => {
+            return record.products.map((product, index) => (
+              <div key={index}>{index + 1}</div>
+            ));
+          },
+        },
+        {
+          title: t("Nomi"),
+          dataIndex: "products",
+          key: "products",
+          render: (_, record) => {
+            return record.products.map((product, index) => (
+              <div key={index}>{get(product.product, "name", "")}</div>
+            ));
+          },
+        },
+        {
+          title: t("Narxi"),
+          dataIndex: "products",
+          key: "products",
+          render: (_, record) => {
+            return record.products.map((item, index) => (
+              <div key={index}>{NumberToThousandFormat(item.price)}</div>
+            ));
+          },
+        },
+        {
+          title: t("Size type"),
+          dataIndex: "products",
+          key: "products",
+          render: (_, record) => {
+            return record.products.map((item, index) => (
+              <div key={index}>{item.size_type}</div>
+            ));
+          },
+        },
+        {
+          title: t("Miqdori"),
+          dataIndex: "products",
+          key: "products",
+          render: (_, record) => {
+            return record.products.map((item, index) => (
+              <div key={index}>{NumberToThousandFormat(item.count)}</div>
+            ));
+          },
+        },
+        {
+          title: t("Ombor"),
+          dataIndex: "products",
+          key: "products",
+          render: (_, record) => {
+            return record.products.map((item, index) => (
+              <div key={index}>{get(item.storage, "name", "")}</div>
+            ));
+          },
+        },
+      ],
+    },
+    {
+      title: "Xizmatlar",
+      key: "services",
+      hidden: true,
+      children: [
+        {
+          title: t("#"),
+          dataIndex: "services",
+          key: "services",
+          render: (_, record) => {
+            return record.services.map((item, index) => (
+              <div key={index}>{index + 1}</div>
+            ));
+          },
+        },
+        {
+          title: t("Nomi"),
+          dataIndex: "services",
+          key: "services",
+          render: (_, record) => {
+            return record.services.map((item, index) => (
+              <div key={index}>{get(item.service, "name", "")}</div>
+            ));
+          },
+        },
+        {
+          title: t("Narxi"),
+          dataIndex: "services",
+          key: "services",
+          render: (_, record) => {
+            return record.services.map((item, index) => (
+              <div key={index}>{NumberToThousandFormat(item.price)}</div>
+            ));
+          },
+        },
+        {
+          title: t("Miqdori"),
+          dataIndex: "services",
+          key: "services",
+          render: (_, record) => {
+            return record.services.map((item, index) => (
+              <div key={index}>{NumberToThousandFormat(item.count)}</div>
+            ));
+          },
+        },
+      ],
+    },
+    {
+      title: t("Sana"),
+      dataIndex: "date",
+      key: "date",
+      render: (date) => {
+        return <>{formatTimeForUI(date)}</>;
+      },
     },
     {
       title: <RiListSettingsFill size={15} />,

@@ -1,7 +1,6 @@
 import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
 import useProductCategories from "@/hooks/api/useProductCategories";
 import useProductFormats from "@/hooks/api/useProductFormats";
-import useStorages from "@/hooks/api/useStorages";
 import useProductTypes from "@/hooks/useProductTypes";
 import { httpDeleteProduct } from "@/services/api/requests/products.requests";
 import {
@@ -22,7 +21,6 @@ export const useProductColumns = (pagination, filters, setFilters) => {
 
   const { productFormatsOptions } = useProductFormats();
   const { productCategoriesOptions } = useProductCategories();
-  const { storagesOptions } = useStorages();
   const productTypes = useProductTypes();
 
   const queryClient = useQueryClient();
@@ -89,6 +87,7 @@ export const useProductColumns = (pagination, filters, setFilters) => {
     {
       title: t("Mahsulot turi"),
       dataIndex: "product_type",
+      key: "product_type",
       filters: [...productTypes],
       filteredValue: filters.product_type || null,
       filterSearch: true,
@@ -99,17 +98,6 @@ export const useProductColumns = (pagination, filters, setFilters) => {
           case "Sanalmaydigan":
             return <Tag color={"red"}>{product_type}</Tag>;
         }
-      },
-    },
-    {
-      title: t("Ombor"),
-      dataIndex: "storage",
-      key: "storage_id",
-      filters: [...storagesOptions],
-      filteredValue: filters.storage_id || null,
-      filterSearch: true,
-      render: (storage) => {
-        return <>{get(storage, "name", "")}</>;
       },
     },
     {

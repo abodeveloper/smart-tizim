@@ -13,9 +13,10 @@ const CustomSelect = ({ ...rest }) => {
       autoClearSearchValue={true}
       placeholder={t("Tanlang")}
       virtual={false}
-      placement={"topLeft"}
+      placement={"bottomLeft"}
       showSearch={true}
       optionFilterProp="label"
+      maxTagCount={"responsive"}
       {...rest}
     />
   );

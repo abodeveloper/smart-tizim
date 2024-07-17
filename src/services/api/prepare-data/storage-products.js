@@ -6,7 +6,7 @@ export function prepareStorageProductDto(item) {
     storage: Number(get(item, "storage", "")),
     supplier: Number(get(item, "supplier", "")),
     desc: get(item, "desc", ""),
-    date: formatTimeForApi(get(item, "added", "")),
+    date: formatTimeForApi(get(item, "date", "")),
 
     cash: get(item, "cash", ""),
     card: get(item, "card", ""),
