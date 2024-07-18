@@ -1,19 +1,34 @@
-import { Flex, Typography } from "antd";
+import { Typography } from "antd";
 import styled from "styled-components";
 import React from "react";
 
-const Styled = styled(Flex)``;
+const Styled = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  gap: 5px;
+  min-width: max-content;
+`;
+
+const ValueContainer = styled(Typography.Text)`
+  flex: 1;
+  word-break: break-word;
+`;
 
 const TitleAndIconText = ({ title, value, icon, ...rest }) => {
   return (
-    <Styled gap="middle">
-      <Flex gap="small">
+    <Styled>
+      <TitleContainer>
         {icon && React.cloneElement(icon, { size: 20 })}
-        <Typography.Text strong style={{ width: "100%" }} {...rest}>
+        <Typography.Text strong {...rest}>
           {title}:
         </Typography.Text>
-      </Flex>
-      <Typography.Text>{value}</Typography.Text>
+      </TitleContainer>
+      <ValueContainer>{value}</ValueContainer>
     </Styled>
   );
 };

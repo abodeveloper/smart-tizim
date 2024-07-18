@@ -1,3 +1,4 @@
+import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picker/CustomDatePicker";
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
 import { httpAddPaymentStorageProduct } from "@/services/api/requests/storage-products.requests";
@@ -12,16 +13,17 @@ import {
   RiCashLine,
   RiCopperCoinLine,
   RiMoneyDollarBoxLine,
-  RiRefundLine,
 } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Col, Flex, Form, Modal, Row } from "antd";
+import dayjs from "dayjs";
+import { get } from "lodash";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { object, string } from "yup";
 
-const AddPaymentForStorageProduct = ({ summa, refetch }) => {
+const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -60,9 +62,12 @@ const AddPaymentForStorageProduct = ({ summa, refetch }) => {
     reset,
   } = useForm({
     resolver,
+    defaultValues: {
+      date: dayjs(),
+    },
   });
 
-  const { isLoading, isPending, mutateAsync } = useMutation({
+  const { isLoading, mutateAsync } = useMutation({
     mutationFn: httpAddPaymentStorageProduct,
     onSuccess: () => {
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
@@ -76,7 +81,7 @@ const AddPaymentForStorageProduct = ({ summa, refetch }) => {
   });
 
   const onSubmit = (data) => {
-    mutateAsync(data);
+    mutateAsync({ ...data, storage_product: get(item, "id", "") });
   };
 
   useEffect(() => {
@@ -192,6 +197,19 @@ const AddPaymentForStorageProduct = ({ summa, refetch }) => {
                       {...field}
                     />
                   )}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={24}>
+              <Form.Item
+                label={t("Sana")}
+                {...getValidationStatus(errors, "date")}
+                required={true}
+              >
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({ field }) => <CustomDatePicker {...field} />}
                 />
               </Form.Item>
             </Col>

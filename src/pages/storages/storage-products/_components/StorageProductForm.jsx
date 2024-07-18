@@ -212,8 +212,13 @@ const StorageProductForm = ({
   const services = useWatch({ control, name: "services" });
   const products = useWatch({ control, name: "products" });
 
+  // const totalServicePrice = services?.reduce(
+  //   (sum, item) => sum + (get(item, "price", 0) * get(item, "count", 0) || 0),
+  //   0
+  // );
+
   const totalServicePrice = services?.reduce(
-    (sum, item) => sum + (get(item, "price", 0) * get(item, "count", 0) || 0),
+    (sum, item) => sum + get(item, "price", 0) * get(item, "count", 0) || 0,
     0
   );
 
@@ -227,7 +232,9 @@ const StorageProductForm = ({
     0
   );
 
-  const totalSumma = Number(totalServicePrice) + Number(totalProductPrice) || 0;
+  const totalSumma =
+    (totalServicePrice ? totalServicePrice : 0) +
+    (totalProductPrice ? totalProductPrice : 0);
 
   useEffect(() => {
     const card = getValues("card") || 0;

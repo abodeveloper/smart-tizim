@@ -246,6 +246,13 @@ export const useStorageProductColumns = (
       },
     },
     {
+      title: t("Izoh"),
+      dataIndex: "desc",
+      key: "desc",
+      width: 300,
+      hidden: true,
+    },
+    {
       title: <RiListSettingsFill size={15} />,
       dataIndex: "id",
       key: "operation",

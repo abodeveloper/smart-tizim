@@ -25,7 +25,7 @@ function httpDeleteStorageProduct(id) {
 }
 
 function httpAddPaymentStorageProduct(data) {
-  return request.post(`/api/storage_products/`, data);
+  return request.post(`/api/storage_product_payments/`, data);
 }
 
 export {

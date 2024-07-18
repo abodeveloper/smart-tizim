@@ -7,11 +7,15 @@ import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAn
 import { httpGetStorageProductOne } from "@/services/api/requests/storage-products.requests";
 import { NumberToThousandFormat, formatTimeForUI } from "@/utils/helpers";
 import {
+  RiBankCardLine,
   RiCalendarTodoFill,
+  RiCashLine,
   RiColorFilterFill,
+  RiCopperCoinLine,
   RiRefundFill,
   RiRefundLine,
   RiShakeHandsFill,
+  RiSlideshowLine,
   RiStackFill,
   RiUser2Fill,
 } from "@remixicon/react";
@@ -108,11 +112,15 @@ const StorageProductDetailPage = () => {
                               )}
                               icon={<RiRefundLine />}
                             />
-                            <TitleAndIconText
-                              title={t("Izoh").toUpperCase()}
-                              value={get(data, "desc", "")}
-                              icon={<RiRefundLine />}
-                            />
+                            {get(data, "desc", "") ? (
+                              <TitleAndIconText
+                                title={t("Izoh").toUpperCase()}
+                                value={get(data, "desc", "")}
+                                icon={<RiSlideshowLine />}
+                              />
+                            ) : (
+                              ""
+                            )}
                           </Flex>
                         </Card>
                         {!isEmpty(get(data, "services", [])) && (
@@ -131,6 +139,35 @@ const StorageProductDetailPage = () => {
                             )}
                             icon={<RiRefundLine />}
                           />
+                          {get(data, "total_pay", "") ? (
+                            <>
+                              <Divider style={{ margin: "0" }} />
+                              <TitleAndIconText
+                                title={t("Naqt").toUpperCase()}
+                                value={NumberToThousandFormat(
+                                  get(data, "cash", "")
+                                )}
+                                icon={<RiCashLine />}
+                              />
+                              <TitleAndIconText
+                                title={t("Karta orqali").toUpperCase()}
+                                value={NumberToThousandFormat(
+                                  get(data, "card", "")
+                                )}
+                                icon={<RiBankCardLine />}
+                              />
+                              <TitleAndIconText
+                                title={t("Boshqa").toUpperCase()}
+                                value={NumberToThousandFormat(
+                                  get(data, "other", "")
+                                )}
+                                icon={<RiCopperCoinLine />}
+                              />
+                            </>
+                          ) : (
+                            ""
+                          )}
+                          <Divider style={{ margin: "0" }} />
                           <TitleAndIconText
                             title={t("To'langan summa").toUpperCase()}
                             value={NumberToThousandFormat(
@@ -158,6 +195,8 @@ const StorageProductDetailPage = () => {
                           {get(data, "status", "") === "Qarzdorlik" && (
                             <AddPaymentForStorageProduct
                               summa={get(data, "debt_balance", "")}
+                              refetch={refetch}
+                              item={data}
                             />
                           )}
                         </Flex>
