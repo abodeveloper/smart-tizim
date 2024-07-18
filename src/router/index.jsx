@@ -76,7 +76,10 @@ const CreateStorageProductsPage = lazy(() =>
   import("@/pages/storages/storage-products/CreateStorageProductsPage")
 );
 const UpdateStorageProductsPage = lazy(() =>
-  import("@/pages/storages/storage-products/CreateStorageProductsPage")
+  import("@/pages/storages/storage-products/UpdateStorageProductsPage")
+);
+const StorageProductDetailPage = lazy(() =>
+  import("@/pages/storages/storage-products/StorageProductDetailPage")
 );
 
 //Product category
@@ -201,9 +204,10 @@ const Router = () => {
                     element={<CreateStorageProductsPage />}
                   />
                   <Route
-                    path={`update/:id/`}
+                    path={`update/:id`}
                     element={<UpdateStorageProductsPage />}
                   />
+                  <Route path={`:id`} element={<StorageProductDetailPage />} />
                 </Route>
 
                 <Route path={"*"} element={<NotFoundPage />} />

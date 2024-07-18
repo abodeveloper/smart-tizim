@@ -23,7 +23,7 @@ const UpdateStorageProductsPage = () => {
   const { id } = useParams();
 
   const updateElementState = useQuery({
-    queryKey: ["storage-one", id],
+    queryKey: ["storage-product-one", id],
     queryFn: () => httpGetStorageProductOne(id),
     select: (response) => prepareStorageProductForEdit(response.data),
   });

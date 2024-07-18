@@ -3,6 +3,8 @@ import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picke
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
 import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
 import CustomTextarea from "@/components/atoms/form-elements/custom-textarea/CustomTextarea";
+import CardTitle from "@/components/molecules/card-title/CardTitle";
+import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
 import useProducts from "@/hooks/api/useProducts";
 import useServices from "@/hooks/api/useServices";
 import useStorages from "@/hooks/api/useStorages";
@@ -14,12 +16,16 @@ import {
   getValidationStatus,
   getValidationStatusForArray,
 } from "@/utils/helpers";
-import {
-  DeleteFilled,
-  MoneyCollectOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { DeleteFilled, PlusOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  RiBankCardLine,
+  RiCashLine,
+  RiCopperCoinLine,
+  RiMoneyDollarBoxFill,
+  RiMoneyDollarCircleFill,
+  RiRefundFill,
+} from "@remixicon/react";
 import { Button, Card, Col, Divider, Flex, Form, Row } from "antd";
 import Typography from "antd/es/typography/Typography";
 import dayjs from "dayjs";
@@ -37,52 +43,63 @@ const StorageProductForm = ({
 }) => {
   const { t } = useTranslation();
 
-  const validationSchema = object().shape({
-    supplier: string().required(t("Maydonni kiritishingiz shart !")),
-    date: string().required(t("Maydonni kiritishingiz shart !")),
-    products: array().of(
-      object().shape({
-        product: string().required(t("Maydonni kiritishingiz shart !")),
-        storage: string().when("product", {
-          is: (value) => {
-            const selectedProduct = productsData.find(
-              (item) => item.id == value
-            );
-            return selectedProduct?.product_type === "Sanaladigan";
-          },
-          then: () => string().required(t("Maydonni kiritishingiz shart !")),
-        }),
-        price: string().required(t("Maydonni kiritishingiz shart !")),
-        size_type: string().required(t("Maydonni kiritishingiz shart !")),
-        count: number()
-          .min(0, t("Miqdor noldan katta yoki teng bo'lishi kerak !"))
-          .required(t("Maydonni kiritishingiz shart !")),
-        part_size: string().when("size_type", {
-          is: "O'lchovli",
-          then: () => string().required(t("Maydonni kiritishingiz shart !")),
-        }),
-        height: string().when("size_type", {
-          is: "Formatli",
-          then: () => string().required(t("Maydonni kiritishingiz shart !")),
-        }),
-        width: string().when("size_type", {
-          is: "Formatli",
-          then: () => string().required(t("Maydonni kiritishingiz shart !")),
-        }),
-      })
-    ),
-    services: array().of(
-      object().shape({
-        service: string().required(t("Maydonni kiritishingiz shart !")),
-        count: number()
-          .min(0, t("Miqdor noldan katta yoki teng bo'lishi kerak !"))
-          .required(t("Maydonni kiritishingiz shart !")),
-        price: number()
-          .min(0, t("Narx noldan katta yoki teng bo'lishi kerak !"))
-          .required(t("Maydonni kiritishingiz shart !")),
-      })
-    ),
-  });
+  const validationSchema = object()
+    .shape({
+      supplier: string().required(t("Maydonni kiritishingiz shart !")),
+      cash: string().nullable(),
+      card: string().nullable(),
+      other: string().nullable(),
+      date: string().required(t("Maydonni kiritishingiz shart !")),
+      products: array().of(
+        object().shape({
+          product: string().required(t("Maydonni kiritishingiz shart !")),
+          storage: string().when("product", {
+            is: (value) => {
+              const selectedProduct = productsData.find(
+                (item) => item.id == value
+              );
+              return selectedProduct?.product_type === "Sanaladigan";
+            },
+            then: () => string().required(t("Maydonni kiritishingiz shart !")),
+          }),
+          price: string().required(t("Maydonni kiritishingiz shart !")),
+          size_type: string().required(t("Maydonni kiritishingiz shart !")),
+          count: number()
+            .min(0, t("Miqdor noldan katta yoki teng bo'lishi kerak !"))
+            .required(t("Maydonni kiritishingiz shart !")),
+          part_size: string().when("size_type", {
+            is: "O'lchovli",
+            then: () => string().required(t("Maydonni kiritishingiz shart !")),
+          }),
+          height: string().when("size_type", {
+            is: "Formatli",
+            then: () => string().required(t("Maydonni kiritishingiz shart !")),
+          }),
+          width: string().when("size_type", {
+            is: "Formatli",
+            then: () => string().required(t("Maydonni kiritishingiz shart !")),
+          }),
+        })
+      ),
+      services: array().of(
+        object().shape({
+          service: string().required(t("Maydonni kiritishingiz shart !")),
+          count: number()
+            .min(0, t("Miqdor noldan katta yoki teng bo'lishi kerak !"))
+            .required(t("Maydonni kiritishingiz shart !")),
+          price: number()
+            .min(0, t("Narx noldan katta yoki teng bo'lishi kerak !"))
+            .required(t("Maydonni kiritishingiz shart !")),
+        })
+      ),
+    })
+    .test(
+      "one-of-three-required",
+      t("Cash, Card yoki Other maydonlaridan biri kiritilishi shart !"),
+      function (value) {
+        return value.cash || value.card || value.other;
+      }
+    );
 
   const resolver = yupResolver(validationSchema);
 
@@ -103,7 +120,7 @@ const StorageProductForm = ({
   } = useForm({
     defaultValues: {
       date: dayjs(),
-      products: [{ size_type: "O'lchovsiz" }],
+      products: [{}],
       services: [],
       ...defaultValues,
     },
@@ -132,9 +149,15 @@ const StorageProductForm = ({
     reset(defaultValues);
   }, [defaultValues]);
 
-  const handleReset = () => reset({});
+  const handleReset = () => {
+    reset({
+      services: [],
+      products: [{}],
+    });
+  };
 
   const onSubmit = rest.handleSubmit((values) => {
+    handleReset();
     handleSubmit(prepareStorageProductDto(values), handleReset);
   });
 
@@ -195,11 +218,43 @@ const StorageProductForm = ({
   );
 
   const totalProductPrice = products?.reduce(
-    (sum, item) => sum + (get(item, "price", 0) || 0),
+    (sum, item) =>
+      sum +
+      get(item, "price", 0) *
+        get(item, "count", 0) *
+        get(item, "part_size", 1) *
+        (get(item, "width", 1) * get(item, "height", 1) || 0),
     0
   );
 
-  const totalSumma = totalServicePrice || 0 + totalProductPrice || 0;
+  const totalSumma = Number(totalServicePrice) + Number(totalProductPrice) || 0;
+
+  useEffect(() => {
+    const card = getValues("card") || 0;
+    const other = getValues("other") || 0;
+    const remainingCash = totalSumma - card - other;
+    if (remainingCash !== getValues("cash")) {
+      setValue("cash", remainingCash >= 0 ? remainingCash : 0);
+    }
+  }, [totalSumma, watch("card"), watch("other")]);
+
+  useEffect(() => {
+    const cash = getValues("cash") || 0;
+    const other = getValues("other") || 0;
+    const remainingCard = totalSumma - cash - other;
+    if (remainingCard !== getValues("card")) {
+      setValue("card", remainingCard >= 0 ? remainingCard : 0);
+    }
+  }, [totalSumma, watch("cash"), watch("other")]);
+
+  useEffect(() => {
+    const cash = getValues("cash") || 0;
+    const card = getValues("card") || 0;
+    const remainingOther = totalSumma - cash - card;
+    if (remainingOther !== getValues("other")) {
+      setValue("other", remainingOther >= 0 ? remainingOther : 0);
+    }
+  }, [totalSumma, watch("cash"), watch("card")]);
 
   return (
     <Form
@@ -213,17 +268,7 @@ const StorageProductForm = ({
       <Row gutter={[20, 20]}>
         <Col xs={24} md={18}>
           <Flex gap="large" vertical>
-            <Card>
-              <Flex
-                horizontal
-                align="center"
-                justify="space-between"
-                style={{ marginBottom: "20px" }}
-              >
-                <Typography.Title level={5}>
-                  {t("Ta'minotchi va xizmatlar")}
-                </Typography.Title>
-              </Flex>
+            <Card title={<CardTitle title={t("Ta'minotchi va xizmatlar")} />}>
               <Row gutter={[20, 20]}>
                 <Col xs={24} md={6}>
                   <Form.Item
@@ -264,133 +309,120 @@ const StorageProductForm = ({
                   </Form.Item>
                 </Col>
               </Row>
-              {!isEmpty(serviceFields) && (
-                <>
-                  <Flex
-                    horizontal
-                    align="center"
-                    justify="space-between"
-                    style={{ marginBottom: "20px", marginTop: "20px" }}
-                  >
-                    <Typography.Title level={5}>
-                      {t("Qo'shimcha xizmatlar")}
-                    </Typography.Title>
-                  </Flex>
-                  <Flex gap="large" vertical>
-                    {serviceFields.map((item, index) => (
-                      <>
-                        <Row gutter={[20, 20]}>
-                          <Col xs={24} md={22}>
-                            <Card hoverable={true}>
-                              <Row gutter={[20, 20]} key={item.id}>
-                                <Col xs={24} md={6}>
-                                  <Form.Item
-                                    label={t("Xizmat")}
-                                    {...getValidationStatusForArray(
-                                      errors,
-                                      "services",
-                                      index,
-                                      "service"
-                                    )}
-                                    required={true}
-                                  >
-                                    <Controller
-                                      name={`services.${index}.service`}
-                                      control={control}
-                                      render={({ field }) => (
-                                        <CustomSelect
-                                          {...field}
-                                          disabled={true}
-                                          options={servicesOptions}
-                                        />
-                                      )}
-                                    />
-                                  </Form.Item>
-                                </Col>
-                                <Col xs={24} md={6}>
-                                  <Form.Item
-                                    label={t("Miqdori")}
-                                    {...getValidationStatusForArray(
-                                      errors,
-                                      "services",
-                                      index,
-                                      "count"
-                                    )}
-                                    required={true}
-                                  >
-                                    <Controller
-                                      name={`services.${index}.count`}
-                                      control={control}
-                                      render={({ field }) => (
-                                        <CustomInputNumber {...field} />
-                                      )}
-                                    />
-                                  </Form.Item>
-                                </Col>
-                                <Col xs={24} md={6}>
-                                  <Form.Item
-                                    label={t("Narxi")}
-                                    {...getValidationStatusForArray(
-                                      errors,
-                                      "services",
-                                      index,
-                                      "price"
-                                    )}
-                                    required={true}
-                                  >
-                                    <Controller
-                                      name={`services.${index}.price`}
-                                      control={control}
-                                      render={({ field }) => (
-                                        <CustomInputNumber {...field} />
-                                      )}
-                                    />
-                                  </Form.Item>
-                                </Col>
-                              </Row>
-                            </Card>
-                          </Col>
-                          <Col xs={24} md={2}>
-                            <Button
-                              icon={<DeleteFilled />}
-                              danger
-                              onClick={() => handleRemoveService(index)}
-                            >
-                              {/* {t("O'chirish")} */}
-                            </Button>
-                          </Col>
-                        </Row>
-                      </>
-                    ))}
-                    <Flex gap={"small"} align="center">
-                      <MoneyCollectOutlined style={{ fontSize: "20px" }} />
-                      <Typography.Text type="success">
-                        {t("Summa")}:{" "}
-                        {NumberToThousandFormat(totalServicePrice)}
-                      </Typography.Text>
-                    </Flex>
-                  </Flex>
-                </>
-              )}
             </Card>
-            <Card>
-              <Flex
-                horizontal
-                align="center"
-                justify="space-between"
-                style={{ marginBottom: "20px" }}
-              >
-                <Typography.Title level={5}>
-                  {t("Mahsulotlar")}
-                </Typography.Title>
-                <Button
-                  icon={<PlusOutlined />}
-                  type="primary"
-                  onClick={() => appendProduct({ size_type: "O'lchovsiz" })}
-                >
-                  {t("MAHSULOT")}
-                </Button>
-              </Flex>
+            {!isEmpty(serviceFields) && (
+              <Card title={<CardTitle title={t("Qo'shimcha xizmatlar")} />}>
+                <Flex gap="large" vertical>
+                  {serviceFields.map((item, index) => (
+                    <>
+                      <Row gutter={[20, 20]}>
+                        <Col xs={24} md={22}>
+                          <Card hoverable={true}>
+                            <Row gutter={[20, 20]} key={item.id}>
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Xizmat")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "services",
+                                    index,
+                                    "service"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`services.${index}.service`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomSelect
+                                        {...field}
+                                        disabled={true}
+                                        options={servicesOptions}
+                                      />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Miqdori")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "services",
+                                    index,
+                                    "count"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`services.${index}.count`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomInputNumber {...field} />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col xs={24} md={6}>
+                                <Form.Item
+                                  label={t("Narxi")}
+                                  {...getValidationStatusForArray(
+                                    errors,
+                                    "services",
+                                    index,
+                                    "price"
+                                  )}
+                                  required={true}
+                                >
+                                  <Controller
+                                    name={`services.${index}.price`}
+                                    control={control}
+                                    render={({ field }) => (
+                                      <CustomInputNumber {...field} />
+                                    )}
+                                  />
+                                </Form.Item>
+                              </Col>
+                            </Row>
+                          </Card>
+                        </Col>
+                        <Col xs={24} md={2}>
+                          <Button
+                            icon={<DeleteFilled />}
+                            danger
+                            size="small"
+                            onClick={() => handleRemoveService(index)}
+                          >
+                            {/* {t("O'chirish")} */}
+                          </Button>
+                        </Col>
+                      </Row>
+                    </>
+                  ))}
+                  <Flex gap={"small"} align="center">
+                    <RiMoneyDollarCircleFill size={20} />
+                    <Typography.Text type="warning" strong>
+                      {t("SUMMA")}: {NumberToThousandFormat(totalServicePrice)}
+                    </Typography.Text>
+                  </Flex>
+                </Flex>
+              </Card>
+            )}
+            <Card
+              title={
+                <Flex horizontal align="center" justify="space-between">
+                  <CardTitle title={t("Mahsulotlar")} />
+                  <Button
+                    icon={<PlusOutlined />}
+                    type="primary"
+                    size="small"
+                    onClick={() => appendProduct({ size_type: "O'lchovsiz" })}
+                  >
+                    {t("MAHSULOT")}
+                  </Button>
+                </Flex>
+              }
+            >
               <Flex gap="large" vertical>
                 {productFields.map((item, index) => {
                   const productType = productsData.find(
@@ -489,7 +521,7 @@ const StorageProductForm = ({
                               </Col>
                               <Col xs={24} md={6}>
                                 <Form.Item
-                                  label={t("Size type")}
+                                  label={t("O'lcham turi")}
                                   {...getValidationStatusForArray(
                                     errors,
                                     "products",
@@ -526,7 +558,7 @@ const StorageProductForm = ({
                                     name={`products.${index}.count`}
                                     control={control}
                                     render={({ field }) => (
-                                      <CustomInputNumber {...field} />
+                                      <CustomInputNumber min={0} {...field} />
                                     )}
                                   />
                                 </Form.Item>
@@ -536,7 +568,7 @@ const StorageProductForm = ({
                                 "O'lchovli" && (
                                 <Col xs={24} md={6}>
                                   <Form.Item
-                                    label={t("Part size")}
+                                    label={t("Qism hajmi")}
                                     {...getValidationStatusForArray(
                                       errors,
                                       "products",
@@ -549,7 +581,7 @@ const StorageProductForm = ({
                                       name={`products.${index}.part_size`}
                                       control={control}
                                       render={({ field }) => (
-                                        <CustomInputNumber {...field} />
+                                        <CustomInputNumber min={0} {...field} />
                                       )}
                                     />
                                   </Form.Item>
@@ -561,7 +593,7 @@ const StorageProductForm = ({
                                 <>
                                   <Col xs={24} md={6}>
                                     <Form.Item
-                                      label={t("Height")}
+                                      label={t("Bo'yi")}
                                       {...getValidationStatusForArray(
                                         errors,
                                         "products",
@@ -574,14 +606,17 @@ const StorageProductForm = ({
                                         name={`products.${index}.height`}
                                         control={control}
                                         render={({ field }) => (
-                                          <CustomInputNumber {...field} />
+                                          <CustomInputNumber
+                                            min={0}
+                                            {...field}
+                                          />
                                         )}
                                       />
                                     </Form.Item>
                                   </Col>
                                   <Col xs={24} md={6}>
                                     <Form.Item
-                                      label={t("Width")}
+                                      label={t("Eni")}
                                       {...getValidationStatusForArray(
                                         errors,
                                         "products",
@@ -594,7 +629,10 @@ const StorageProductForm = ({
                                         name={`products.${index}.width`}
                                         control={control}
                                         render={({ field }) => (
-                                          <CustomInputNumber {...field} />
+                                          <CustomInputNumber
+                                            min={0}
+                                            {...field}
+                                          />
                                         )}
                                       />
                                     </Form.Item>
@@ -605,22 +643,23 @@ const StorageProductForm = ({
                           </Card>
                         </Col>
                         <Col xs={24} md={2}>
-                          <Button
-                            icon={<DeleteFilled />}
-                            danger
-                            onClick={() => removeProduct(index)}
-                          >
-                            {/* {t("O'chirish")} */}
-                          </Button>
+                          {productFields.length > 1 && (
+                            <Button
+                              icon={<DeleteFilled />}
+                              danger
+                              size="small"
+                              onClick={() => removeProduct(index)}
+                            />
+                          )}
                         </Col>
                       </Row>
                     </>
                   );
                 })}
                 <Flex gap={"small"} align="center">
-                  <MoneyCollectOutlined style={{ fontSize: "20px" }} />
-                  <Typography.Text type="success">
-                    {t("Summa")}: {NumberToThousandFormat(totalSumma)}
+                  <RiMoneyDollarBoxFill size={20} />
+                  <Typography.Text type="default" strong>
+                    {t("SUMMA")}: {NumberToThousandFormat(totalProductPrice)}
                   </Typography.Text>
                 </Flex>
               </Flex>
@@ -628,40 +667,27 @@ const StorageProductForm = ({
           </Flex>
         </Col>
         <Col xs={24} md={6}>
-          <Card>
-            <Flex
-              horizontal
-              align="center"
-              justify="space-between"
-              style={{ marginBottom: "20px" }}
-            >
-              <Typography.Title level={5}>
-                {t("Umumiy ma'lumotlar")}
-              </Typography.Title>
-            </Flex>
+          <Card title={<CardTitle title={t("To'lov")} />}>
             <Row gutter={[20, 20]}>
               <Col xs={24} md={24}>
                 <Flex vertical gap={"middle"}>
-                  <Flex gap={"small"} align="center">
-                    <MoneyCollectOutlined style={{ fontSize: "20px" }} />
-                    <Typography.Text type="success">
-                      {t("Qo'shimcha xizmatlar")}:{" "}
-                      {NumberToThousandFormat(totalServicePrice)}
-                    </Typography.Text>
-                  </Flex>
-                  <Flex gap={"small"} align="center">
-                    <MoneyCollectOutlined style={{ fontSize: "20px" }} />
-                    <Typography.Text type="success">
-                      {t("Mahsulotlar")}:{" "}
-                      {NumberToThousandFormat(totalProductPrice)}
-                    </Typography.Text>
-                  </Flex>
-                  <Flex gap={"small"} align="center">
-                    <MoneyCollectOutlined style={{ fontSize: "20px" }} />
-                    <Typography.Text type="success">
-                      {t("Umumiy summa")}: {NumberToThousandFormat(totalSumma)}
-                    </Typography.Text>
-                  </Flex>
+                  <TitleAndIconText
+                    title={t("Mahsulotlar").toUpperCase()}
+                    value={NumberToThousandFormat(totalProductPrice)}
+                    icon={<RiMoneyDollarBoxFill />}
+                  />
+                  <TitleAndIconText
+                    type="warning"
+                    title={t("Xizmatlar").toUpperCase()}
+                    value={NumberToThousandFormat(totalServicePrice)}
+                    icon={<RiMoneyDollarBoxFill />}
+                  />
+                  <TitleAndIconText
+                    type="success"
+                    title={t("Umumiy summa").toUpperCase()}
+                    value={NumberToThousandFormat(totalSumma)}
+                    icon={<RiMoneyDollarBoxFill />}
+                  />
                 </Flex>
               </Col>
 
@@ -674,7 +700,9 @@ const StorageProductForm = ({
                   <Controller
                     name="cash"
                     control={control}
-                    render={({ field }) => <CustomInputNumber {...field} />}
+                    render={({ field }) => (
+                      <CustomInputNumber prefix={<RiCashLine />} {...field} />
+                    )}
                   />
                 </Form.Item>
               </Col>
@@ -687,7 +715,12 @@ const StorageProductForm = ({
                   <Controller
                     name="card"
                     control={control}
-                    render={({ field }) => <CustomInputNumber {...field} />}
+                    render={({ field }) => (
+                      <CustomInputNumber
+                        prefix={<RiBankCardLine />}
+                        {...field}
+                      />
+                    )}
                   />
                 </Form.Item>
               </Col>
@@ -700,13 +733,18 @@ const StorageProductForm = ({
                   <Controller
                     name="other"
                     control={control}
-                    render={({ field }) => <CustomInputNumber {...field} />}
+                    render={({ field }) => (
+                      <CustomInputNumber
+                        prefix={<RiCopperCoinLine />}
+                        {...field}
+                      />
+                    )}
                   />
                 </Form.Item>
               </Col>
               <Col xs={24} md={24}>
                 <Form.Item
-                  label={t("Qo'shilgan vaqti")}
+                  label={t("Sana")}
                   {...getValidationStatus(errors, "date")}
                   required={true}
                 >

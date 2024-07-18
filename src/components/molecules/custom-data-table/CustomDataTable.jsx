@@ -1,8 +1,8 @@
-import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
-import { Checkbox, Col, Divider, Flex, Row, Select, Space, Table } from "antd";
+import { Checkbox, Flex, Select, Space, Table } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import CardTitle from "../card-title/CardTitle";
 
 export const StyledCustomDataTable = styled(Table)`
   .ant-table {
@@ -35,7 +35,15 @@ export const StyledCustomDataTable = styled(Table)`
   }
 `;
 
-const CustomDataTable = ({ columns, data, pagination, loading, onChange }) => {
+const CustomDataTable = ({
+  columns,
+  data,
+  pagination,
+  loading,
+  onChange,
+  title,
+  ...rest
+}) => {
   const { t } = useTranslation();
   // Filter out the columns with keys 'id' and 'operation' for selection
   const selectableColumns = columns.filter(
@@ -90,33 +98,10 @@ const CustomDataTable = ({ columns, data, pagination, loading, onChange }) => {
           }
           loading={loading}
           onChange={onChange}
-          // title={() => (
-          //   <>
-          //     <Flex align="center" justify="end">
-          //       <CustomSelect
-          //         mode="multiple"
-          //         placeholder={t("Ustunlarni tanlang")}
-          //         defaultValue={selectableColumns
-          //           .filter((column) => !column.hidden)
-          //           .map((column) => column.key)}
-          //         onChange={handleColumnChange}
-          //         style={{ width: "150px" }}
-          //         // allowClear={false}
-          //         // autoClearSearchValue={false}
-          //       >
-          //         {selectableColumns.map((column) => (
-          //           <Option key={column.key} value={column.key}>
-          //             {column.title}
-          //           </Option>
-          //         ))}
-          //       </CustomSelect>
-          //     </Flex>
-          //   </>
-          // )}
-
           title={() => (
             <>
-              <Flex align="center" justify="end">
+              <Flex align="center" justify={title ? "space-between" : "end"}>
+                {title && <CardTitle title={title} />}
                 <Select
                   mode="multiple"
                   showSearch={false}
@@ -155,6 +140,7 @@ const CustomDataTable = ({ columns, data, pagination, loading, onChange }) => {
               </Flex>
             </>
           )}
+          {...rest}
         />
       </>
     </Space>

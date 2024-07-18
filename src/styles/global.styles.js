@@ -23,4 +23,9 @@ export default createGlobalStyle`
     margin-bottom: 0px;
   }
 
+  .ant-card-head{
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
 `;

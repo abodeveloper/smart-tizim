@@ -9,7 +9,7 @@ import {
 import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
 import { RiListSettingsFill } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
-import { Button, Flex } from "antd";
+import { Button, Flex, Tag } from "antd";
 import { get } from "lodash";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -178,6 +178,32 @@ export const useStorageProductColumns = (
       ],
     },
     {
+      title: t("Total product summa"),
+      dataIndex: "total_product_summa",
+      key: "total_product_summa",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Holati"),
+      dataIndex: "status",
+      key: "status",
+      filters: [
+        { text: t("Qarzdorlik"), value: "Qarzdorlik" },
+        { text: t("To'langan"), value: "To'langan" },
+      ],
+      filteredValue: filters.status || null,
+      render: (value) => {
+        switch (value) {
+          case "Qarzdorlik":
+            return <Tag color={"green"}>{t("To'langan")}</Tag>;
+          case "To'langan":
+            return <Tag color={"red"}>{t("Qarzdorlik")}</Tag>;
+        }
+      },
+    },
+    {
       title: t("Sana"),
       dataIndex: "date",
       key: "date",
@@ -193,7 +219,11 @@ export const useStorageProductColumns = (
       width: 100,
       render: (id) => (
         <Flex align="center" justify="space-between" gap={"middle"}>
-          <Button type="primary" icon={<EyeFilled />} />
+          <Button
+            type="primary"
+            icon={<EyeFilled />}
+            onClick={() => navigate(`${id}`)}
+          />
           <Button
             onClick={() => navigate(`update/${id}`)}
             icon={<EditFilled />}
