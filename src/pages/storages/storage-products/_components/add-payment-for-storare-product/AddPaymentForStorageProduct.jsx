@@ -1,5 +1,6 @@
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
+import { httpAddPaymentStorageProduct } from "@/services/api/requests/storage-products.requests";
 import {
   NumberToThousandFormat,
   getValidationStatus,
@@ -10,6 +11,7 @@ import {
   RiBankCardLine,
   RiCashLine,
   RiCopperCoinLine,
+  RiMoneyDollarBoxLine,
   RiRefundLine,
 } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
@@ -27,10 +29,6 @@ const AddPaymentForStorageProduct = ({ summa, refetch }) => {
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleOk = () => {
     setIsModalVisible(false);
   };
 
@@ -64,8 +62,8 @@ const AddPaymentForStorageProduct = ({ summa, refetch }) => {
     resolver,
   });
 
-  const { isPending, mutateAsync } = useMutation({
-    // mutationFn: uploadRequest,
+  const { isLoading, isPending, mutateAsync } = useMutation({
+    mutationFn: httpAddPaymentStorageProduct,
     onSuccess: () => {
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
       handleCancel();
@@ -126,6 +124,8 @@ const AddPaymentForStorageProduct = ({ summa, refetch }) => {
             <Button
               key="submit"
               type="primary"
+              disabled={isLoading}
+              loading={isLoading}
               onClick={handleSubmit(onSubmit)}
             >
               {t("To'lash")}
@@ -144,7 +144,7 @@ const AddPaymentForStorageProduct = ({ summa, refetch }) => {
                 type="danger"
                 title={t("Qarzdorlik").toUpperCase()}
                 value={NumberToThousandFormat(summa)}
-                icon={<RiRefundLine />}
+                icon={<RiMoneyDollarBoxLine />}
               />
             </Col>
             <Col xs={24} md={24}>

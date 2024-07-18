@@ -24,10 +24,15 @@ function httpDeleteStorageProduct(id) {
   return request.delete(`/api/storage_products/${id}/`);
 }
 
+function httpAddPaymentStorageProduct(data) {
+  return request.post(`/api/storage_products/`, data);
+}
+
 export {
   httpDeleteStorageProduct,
   httpUpdateStorageProduct,
   httpPostStorageProduct,
   httpGetStorageProductOne,
   httpGetStorageProducts,
+  httpAddPaymentStorageProduct,
 };

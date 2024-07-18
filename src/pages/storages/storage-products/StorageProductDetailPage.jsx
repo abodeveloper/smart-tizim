@@ -17,7 +17,7 @@ import {
 } from "@remixicon/react";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Button, Card, Col, Divider, Flex, Row, Tag } from "antd";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -108,9 +108,16 @@ const StorageProductDetailPage = () => {
                               )}
                               icon={<RiRefundLine />}
                             />
+                            <TitleAndIconText
+                              title={t("Izoh").toUpperCase()}
+                              value={get(data, "desc", "")}
+                              icon={<RiRefundLine />}
+                            />
                           </Flex>
                         </Card>
-                        <Services data={get(data, "services", [])} />
+                        {!isEmpty(get(data, "services", [])) && (
+                          <Services data={get(data, "services", [])} />
+                        )}
                         <Products data={get(data, "products", [])} />
                       </Flex>
                     </Col>
@@ -138,8 +145,7 @@ const StorageProductDetailPage = () => {
                                 <Tag color={"red"}>
                                   {t("Qardorlik")} (
                                   {NumberToThousandFormat(
-                                    get(data, "total_summa", "") -
-                                      get(data, "total_pay", "")
+                                    get(data, "debt_balance", "")
                                   )}
                                   )
                                 </Tag>
@@ -151,10 +157,7 @@ const StorageProductDetailPage = () => {
                           />
                           {get(data, "status", "") === "Qarzdorlik" && (
                             <AddPaymentForStorageProduct
-                              summa={
-                                get(data, "total_summa", "") -
-                                get(data, "total_pay", "")
-                              }
+                              summa={get(data, "debt_balance", "")}
                             />
                           )}
                         </Flex>

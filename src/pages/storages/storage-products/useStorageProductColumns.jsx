@@ -178,9 +178,43 @@ export const useStorageProductColumns = (
       ],
     },
     {
-      title: t("Total product summa"),
+      title: t("Jami summa (mahsulotlar)"),
       dataIndex: "total_product_summa",
       key: "total_product_summa",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+      hidden: true,
+    },
+    {
+      title: t("Jami summa (xizmatlar)"),
+      dataIndex: "total_service_summa",
+      key: "total_service_summa",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+      hidden: true,
+    },
+    {
+      title: t("Jami summa"),
+      dataIndex: "total_summa",
+      key: "total_summa",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Jami summa (to'langan)"),
+      dataIndex: "total_pay",
+      key: "total_pay",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Qarzdorlik"),
+      dataIndex: "debt_balance",
+      key: "debt_balance",
       render: (value) => {
         return <>{NumberToThousandFormat(value)}</>;
       },
@@ -197,9 +231,9 @@ export const useStorageProductColumns = (
       render: (value) => {
         switch (value) {
           case "Qarzdorlik":
-            return <Tag color={"green"}>{t("To'langan")}</Tag>;
-          case "To'langan":
             return <Tag color={"red"}>{t("Qarzdorlik")}</Tag>;
+          case "To'langan":
+            return <Tag color={"green"}>{t("To'langan")}</Tag>;
         }
       },
     },

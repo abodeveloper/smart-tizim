@@ -6,10 +6,10 @@ const Styled = styled(Flex)``;
 
 const TitleAndIconText = ({ title, value, icon, ...rest }) => {
   return (
-    <Styled align="center" gap="middle">
-      <Flex align="center" gap="small">
+    <Styled gap="middle">
+      <Flex gap="small">
         {icon && React.cloneElement(icon, { size: 20 })}
-        <Typography.Text strong {...rest}>
+        <Typography.Text strong style={{ width: "100%" }} {...rest}>
           {title}:
         </Typography.Text>
       </Flex>
