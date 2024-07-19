@@ -221,8 +221,8 @@ function Products({ data }) {
   const columns = [
     {
       title: t("#"),
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "index",
+      key: "index",
       render: (value, item, index) => {
         return <>{index + 1}</>;
       },
@@ -277,8 +277,8 @@ function Services({ data }) {
   const columns = [
     {
       title: t("#"),
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "index",
+      key: "index",
       render: (value, item, index) => {
         return <>{index + 1}</>;
       },

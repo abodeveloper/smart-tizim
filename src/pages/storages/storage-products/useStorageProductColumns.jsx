@@ -45,11 +45,6 @@ export const useStorageProductColumns = (
       title: "№",
       dataIndex: "id",
       key: "id",
-      render: (id, item, index) => {
-        return (
-          <>{(pagination.current - 1) * pagination.pageSize + index + 1}</>
-        );
-      },
     },
     {
       title: t("Ta'minotchi"),

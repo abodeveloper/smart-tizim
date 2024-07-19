@@ -1,5 +1,5 @@
 import { Checkbox, Flex, Select, Space, Table } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import CardTitle from "../card-title/CardTitle";
@@ -47,14 +47,19 @@ const CustomDataTable = ({
   const { t } = useTranslation();
   // Filter out the columns with keys 'id' and 'operation' for selection
   const selectableColumns = columns.filter(
-    (column) => column.key !== "id" && column.key !== "operation"
+    (column) =>
+      column.key !== "id" &&
+      column.key !== "index" &&
+      column.key !== "operation"
   );
 
   // Initially visible columns include all columns that are not hidden plus id and operation columns
   const [visibleColumns, setVisibleColumns] = useState(
     columns.filter(
       (column) =>
-        !column.hidden || column.key === "id" || column.key === "operation"
+        !column.hidden ||
+        column.key === "id" ||
+        (column.key !== "index" && column.key === "operation")
     )
   );
 
@@ -65,10 +70,21 @@ const CustomDataTable = ({
         hidden:
           !selectedColumns.includes(column.key) &&
           column.key !== "id" &&
+          column.key !== "index" &&
           column.key !== "operation",
       }))
       .filter((column) => !column.hidden);
     setVisibleColumns(newColumns);
+  };
+
+  const [localPagination, setLocalPagination] = useState(pagination);
+
+  useEffect(() => {
+    setLocalPagination(pagination);
+  }, [pagination]);
+
+  const calculateRowIndex = (index) => {
+    return (localPagination.current - 1) * localPagination.pageSize + index + 1;
   };
 
   return (
@@ -81,7 +97,17 @@ const CustomDataTable = ({
           bordered={true}
           style={{ maxWidth: "100%" }}
           scroll={{ x: true }}
-          columns={visibleColumns}
+          // columns={visibleColumns}
+          columns={visibleColumns.map((column) =>
+            column.key === "id"
+              ? {
+                  ...column,
+                  render: (text, record, index) => {
+                    return calculateRowIndex(index);
+                  },
+                }
+              : column
+          )}
           rowKey={(record) => record.id}
           dataSource={data}
           pagination={

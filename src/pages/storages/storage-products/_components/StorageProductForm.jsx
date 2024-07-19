@@ -212,11 +212,6 @@ const StorageProductForm = ({
   const services = useWatch({ control, name: "services" });
   const products = useWatch({ control, name: "products" });
 
-  // const totalServicePrice = services?.reduce(
-  //   (sum, item) => sum + (get(item, "price", 0) * get(item, "count", 0) || 0),
-  //   0
-  // );
-
   const totalServicePrice = services?.reduce(
     (sum, item) => sum + get(item, "price", 0) * get(item, "count", 0) || 0,
     0

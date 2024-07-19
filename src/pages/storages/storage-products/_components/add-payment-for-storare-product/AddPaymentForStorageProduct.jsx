@@ -1,6 +1,7 @@
 import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picker/CustomDatePicker";
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
+import { prepareAddPaymentStorageProductDto } from "@/services/api/prepare-data/storage-products";
 import { httpAddPaymentStorageProduct } from "@/services/api/requests/storage-products.requests";
 import {
   NumberToThousandFormat,
@@ -81,7 +82,12 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
   });
 
   const onSubmit = (data) => {
-    mutateAsync({ ...data, storage_product: get(item, "id", "") });
+    mutateAsync(
+      prepareAddPaymentStorageProductDto({
+        ...data,
+        storage_product: get(item, "id", ""),
+      })
+    );
   };
 
   useEffect(() => {

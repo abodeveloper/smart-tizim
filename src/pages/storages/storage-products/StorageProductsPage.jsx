@@ -57,17 +57,18 @@ const StorageProductsPage = () => {
 
   useEffect(() => {
     if (data) {
-      setPagination({
+      setPagination((prevPagination) => ({
+        ...prevPagination,
         current: data.current || 1,
         pageSize: data.pageSize || 10,
         total: data.total || "",
-      });
+      }));
     }
   }, [data]);
 
-  const handleTableChange = (pagination, tabelFilters) => {
+  const handleTableChange = (newPagination, tabelFilters) => {
     setPagination({
-      ...pagination,
+      ...newPagination,
     });
     setFilters(tabelFilters);
   };
