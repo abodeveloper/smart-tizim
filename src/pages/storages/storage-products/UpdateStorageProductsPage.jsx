@@ -74,7 +74,10 @@ const UpdateStorageProductsPage = () => {
               ) : (
                 <StorageProductForm
                   handleSubmit={handleSubmit}
-                  defaultValues={get(updateElementState, "data", [])}
+                  defaultValues={{
+                    ...get(updateElementState, "data", []),
+                    pay_type: false,
+                  }}
                   actionLoading={isPending}
                 />
               )}

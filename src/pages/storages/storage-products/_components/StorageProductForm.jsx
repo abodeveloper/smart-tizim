@@ -2,6 +2,7 @@ import CustomCascader from "@/components/atoms/form-elements/custom-cascader/Cus
 import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picker/CustomDatePicker";
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
 import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
+import CustomSwitch from "@/components/atoms/form-elements/custom-switch/CustomSwitch";
 import CustomTextarea from "@/components/atoms/form-elements/custom-textarea/CustomTextarea";
 import CardTitle from "@/components/molecules/card-title/CardTitle";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
@@ -95,9 +96,44 @@ const StorageProductForm = ({
     })
     .test(
       "one-of-three-required",
-      t("Cash, Card yoki Other maydonlaridan biri kiritilishi shart !"),
+      t("Naqt, Karta orqali yoki Boshqa maydonlaridan biri kiritilishi shart!"),
       function (value) {
-        return value.cash || value.card || value.other;
+        const { path, createError } = this;
+        const cash = parseFloat(value.cash) || 0;
+        const card = parseFloat(value.card) || 0;
+        const other = parseFloat(value.other) || 0;
+
+        if (cash >= 0 || card >= 0 || other >= 0) {
+          return true;
+        }
+
+        return createError({
+          path: `${path}.cash`,
+          message: t(
+            "Naqt, Karta orqali yoki Boshqa maydonlaridan biri kiritilishi shart!"
+          ),
+        });
+      }
+    )
+    .test(
+      "total-less-than-summa",
+      t("To'lovlarning umumiy summasi qarzdorlikdan oshmasligi kerak!"),
+      function (value) {
+        const { path, createError } = this;
+        const cash = parseFloat(value.cash) || 0;
+        const card = parseFloat(value.card) || 0;
+        const other = parseFloat(value.other) || 0;
+
+        if (cash + card + other <= totalSumma) {
+          return true;
+        }
+
+        return createError({
+          path: `${path}.total_summa`,
+          message: t(
+            "To'lovlarning umumiy summasi qarzdorlikdan oshmasligi kerak!"
+          ),
+        });
       }
     );
 
@@ -122,6 +158,7 @@ const StorageProductForm = ({
       date: dayjs(),
       products: [{}],
       services: [],
+      pay_type: true,
       ...defaultValues,
     },
     resolver,
@@ -231,32 +268,47 @@ const StorageProductForm = ({
     (totalServicePrice ? totalServicePrice : 0) +
     (totalProductPrice ? totalProductPrice : 0);
 
-  useEffect(() => {
-    const card = getValues("card") || 0;
-    const other = getValues("other") || 0;
-    const remainingCash = totalSumma - card - other;
-    if (remainingCash !== getValues("cash")) {
-      setValue("cash", remainingCash >= 0 ? remainingCash : 0);
-    }
-  }, [totalSumma, watch("card"), watch("other")]);
+  const payType = watch("pay_type");
 
   useEffect(() => {
-    const cash = getValues("cash") || 0;
-    const other = getValues("other") || 0;
-    const remainingCard = totalSumma - cash - other;
-    if (remainingCard !== getValues("card")) {
-      setValue("card", remainingCard >= 0 ? remainingCard : 0);
+    if (payType) {
+      const card = getValues("card") || 0;
+      const other = getValues("other") || 0;
+      const remainingCash = totalSumma - card - other;
+      if (remainingCash !== getValues("cash")) {
+        setValue("cash", remainingCash >= 0 ? remainingCash : 0);
+      }
     }
-  }, [totalSumma, watch("cash"), watch("other")]);
+  }, [totalSumma, watch("card"), watch("other"), payType]);
 
   useEffect(() => {
-    const cash = getValues("cash") || 0;
-    const card = getValues("card") || 0;
-    const remainingOther = totalSumma - cash - card;
-    if (remainingOther !== getValues("other")) {
-      setValue("other", remainingOther >= 0 ? remainingOther : 0);
+    if (payType) {
+      const cash = getValues("cash") || 0;
+      const other = getValues("other") || 0;
+      const remainingCard = totalSumma - cash - other;
+      if (remainingCard !== getValues("card")) {
+        setValue("card", remainingCard >= 0 ? remainingCard : 0);
+      }
     }
-  }, [totalSumma, watch("cash"), watch("card")]);
+  }, [totalSumma, watch("cash"), watch("other"), payType]);
+
+  useEffect(() => {
+    if (payType) {
+      const cash = getValues("cash") || 0;
+      const card = getValues("card") || 0;
+      const remainingOther = totalSumma - cash - card;
+      if (remainingOther !== getValues("other")) {
+        setValue("other", remainingOther >= 0 ? remainingOther : 0);
+      }
+    }
+  }, [totalSumma, watch("cash"), watch("card"), payType]);
+
+  const totalPayment = watch(["cash", "card", "other"]).reduce(
+    (acc, curr) => acc + (parseFloat(curr) || 0),
+    0
+  );
+
+  useEffect(() => {}, [watch()]);
 
   return (
     <Form
@@ -695,6 +747,22 @@ const StorageProductForm = ({
 
               <Col xs={24} md={24}>
                 <Form.Item
+                  label={t("Barchasini to'lash")}
+                  {...getValidationStatus(errors, "pay_type")}
+                  required={true}
+                >
+                  <Controller
+                    name="pay_type"
+                    control={control}
+                    render={({ field }) => (
+                      <CustomSwitch prefix={<RiCashLine />} {...field} />
+                    )}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col xs={24} md={24}>
+                <Form.Item
                   label={t("Naqt")}
                   {...getValidationStatus(errors, "cash")}
                   required={true}
@@ -741,6 +809,16 @@ const StorageProductForm = ({
                         {...field}
                       />
                     )}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={24}>
+                <Form.Item {...getValidationStatus(errors, "total_summa")}>
+                  <TitleAndIconText
+                    type="success"
+                    title={t("To'lanayotgan summa").toUpperCase()}
+                    value={NumberToThousandFormat(totalPayment)}
+                    icon={<RiMoneyDollarBoxFill />}
                   />
                 </Form.Item>
               </Col>

@@ -1,5 +1,6 @@
 import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picker/CustomDatePicker";
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
+import CustomSwitch from "@/components/atoms/form-elements/custom-switch/CustomSwitch";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
 import { prepareAddPaymentStorageProductDto } from "@/services/api/prepare-data/storage-products";
 import { httpAddPaymentStorageProduct } from "@/services/api/requests/storage-products.requests";
@@ -13,6 +14,7 @@ import {
   RiBankCardLine,
   RiCashLine,
   RiCopperCoinLine,
+  RiMoneyDollarBoxFill,
   RiMoneyDollarBoxLine,
 } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
@@ -45,9 +47,44 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
     })
     .test(
       "one-of-three-required",
-      t("Cash, Card yoki Other maydonlaridan biri kiritilishi shart !"),
+      t("Naqt, Karta orqali yoki Boshqa maydonlaridan biri kiritilishi shart!"),
       function (value) {
-        return value.cash || value.card || value.other;
+        const { path, createError } = this;
+        const cash = parseFloat(value.cash) || 0;
+        const card = parseFloat(value.card) || 0;
+        const other = parseFloat(value.other) || 0;
+
+        if (cash > 0 || card > 0 || other > 0) {
+          return true;
+        }
+
+        return createError({
+          path: `${path}.cash`,
+          message: t(
+            "Naqt, Karta orqali yoki Boshqa maydonlaridan biri kiritilishi shart!"
+          ),
+        });
+      }
+    )
+    .test(
+      "total-less-than-summa",
+      t("To'lovlarning umumiy summasi qarzdorlikdan oshmasligi kerak!"),
+      function (value) {
+        const { path, createError } = this;
+        const cash = parseFloat(value.cash) || 0;
+        const card = parseFloat(value.card) || 0;
+        const other = parseFloat(value.other) || 0;
+
+        if (cash + card + other <= summa) {
+          return true;
+        }
+
+        return createError({
+          path: `${path}.total_summa`,
+          message: t(
+            "To'lovlarning umumiy summasi qarzdorlikdan oshmasligi kerak!"
+          ),
+        });
       }
     );
 
@@ -65,6 +102,7 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
     resolver,
     defaultValues: {
       date: dayjs(),
+      pay_type: true,
     },
   });
 
@@ -90,32 +128,45 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
     );
   };
 
-  useEffect(() => {
-    const card = getValues("card") || 0;
-    const other = getValues("other") || 0;
-    const remainingCash = summa - card - other;
-    if (remainingCash !== getValues("cash")) {
-      setValue("cash", remainingCash >= 0 ? remainingCash : 0);
-    }
-  }, [summa, watch("card"), watch("other")]);
+  const payType = watch("pay_type");
 
   useEffect(() => {
-    const cash = getValues("cash") || 0;
-    const other = getValues("other") || 0;
-    const remainingCard = summa - cash - other;
-    if (remainingCard !== getValues("card")) {
-      setValue("card", remainingCard >= 0 ? remainingCard : 0);
+    if (payType) {
+      const card = getValues("card") || 0;
+      const other = getValues("other") || 0;
+      const remainingCash = summa - card - other;
+      if (remainingCash !== getValues("cash")) {
+        setValue("cash", remainingCash >= 0 ? remainingCash : 0);
+      }
     }
-  }, [summa, watch("cash"), watch("other")]);
+  }, [summa, watch("card"), watch("other"), payType]);
 
   useEffect(() => {
-    const cash = getValues("cash") || 0;
-    const card = getValues("card") || 0;
-    const remainingOther = summa - cash - card;
-    if (remainingOther !== getValues("other")) {
-      setValue("other", remainingOther >= 0 ? remainingOther : 0);
+    if (payType) {
+      const cash = getValues("cash") || 0;
+      const other = getValues("other") || 0;
+      const remainingCard = summa - cash - other;
+      if (remainingCard !== getValues("card")) {
+        setValue("card", remainingCard >= 0 ? remainingCard : 0);
+      }
     }
-  }, [summa, watch("cash"), watch("card")]);
+  }, [summa, watch("cash"), watch("other"), payType]);
+
+  useEffect(() => {
+    if (payType) {
+      const cash = getValues("cash") || 0;
+      const card = getValues("card") || 0;
+      const remainingOther = summa - cash - card;
+      if (remainingOther !== getValues("other")) {
+        setValue("other", remainingOther >= 0 ? remainingOther : 0);
+      }
+    }
+  }, [summa, watch("cash"), watch("card"), payType]);
+
+  const totalPayment = watch(["cash", "card", "other"]).reduce(
+    (acc, curr) => acc + (parseFloat(curr) || 0),
+    0
+  );
 
   return (
     <>
@@ -160,9 +211,26 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
             </Col>
             <Col xs={24} md={24}>
               <Form.Item
+                label={t("Barcha qarzdorlikni to'lash")}
+                {...getValidationStatus(errors, "pay_type")}
+                required={true}
+              >
+                <Controller
+                  name="pay_type"
+                  control={control}
+                  render={({ field }) => (
+                    <CustomSwitch prefix={<RiCashLine />} {...field} />
+                  )}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={24}>
+              <Form.Item
                 label={t("Naqt")}
                 {...getValidationStatus(errors, "cash")}
                 required={true}
+                help={errors.cash?.message}
+                validateStatus={errors.cash ? "error" : ""}
               >
                 <Controller
                   name="cash"
@@ -203,6 +271,16 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
                       {...field}
                     />
                   )}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={24}>
+              <Form.Item {...getValidationStatus(errors, "total_summa")}>
+                <TitleAndIconText
+                  type="success"
+                  title={t("To'lanayotgan summa").toUpperCase()}
+                  value={NumberToThousandFormat(totalPayment)}
+                  icon={<RiMoneyDollarBoxFill />}
                 />
               </Form.Item>
             </Col>
