@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
 import { get } from "lodash";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export const useStorageProductColumns = (
   pagination,
@@ -51,7 +51,13 @@ export const useStorageProductColumns = (
       dataIndex: "supplier",
       key: "supplier",
       render: (supplier) => {
-        return <>{get(supplier, "name", "")}</>;
+        return (
+          <>
+            <NavLink to={`/admin/suppliers/${get(supplier, "id", "")}`}>
+              {get(supplier, "name", "")}
+            </NavLink>
+          </>
+        );
       },
       filters: [...suppliersOptions],
       filteredValue: filters.supplier || null,

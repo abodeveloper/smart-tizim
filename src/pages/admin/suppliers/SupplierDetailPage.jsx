@@ -1,48 +1,39 @@
 import BackButton from "@/components/atoms/back-button/BackButton";
+import ClearFilterButton from "@/components/atoms/clear-filter-button/ClearFilterButton";
+import CreateButton from "@/components/atoms/create-button/CreateButton";
 import CardTitle from "@/components/molecules/card-title/CardTitle";
 import CustomDataTable from "@/components/molecules/custom-data-table/CustomDataTable";
 import ErrorResult from "@/components/molecules/error-result/ErrorResult";
+import GlobalSearchInput from "@/components/molecules/global-search-input/GlobalSearchInput";
 import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
-import {
-  httpGetStorageProductOne,
-  httpGetStorageProducts,
-} from "@/services/api/requests/storage-products.requests";
+import { useStorageProductColumns } from "@/pages/storages/storage-products/useStorageProductColumns";
+import { httpGetStorageProducts } from "@/services/api/requests/storage-products.requests";
+import { httpGetSupplierOne } from "@/services/api/requests/suppliers.requests";
 import {
   NumberToThousandFormat,
   formatTimeForUI,
   objectToQueryString,
 } from "@/utils/helpers";
 import {
-  RiBankCardLine,
   RiCalendarTodoFill,
-  RiCashLine,
   RiColorFilterFill,
-  RiCopperCoinLine,
   RiPhoneFill,
-  RiRefundFill,
   RiRefundLine,
-  RiShakeHandsFill,
   RiSlideshowLine,
   RiStackFill,
   RiUser2Fill,
 } from "@remixicon/react";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Card, Col, Divider, Flex, Row, Tag } from "antd";
-import { get, isEmpty } from "lodash";
+import { get } from "lodash";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import AddPaymentForStorageProduct from "./_components/add-payment-for-supplier/AddPaymentForSupplier";
 import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
-import { httpGetSupplierOne } from "@/services/api/requests/suppliers.requests";
-import StorageProductsPage from "@/pages/storages/storage-products/StorageProductsPage";
-import { useEffect, useState } from "react";
-import { useStorageProductColumns } from "@/pages/storages/storage-products/useStorageProductColumns";
-import GlobalSearchInput from "@/components/molecules/global-search-input/GlobalSearchInput";
-import ClearFilterButton from "@/components/atoms/clear-filter-button/ClearFilterButton";
-import CreateButton from "@/components/atoms/create-button/CreateButton";
 
 const SupplierDetailPage = () => {
   const { id } = useParams();
@@ -129,6 +120,7 @@ const SupplierDetailPage = () => {
                         </Card>
                       </Flex>
                     </Col>
+
                     <Col xs={24} md={6}>
                       <Card title={<CardTitle title={t("To'lovlar")} />}>
                         <Flex vertical gap={"large"}>
@@ -169,8 +161,13 @@ const SupplierDetailPage = () => {
                         </Flex>
                       </Card>
                     </Col>
+
                     <Col xs={24}>
-                      <StorageProducts supplier={get(data, "id", "")} />
+                      <Divider />
+                      <StorageProducts
+                        supplier={get(data, "id", "")}
+                        supplierRefetch={refetch}
+                      />
                     </Col>
                   </Row>
                 </>
@@ -185,7 +182,7 @@ const SupplierDetailPage = () => {
 
 export default SupplierDetailPage;
 
-const StorageProducts = ({ supplier }) => {
+const StorageProducts = ({ supplier, supplierRefetch }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -257,11 +254,16 @@ const StorageProducts = ({ supplier }) => {
     setSearch(e.target.value);
   };
 
+  const handleRefetch = () => {
+    refetch();
+    supplierRefetch();
+  };
+
   const TABLE_COLUMNS = useStorageProductColumns(
     pagination,
     filters,
     setFilters,
-    refetch
+    handleRefetch
   ).filter((item) => item.key !== "supplier");
 
   return (
