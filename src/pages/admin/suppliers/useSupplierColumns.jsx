@@ -119,7 +119,11 @@ export const useSupplierColumns = (
       width: 100,
       render: (id) => (
         <Flex align="center" justify="space-between" gap={"middle"}>
-          <Button type="primary" icon={<EyeFilled />} />
+          <Button
+            type="primary"
+            onClick={() => navigate(`${id}`)}
+            icon={<EyeFilled />}
+          />
           <Button
             onClick={() => navigate(`update/${id}`)}
             icon={<EditFilled />}

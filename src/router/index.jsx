@@ -39,6 +39,9 @@ const UpdateServicesPage = lazy(() =>
 const SuppliersPage = lazy(() =>
   import("@/pages/admin/suppliers/SuppliersPage")
 );
+const SupplierDetailPage = lazy(() =>
+  import("@/pages/admin/suppliers/SupplierDetailPage")
+);
 const CreateSuppliersPage = lazy(() =>
   import("@/pages/admin/suppliers/CreateSuppliersPage")
 );
@@ -137,6 +140,7 @@ const Router = () => {
                 </Route>
                 <Route path="suppliers">
                   <Route index element={<SuppliersPage />} />
+                  <Route path={`:id`} element={<SupplierDetailPage />} />
                   <Route path={`create`} element={<CreateSuppliersPage />} />
                   <Route
                     path={`update/:id/`}

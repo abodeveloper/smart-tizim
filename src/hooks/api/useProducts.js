@@ -1,15 +1,16 @@
 import { httpGetAllProducts } from "@/services/api/requests/products.requests";
+import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 
-const useProducts = (changeState) => {
+const useProducts = (filters, changeState) => {
   const {
     data = [],
     refetch,
     ...rest
   } = useQuery({
-    queryKey: ["all-products"],
-    queryFn: httpGetAllProducts,
+    queryKey: ["all-products", { filters }],
+    queryFn: () => httpGetAllProducts(objectToQueryString(filters)),
     select: (response) => response.data,
   });
 

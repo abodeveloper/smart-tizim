@@ -8,28 +8,35 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import StorageProductForm from "./_components/StorageProductForm";
 import { useCreateBreadcrumbItems } from "./breadcrumbs/useCreateBreadcrumb";
+import { useRef } from "react";
 
 const CreateStorageProductsPage = () => {
   const { t } = useTranslation();
 
+  const handleResetRef = useRef(() => {});
+
   const { isPending, mutateAsync } = useMutation({
     mutationFn: httpPostStorageProduct,
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       scrollToTop();
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
+      if (context?.handleReset) {
+        context.handleReset(); // Call handleReset from context
+      }
     },
     onError: (error) => {
       scrollToTop();
       console.log(error);
     },
+    onMutate: (variables) => {
+      // Return context with handleReset
+      return { handleReset: handleResetRef.current };
+    },
   });
 
-  const handleSubmit = async (values, reset) => {
-    const response = await mutateAsync(values);
-
-    if (response?.status === 201) {
-      reset();
-    }
+  const handleSubmit = async (values, handleReset) => {
+    handleResetRef.current = handleReset;
+    await mutateAsync(values);
   };
 
   const BREADCRUMB_ITEMS = useCreateBreadcrumbItems();

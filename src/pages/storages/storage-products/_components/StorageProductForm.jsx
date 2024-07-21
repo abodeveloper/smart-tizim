@@ -25,7 +25,6 @@ import {
   RiCopperCoinLine,
   RiMoneyDollarBoxFill,
   RiMoneyDollarCircleFill,
-  RiRefundFill,
 } from "@remixicon/react";
 import { Button, Card, Col, Divider, Flex, Form, Row } from "antd";
 import Typography from "antd/es/typography/Typography";
@@ -141,8 +140,11 @@ const StorageProductForm = ({
 
   const { storagesOptions } = useStorages();
   const { servicesOptions } = useServices();
-  const { suppliersOptions } = useSuppliers();
-  const { productsOptions, productsData } = useProducts();
+  const { suppliersOptions, suppliersData } = useSuppliers();
+  const { productsOptions, productsData } = useProducts({
+    product_type: "Sanaladigan",
+  });
+
   const SIZE_TYPE = useSizeType();
 
   const {
@@ -156,7 +158,8 @@ const StorageProductForm = ({
   } = useForm({
     defaultValues: {
       date: dayjs(),
-      products: [{}],
+      supplier: 1,
+      products: [{ size_type: "O'lchovsiz" }],
       services: [],
       pay_type: true,
       ...defaultValues,
@@ -182,14 +185,17 @@ const StorageProductForm = ({
     name: "services",
   });
 
-  useEffect(() => {
-    reset(defaultValues);
-  }, [defaultValues]);
+  // useEffect(() => {
+  //   reset(defaultValues);
+  // }, [defaultValues]);
 
   const handleReset = () => {
     reset({
+      date: dayjs(),
+      supplier: 1,
+      products: [{ size_type: "O'lchovsiz" }],
       services: [],
-      products: [{}],
+      pay_type: true,
     });
   };
 
@@ -307,8 +313,6 @@ const StorageProductForm = ({
     (acc, curr) => acc + (parseFloat(curr) || 0),
     0
   );
-
-  useEffect(() => {}, [watch()]);
 
   return (
     <Form
@@ -816,7 +820,7 @@ const StorageProductForm = ({
                 <Form.Item {...getValidationStatus(errors, "total_summa")}>
                   <TitleAndIconText
                     type="success"
-                    title={t("To'lanayotgan summa").toUpperCase()}
+                    title={t("Summa").toUpperCase()}
                     value={NumberToThousandFormat(totalPayment)}
                     icon={<RiMoneyDollarBoxFill />}
                   />

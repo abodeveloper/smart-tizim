@@ -36,6 +36,10 @@ function httpDeleteSupplier(id) {
   return request.delete(`/api/suppliers/${id}/`);
 }
 
+function httpAddPaymentSupplier(data) {
+  return request.post(`/api/supplier_payments/`, data);
+}
+
 export {
   httpGetAllSuppliers,
   httpGetSuppliers,
@@ -44,4 +48,5 @@ export {
   httpPostSupplier,
   httpUpdateSupplier,
   httpDeleteSupplier,
+  httpAddPaymentSupplier,
 };

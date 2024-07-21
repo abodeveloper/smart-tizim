@@ -3,7 +3,9 @@ import CustomInputNumber from "@/components/atoms/form-elements/custom-input-num
 import CustomSwitch from "@/components/atoms/form-elements/custom-switch/CustomSwitch";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
 import { prepareAddPaymentStorageProductDto } from "@/services/api/prepare-data/storage-products";
+import { prepareAddPaymentSupplierDto } from "@/services/api/prepare-data/suppliers";
 import { httpAddPaymentStorageProduct } from "@/services/api/requests/storage-products.requests";
+import { httpAddPaymentSupplier } from "@/services/api/requests/suppliers.requests";
 import {
   NumberToThousandFormat,
   getValidationStatus,
@@ -26,7 +28,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { object, string } from "yup";
 
-const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
+const AddPaymentForSupplier = ({ summa, refetch, item }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -107,7 +109,7 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
   });
 
   const { isLoading, mutateAsync } = useMutation({
-    mutationFn: httpAddPaymentStorageProduct,
+    mutationFn: httpAddPaymentSupplier,
     onSuccess: () => {
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
       handleCancel();
@@ -121,9 +123,9 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
 
   const onSubmit = (data) => {
     mutateAsync(
-      prepareAddPaymentStorageProductDto({
+      prepareAddPaymentSupplierDto({
         ...data,
-        storage_product: get(item, "id", ""),
+        supplier: get(item, "id", ""),
       })
     );
   };
@@ -305,4 +307,4 @@ const AddPaymentForStorageProduct = ({ summa, refetch, item }) => {
   );
 };
 
-export default AddPaymentForStorageProduct;
+export default AddPaymentForSupplier;

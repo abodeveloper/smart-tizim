@@ -1,7 +1,7 @@
 import request from "../request";
 
-function httpGetAllProducts() {
-  return request.get(`/api/all_products/`);
+function httpGetAllProducts(filters) {
+  return request.get(`/api/all_products/${filters && `?${filters}`}`);
 }
 
 function httpGetProducts(page, page_size, filters) {
