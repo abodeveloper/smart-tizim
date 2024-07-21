@@ -2,6 +2,14 @@ import { formatTimeForApi } from "@/utils/helpers";
 import dayjs from "dayjs";
 import { get } from "lodash";
 
+export function prepareAddDebtSupplierDto(item) {
+  return {
+    supplier: Number(get(item, "supplier", "")),
+    date: formatTimeForApi(get(item, "date", "")),
+    sum: get(item, "sum", ""),
+  };
+}
+
 export function prepareAddPaymentSupplierDto(item) {
   return {
     supplier: Number(get(item, "supplier", "")),

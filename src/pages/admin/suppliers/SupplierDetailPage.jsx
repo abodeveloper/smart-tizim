@@ -32,7 +32,8 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import AddPaymentForStorageProduct from "./_components/add-payment-for-supplier/AddPaymentForSupplier";
+import AddDebtForSupplier from "./_components/add-debt-for-supplier/AddDebtForSupplier";
+import AddPaymentForSupplier from "./_components/add-payment-for-supplier/AddPaymentForSupplier";
 import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
 
 const SupplierDetailPage = () => {
@@ -133,6 +134,10 @@ const SupplierDetailPage = () => {
                                 )}
                                 icon={<RiRefundLine />}
                               />
+                              <AddDebtForSupplier
+                                refetch={refetch}
+                                item={data}
+                              />
                               <Divider style={{ margin: "0" }} />
                               <TitleAndIconText
                                 title={t("Holati").toUpperCase()}
@@ -141,7 +146,7 @@ const SupplierDetailPage = () => {
                                 }
                                 icon={<RiColorFilterFill />}
                               />
-                              <AddPaymentForStorageProduct
+                              <AddPaymentForSupplier
                                 summa={get(data, "debt_balance", "")}
                                 refetch={refetch}
                                 item={data}
@@ -287,7 +292,9 @@ const StorageProducts = ({ supplier, supplierRefetch }) => {
             <Col xs={24} sm={24} md={24} lg={18} xl={18}>
               <Flex align="center" justify="end" gap="middle">
                 <ClearFilterButton onClick={clearFilters} />
-                <CreateButton onClick={() => navigate("create")} />
+                <CreateButton
+                  onClick={() => navigate("/storages/storage-products/create")}
+                />
               </Flex>
             </Col>
             <Col span={24}>

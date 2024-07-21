@@ -40,6 +40,10 @@ function httpAddPaymentSupplier(data) {
   return request.post(`/api/supplier_payments/`, data);
 }
 
+function httpAddDebtSupplier(data) {
+  return request.post(`/api/supplier_debts/`, data);
+}
+
 export {
   httpGetAllSuppliers,
   httpGetSuppliers,
@@ -49,4 +53,5 @@ export {
   httpUpdateSupplier,
   httpDeleteSupplier,
   httpAddPaymentSupplier,
+  httpAddDebtSupplier,
 };

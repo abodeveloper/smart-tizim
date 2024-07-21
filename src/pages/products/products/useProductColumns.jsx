@@ -126,8 +126,6 @@ export const useProductColumns = (pagination, filters, setFilters) => {
       width: 100,
       render: (id) => (
         <Flex align="center" justify="space-between" gap={"middle"}>
-          <Button type="primary" icon={<EyeFilled />} />
-
           <Button
             onClick={() => navigate(`/products/products/update/${id}`)}
             icon={<EditFilled />}
