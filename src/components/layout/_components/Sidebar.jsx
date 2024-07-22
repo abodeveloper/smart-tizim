@@ -133,6 +133,11 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           path: "/storages/storage-products",
           icon: <RiShoppingBag3Fill />,
         },
+        {
+          title: "Yaroqsiz mahsulotlar",
+          path: "/storages/storage-products-off",
+          icon: <RiShoppingBag3Fill />,
+        },
       ],
     },
     {

@@ -85,6 +85,17 @@ const StorageProductDetailPage = lazy(() =>
   import("@/pages/storages/storage-products/StorageProductDetailPage")
 );
 
+// STORAGE PRODUCTS OFF
+const StorageProductsOffPage = lazy(() =>
+  import("@/pages/storages/storage-products-off/StorageProductsOffPage")
+);
+const CreateStorageProductsOffPage = lazy(() =>
+  import("@/pages/storages/storage-products-off/CreateStorageProductsOffPage")
+);
+const UpdateStorageProductsOffPage = lazy(() =>
+  import("@/pages/storages/storage-products-off/UpdateStorageProductsOffPage")
+);
+
 //Product category
 const ProductCategoriesPage = lazy(() =>
   import("@/pages/products/product-categories/ProductCategoriesPage")
@@ -212,6 +223,18 @@ const Router = () => {
                     element={<UpdateStorageProductsPage />}
                   />
                   <Route path={`:id`} element={<StorageProductDetailPage />} />
+                </Route>
+
+                <Route path="storage-products-off">
+                  <Route index element={<StorageProductsOffPage />} />
+                  <Route
+                    path={`create`}
+                    element={<CreateStorageProductsOffPage />}
+                  />
+                  <Route
+                    path={`update/:id`}
+                    element={<UpdateStorageProductsOffPage />}
+                  />
                 </Route>
 
                 <Route path={"*"} element={<NotFoundPage />} />

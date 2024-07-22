@@ -3,7 +3,7 @@ import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 
-const useProducts = (filters, changeState) => {
+const useProducts = (filters = {}, changeState) => {
   const {
     data = [],
     refetch,
