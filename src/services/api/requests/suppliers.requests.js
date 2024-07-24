@@ -37,7 +37,7 @@ function httpDeleteSupplier(id) {
 }
 
 function httpAddPaymentSupplier(data) {
-  return request.post(`/api/storage_product_payment/`, data);
+  return request.post(`/api/storage_product_payments/`, data);
 }
 
 function httpAddDebtSupplier(data) {
