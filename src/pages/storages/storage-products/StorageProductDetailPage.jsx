@@ -1,17 +1,28 @@
 import BackButton from "@/components/atoms/back-button/BackButton";
+import CardTitle from "@/components/molecules/card-title/CardTitle";
 import CustomDataTable from "@/components/molecules/custom-data-table/CustomDataTable";
+import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
 import ErrorResult from "@/components/molecules/error-result/ErrorResult";
 import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
-import { httpGetStorageProductOne } from "@/services/api/requests/storage-products.requests";
-import { NumberToThousandFormat, formatTimeForUI } from "@/utils/helpers";
+import {
+  httpDeletePaymentStorageProduct,
+  httpGetStorageProductOne,
+} from "@/services/api/requests/storage-products.requests";
+import {
+  NumberToThousandFormat,
+  formatTimeForUI,
+  handleSuccessNotification,
+} from "@/utils/helpers";
+import { DeleteFilled } from "@ant-design/icons";
 import {
   RiBankCardLine,
   RiCalendarTodoFill,
   RiCashLine,
   RiColorFilterFill,
   RiCopperCoinLine,
+  RiListSettingsFill,
   RiRefundFill,
   RiRefundLine,
   RiShakeHandsFill,
@@ -19,15 +30,14 @@ import {
   RiStackFill,
   RiUser2Fill,
 } from "@remixicon/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Button, Card, Col, Divider, Flex, Row, Tag } from "antd";
 import { get, isEmpty } from "lodash";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
-import CardTitle from "@/components/molecules/card-title/CardTitle";
 import AddPaymentForStorageProduct from "./_components/add-payment-for-storare-product/AddPaymentForStorageProduct";
+import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
 
 const StorageProductDetailPage = () => {
   const { id } = useParams();
@@ -127,6 +137,12 @@ const StorageProductDetailPage = () => {
                           <Services data={get(data, "services", [])} />
                         )}
                         <Products data={get(data, "products", [])} />
+                        {!isEmpty(get(data, "payments", [])) && (
+                          <Payments
+                            data={get(data, "payments", [])}
+                            refetch={refetch}
+                          />
+                        )}
                       </Flex>
                     </Col>
                     <Col xs={24} md={6}>
@@ -311,5 +327,87 @@ function Services({ data }) {
 
   return (
     <CustomDataTable title={t("Xizmatlar")} data={data} columns={columns} />
+  );
+}
+
+function Payments({ data, refetch }) {
+  const { t } = useTranslation();
+
+  const deleteMutate = useMutation({
+    mutationFn: httpDeletePaymentStorageProduct,
+    onSuccess: () => {
+      handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleDelete = (id) => {
+    deleteMutate.mutate(id);
+  };
+
+  const columns = [
+    {
+      title: t("#"),
+      dataIndex: "index",
+      key: "index",
+      render: (value, item, index) => {
+        return <>{index + 1}</>;
+      },
+    },
+    {
+      title: t("Naqt"),
+      dataIndex: "cash",
+      key: "cash",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Karta"),
+      dataIndex: "card",
+      key: "card",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Boshqa"),
+      dataIndex: "other",
+      key: "other",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Jami summa"),
+      dataIndex: "total",
+      key: "other",
+      render: (value, row) => {
+        return <>{NumberToThousandFormat(row.cash + row.card + row.other)}</>;
+      },
+    },
+    {
+      title: <RiListSettingsFill size={15} />,
+      dataIndex: "id",
+      key: "operation",
+      align: "center",
+      width: 50,
+      align: "center",
+      render: (id) => (
+        <Flex align="center" justify="space-between" gap={"small"}>
+          <CustomModalConfirm
+            trigger={<Button danger icon={<DeleteFilled />} />}
+            onOk={() => handleDelete(id)}
+          />
+        </Flex>
+      ),
+    },
+  ];
+
+  return (
+    <CustomDataTable title={t("To'lovlar")} data={data} columns={columns} />
   );
 }

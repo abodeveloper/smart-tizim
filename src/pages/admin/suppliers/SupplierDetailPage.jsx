@@ -9,25 +9,31 @@ import PageLoader from "@/components/molecules/page-loader/PageLoader";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
 import { useStorageProductColumns } from "@/pages/storages/storage-products/useStorageProductColumns";
-import { httpGetStorageProducts } from "@/services/api/requests/storage-products.requests";
+import {
+  httpDeletePaymentStorageProduct,
+  httpGetStorageProducts,
+} from "@/services/api/requests/storage-products.requests";
 import { httpGetSupplierOne } from "@/services/api/requests/suppliers.requests";
 import {
   NumberToThousandFormat,
   formatTimeForUI,
+  handleSuccessNotification,
   objectToQueryString,
 } from "@/utils/helpers";
+import { DeleteFilled } from "@ant-design/icons";
 import {
   RiCalendarTodoFill,
   RiColorFilterFill,
+  RiListSettingsFill,
   RiPhoneFill,
   RiRefundLine,
   RiSlideshowLine,
   RiStackFill,
   RiUser2Fill,
 } from "@remixicon/react";
-import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Card, Col, Divider, Flex, Row, Tag } from "antd";
-import { get } from "lodash";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Breadcrumb, Button, Card, Col, Divider, Flex, Row, Tag } from "antd";
+import { get, isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
@@ -35,6 +41,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import AddDebtForSupplier from "./_components/add-debt-for-supplier/AddDebtForSupplier";
 import AddPaymentForSupplier from "./_components/add-payment-for-supplier/AddPaymentForSupplier";
 import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
+import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
 
 const SupplierDetailPage = () => {
   const { id } = useParams();
@@ -119,6 +126,12 @@ const SupplierDetailPage = () => {
                             )}
                           </Flex>
                         </Card>
+                        {!isEmpty(get(data, "payments", [])) && (
+                          <Payments
+                            data={get(data, "payments", [])}
+                            refetch={refetch}
+                          />
+                        )}
                       </Flex>
                     </Col>
 
@@ -312,3 +325,85 @@ const StorageProducts = ({ supplier, supplierRefetch }) => {
     </>
   );
 };
+
+function Payments({ data, refetch }) {
+  const { t } = useTranslation();
+
+  const deleteMutate = useMutation({
+    mutationFn: httpDeletePaymentStorageProduct,
+    onSuccess: () => {
+      handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleDelete = (id) => {
+    deleteMutate.mutate(id);
+  };
+
+  const columns = [
+    {
+      title: t("#"),
+      dataIndex: "index",
+      key: "index",
+      render: (value, item, index) => {
+        return <>{index + 1}</>;
+      },
+    },
+    {
+      title: t("Naqt"),
+      dataIndex: "cash",
+      key: "cash",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Karta"),
+      dataIndex: "card",
+      key: "card",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Boshqa"),
+      dataIndex: "other",
+      key: "other",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Jami summa"),
+      dataIndex: "total",
+      key: "other",
+      render: (value, row) => {
+        return <>{NumberToThousandFormat(row.cash + row.card + row.other)}</>;
+      },
+    },
+    {
+      title: <RiListSettingsFill size={15} />,
+      dataIndex: "id",
+      key: "operation",
+      align: "center",
+      width: 50,
+      align: "center",
+      render: (id) => (
+        <Flex align="center" justify="space-between" gap={"small"}>
+          <CustomModalConfirm
+            trigger={<Button danger icon={<DeleteFilled />} />}
+            onOk={() => handleDelete(id)}
+          />
+        </Flex>
+      ),
+    },
+  ];
+
+  return (
+    <CustomDataTable title={t("To'lovlar")} data={data} columns={columns} />
+  );
+}
