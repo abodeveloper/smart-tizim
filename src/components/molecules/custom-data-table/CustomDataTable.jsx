@@ -88,7 +88,11 @@ const CustomDataTable = ({
   };
 
   return (
-    <Space direction="vertical" size="large" style={{ width: "100%" }}>
+    <Space
+      direction="vertical"
+      size="large"
+      style={{ width: "100%", margin: 0 }}
+    >
       <>
         <StyledCustomDataTable
           locale={{

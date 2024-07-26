@@ -10,7 +10,7 @@ import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
 import { RiListSettingsFill } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -259,17 +259,19 @@ export const useStorageProductColumns = (
       key: "operation",
       align: "center",
       width: 100,
-      render: (id) => (
+      render: (id, row) => (
         <Flex align="center" justify="space-between" gap={"middle"}>
           <Button
             type="primary"
-            icon={<EyeFilled />}
             onClick={() => navigate(`${id}`)}
+            icon={<EyeFilled />}
           />
-          <Button
-            onClick={() => navigate(`update/${id}`)}
-            icon={<EditFilled />}
-          />
+          {!get(row, "is_payment", true) && (
+            <Button
+              onClick={() => navigate(`update/${id}`)}
+              icon={<EditFilled />}
+            />
+          )}
           <CustomModalConfirm
             trigger={<Button danger icon={<DeleteFilled />} />}
             onOk={() => handleDelete(id)}

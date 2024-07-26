@@ -32,7 +32,17 @@ import {
   RiUser2Fill,
 } from "@remixicon/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Button, Card, Col, Divider, Flex, Row, Tag } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Flex,
+  Row,
+  Tabs,
+  Tag,
+} from "antd";
 import { get, isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -42,6 +52,7 @@ import AddDebtForSupplier from "./_components/add-debt-for-supplier/AddDebtForSu
 import AddPaymentForSupplier from "./_components/add-payment-for-supplier/AddPaymentForSupplier";
 import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
 import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
+import CustomTabs from "@/components/atoms/custom-tabs/CustomTabs";
 
 const SupplierDetailPage = () => {
   const { id } = useParams();
@@ -89,105 +100,53 @@ const SupplierDetailPage = () => {
                 <ErrorResult error={error} />
               ) : (
                 <>
-                  <Divider />
-                  <Row gutter={[20, 20]}>
-                    <Col xs={24} md={18}>
-                      <Flex vertical gap={"large"}>
-                        <Card>
-                          <Flex vertical gap={"large"}>
-                            <TitleAndIconText
-                              title={t("Ta'minotchi").toUpperCase()}
-                              value={get(data, "name", "")}
-                              icon={<RiUser2Fill />}
-                            />
-                            <TitleAndIconText
-                              title={t("Telefon").toUpperCase()}
-                              value={get(data, "phone", "")}
-                              icon={<RiPhoneFill />}
-                            />
-                            <TitleAndIconText
-                              title={t("Ta'minotchi turi").toUpperCase()}
-                              value={get(data, "supplier_type", "")}
-                              icon={<RiStackFill />}
-                            />
-                            <TitleAndIconText
-                              title={t("Sana").toUpperCase()}
-                              value={formatTimeForUI(get(data, "added", ""))}
-                              icon={<RiCalendarTodoFill />}
-                            />
-                            {get(data, "desc", "") ? (
+                  <CustomTabs tabPosition={"top"}>
+                    <Tabs.TabPane tab={t("Umumiy ma'lumotlar")} key="1">
+                      <Row gutter={[20, 20]}>
+                        <Col xs={24} md={24}>
+                          <Card>
+                            <Flex vertical gap={"large"}>
                               <TitleAndIconText
-                                title={t("Izoh").toUpperCase()}
-                                value={get(data, "desc", "")}
-                                icon={<RiSlideshowLine />}
+                                title={t("Ta'minotchi").toUpperCase()}
+                                value={get(data, "name", "")}
+                                icon={<RiUser2Fill />}
                               />
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
-                        </Card>
-                        {!isEmpty(get(data, "payments", [])) && (
-                          <Payments
-                            data={get(data, "payments", [])}
-                            refetch={refetch}
-                          />
-                        )}
-                      </Flex>
-                    </Col>
-
-                    <Col xs={24} md={6}>
-                      <Card title={<CardTitle title={t("To'lovlar")} />}>
-                        <Flex vertical gap={"large"}>
-                          {get(data, "status", "") === "Qarzdorlik" ? (
-                            <>
                               <TitleAndIconText
-                                title={t("Qarzdorlik").toUpperCase()}
-                                value={NumberToThousandFormat(
-                                  get(data, "debt_balance", "")
-                                )}
-                                icon={<RiRefundLine />}
+                                title={t("Telefon").toUpperCase()}
+                                value={get(data, "phone", "")}
+                                icon={<RiPhoneFill />}
                               />
-                              <AddDebtForSupplier
-                                refetch={refetch}
-                                item={data}
-                              />
-                              <Divider style={{ margin: "0" }} />
                               <TitleAndIconText
-                                title={t("Holati").toUpperCase()}
-                                value={
-                                  <Tag color={"red"}>{t("Qardorlik")}</Tag>
-                                }
-                                icon={<RiColorFilterFill />}
+                                title={t("Ta'minotchi turi").toUpperCase()}
+                                value={get(data, "supplier_type", "")}
+                                icon={<RiStackFill />}
                               />
-                              <AddPaymentForSupplier
-                                summa={get(data, "debt_balance", "")}
-                                refetch={refetch}
-                                item={data}
-                              />
-                            </>
-                          ) : (
-                            <>
                               <TitleAndIconText
-                                title={t("Holati").toUpperCase()}
-                                value={
-                                  <Tag color={"green"}>{t("To'langan")}</Tag>
-                                }
-                                icon={<RiColorFilterFill />}
+                                title={t("Sana").toUpperCase()}
+                                value={formatTimeForUI(get(data, "added", ""))}
+                                icon={<RiCalendarTodoFill />}
                               />
-                            </>
-                          )}
-                        </Flex>
-                      </Card>
-                    </Col>
-
-                    <Col xs={24}>
-                      <Divider />
+                              {get(data, "desc", "") ? (
+                                <TitleAndIconText
+                                  title={t("Izoh").toUpperCase()}
+                                  value={get(data, "desc", "")}
+                                  icon={<RiSlideshowLine />}
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </Flex>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={t("Omborga mahsulot")} key="2">
                       <StorageProducts
                         supplier={get(data, "id", "")}
                         supplierRefetch={refetch}
                       />
-                    </Col>
-                  </Row>
+                    </Tabs.TabPane>
+                  </CustomTabs>
                 </>
               )}
             </>
@@ -287,11 +246,11 @@ const StorageProducts = ({ supplier, supplierRefetch }) => {
   return (
     <>
       <Row gutter={[20, 20]}>
-        <Col span={24}>
+        {/* <Col span={24}>
           <Flex align="center" justify="space-between">
             <PageTitle>{t("Omborga mahsulot")}</PageTitle>
           </Flex>
-        </Col>
+        </Col> */}
         <Col span={24}>
           <Row gutter={[20, 20]}>
             <Col xs={24} sm={24} md={24} lg={6} xl={6}>

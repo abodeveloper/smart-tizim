@@ -29,15 +29,27 @@ import {
   RiSlideshowLine,
   RiStackFill,
   RiUser2Fill,
+  RiWallet3Fill,
 } from "@remixicon/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Button, Card, Col, Divider, Flex, Row, Tag } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Flex,
+  Row,
+  Tabs,
+  Tag,
+} from "antd";
 import { get, isEmpty } from "lodash";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import AddPaymentForStorageProduct from "./_components/add-payment-for-storare-product/AddPaymentForStorageProduct";
 import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
+import CustomTabs from "@/components/atoms/custom-tabs/CustomTabs";
 
 const StorageProductDetailPage = () => {
   const { id } = useParams();
@@ -85,140 +97,275 @@ const StorageProductDetailPage = () => {
                 <ErrorResult error={error} />
               ) : (
                 <>
-                  <Divider />
-                  <Row gutter={[20, 20]}>
-                    <Col xs={24} md={18}>
-                      <Flex vertical gap={"large"}>
-                        <Card>
-                          <Flex vertical gap={"large"}>
-                            <TitleAndIconText
-                              title={t("Ta'minotchi").toUpperCase()}
-                              value={get(data, "supplier.name", "")}
-                              icon={<RiUser2Fill />}
-                            />
-                            <TitleAndIconText
-                              title={t("Sana").toUpperCase()}
-                              value={formatTimeForUI(get(data, "date", ""))}
-                              icon={<RiCalendarTodoFill />}
-                            />
-                            <TitleAndIconText
-                              title={t("Mahsulot").toUpperCase()}
-                              value={NumberToThousandFormat(
-                                get(data, "total_product_summa", "")
-                              )}
-                              icon={<RiStackFill />}
-                            />
-                            <TitleAndIconText
-                              title={t("Qo'shimcha xizmatlar").toUpperCase()}
-                              value={NumberToThousandFormat(
-                                get(data, "total_service_summa", "")
-                              )}
-                              icon={<RiShakeHandsFill />}
-                            />
-                            <TitleAndIconText
-                              title={t("Umumiy summa").toUpperCase()}
-                              value={NumberToThousandFormat(
-                                get(data, "total_summa", "")
-                              )}
-                              icon={<RiRefundLine />}
-                            />
-                            {get(data, "desc", "") ? (
-                              <TitleAndIconText
-                                title={t("Izoh").toUpperCase()}
-                                value={get(data, "desc", "")}
-                                icon={<RiSlideshowLine />}
-                              />
-                            ) : (
-                              ""
-                            )}
-                          </Flex>
-                        </Card>
-                        {!isEmpty(get(data, "services", [])) && (
-                          <Services data={get(data, "services", [])} />
-                        )}
-                        <Products data={get(data, "products", [])} />
-                        {!isEmpty(get(data, "payments", [])) && (
-                          <Payments
-                            data={get(data, "payments", [])}
-                            refetch={refetch}
-                          />
-                        )}
-                      </Flex>
-                    </Col>
-                    <Col xs={24} md={6}>
-                      <Card title={<CardTitle title={t("To'lov")} />}>
-                        <Flex vertical gap={"large"}>
-                          <TitleAndIconText
-                            title={t("Umumiy summa").toUpperCase()}
-                            value={NumberToThousandFormat(
-                              get(data, "total_summa", "")
-                            )}
-                            icon={<RiRefundLine />}
-                          />
-                          {get(data, "total_pay", "") ? (
-                            <>
-                              <Divider style={{ margin: "0" }} />
-                              <TitleAndIconText
-                                title={t("Naqt").toUpperCase()}
-                                value={NumberToThousandFormat(
-                                  get(data, "cash", "")
-                                )}
-                                icon={<RiCashLine />}
-                              />
-                              <TitleAndIconText
-                                title={t("Karta orqali").toUpperCase()}
-                                value={NumberToThousandFormat(
-                                  get(data, "card", "")
-                                )}
-                                icon={<RiBankCardLine />}
-                              />
-                              <TitleAndIconText
-                                title={t("Boshqa").toUpperCase()}
-                                value={NumberToThousandFormat(
-                                  get(data, "other", "")
-                                )}
-                                icon={<RiCopperCoinLine />}
-                              />
-                            </>
-                          ) : (
-                            ""
-                          )}
-                          <Divider style={{ margin: "0" }} />
-                          <TitleAndIconText
-                            title={t("To'langan summa").toUpperCase()}
-                            value={NumberToThousandFormat(
-                              get(data, "total_pay", "")
-                            )}
-                            icon={<RiRefundFill />}
-                          />
-                          <TitleAndIconText
-                            title={t("Holati").toUpperCase()}
-                            value={
-                              get(data, "status", "") === "Qarzdorlik" ? (
-                                <Tag color={"red"}>
-                                  {t("Qardorlik")} (
-                                  {NumberToThousandFormat(
-                                    get(data, "debt_balance", "")
+                  <>
+                    <CustomTabs tabPosition={"top"}>
+                      <Tabs.TabPane tab={t("Umumiy ma'lumotlar")} key="1">
+                        <Row gutter={[20, 20]}>
+                          <Col xs={24} md={16}>
+                            <Card>
+                              <Flex vertical gap={"large"}>
+                                <TitleAndIconText
+                                  title={t("Ta'minotchi").toUpperCase()}
+                                  value={get(data, "supplier.name", "")}
+                                  icon={<RiUser2Fill />}
+                                />
+                                <TitleAndIconText
+                                  title={t("Sana").toUpperCase()}
+                                  value={formatTimeForUI(get(data, "date", ""))}
+                                  icon={<RiCalendarTodoFill />}
+                                />
+                                <Divider />
+                                <TitleAndIconText
+                                  title={t("Mahsulot").toUpperCase()}
+                                  value={NumberToThousandFormat(
+                                    get(data, "total_product_summa", "")
                                   )}
-                                  )
-                                </Tag>
-                              ) : (
-                                <Tag color={"green"}>{t("To'langan")}</Tag>
-                              )
-                            }
-                            icon={<RiColorFilterFill />}
-                          />
-                          {get(data, "status", "") === "Qarzdorlik" && (
-                            <AddPaymentForStorageProduct
-                              summa={get(data, "debt_balance", "")}
-                              refetch={refetch}
-                              item={data}
-                            />
-                          )}
-                        </Flex>
-                      </Card>
-                    </Col>
-                  </Row>
+                                  icon={<RiStackFill />}
+                                />
+                                <TitleAndIconText
+                                  title={t(
+                                    "Qo'shimcha xizmatlar"
+                                  ).toUpperCase()}
+                                  value={NumberToThousandFormat(
+                                    get(data, "total_service_summa", "")
+                                  )}
+                                  icon={<RiShakeHandsFill />}
+                                />
+                                <TitleAndIconText
+                                  title={t("Umumiy summa").toUpperCase()}
+                                  value={NumberToThousandFormat(
+                                    get(data, "total_summa", "")
+                                  )}
+                                  icon={<RiRefundLine />}
+                                />
+                                {get(data, "desc", "") ? (
+                                  <TitleAndIconText
+                                    title={t("Izoh").toUpperCase()}
+                                    value={get(data, "desc", "")}
+                                    icon={<RiSlideshowLine />}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </Flex>
+                            </Card>
+                          </Col>
+                          <Col xs={24} md={8}>
+                            <Card
+                              title={
+                                <CardTitle title={t("To'lov ma'lumotlari")} />
+                              }
+                            >
+                              <Flex vertical gap={"large"}>
+                                <TitleAndIconText
+                                  title={t("Umumiy summa").toUpperCase()}
+                                  value={NumberToThousandFormat(
+                                    get(data, "total_summa", "")
+                                  )}
+                                  icon={<RiRefundLine />}
+                                />
+                                {get(data, "total_pay", "") ? (
+                                  <>
+                                    <Divider style={{ margin: "0" }} />
+                                    <TitleAndIconText
+                                      title={t("Birinchi to'lov").toUpperCase()}
+                                      value={NumberToThousandFormat(
+                                        Number(get(data, "cash", 0)) +
+                                          Number(get(data, "card", 0)) +
+                                          Number(get(data, "other", 0))
+                                      )}
+                                      icon={<RiWallet3Fill />}
+                                    />
+                                    <TitleAndIconText
+                                      title={t("Naqt").toUpperCase()}
+                                      value={NumberToThousandFormat(
+                                        get(data, "cash", "")
+                                      )}
+                                      icon={<RiCashLine />}
+                                    />
+                                    <TitleAndIconText
+                                      title={t("Karta orqali").toUpperCase()}
+                                      value={NumberToThousandFormat(
+                                        get(data, "card", "")
+                                      )}
+                                      icon={<RiBankCardLine />}
+                                    />
+                                    <TitleAndIconText
+                                      title={t("Boshqa").toUpperCase()}
+                                      value={NumberToThousandFormat(
+                                        get(data, "other", "")
+                                      )}
+                                      icon={<RiCopperCoinLine />}
+                                    />
+                                  </>
+                                ) : (
+                                  ""
+                                )}
+                                <Divider style={{ margin: "0" }} />
+                                <TitleAndIconText
+                                  title={t(
+                                    "Umumiy to'langan summa"
+                                  ).toUpperCase()}
+                                  value={NumberToThousandFormat(
+                                    get(data, "total_pay", "")
+                                  )}
+                                  icon={<RiRefundFill />}
+                                />
+                                <TitleAndIconText
+                                  title={t("Holati").toUpperCase()}
+                                  value={
+                                    get(data, "status", "") === "Qarzdorlik" ? (
+                                      <Tag color={"red"}>
+                                        {t("Qardorlik")} (
+                                        {NumberToThousandFormat(
+                                          get(data, "debt_balance", "")
+                                        )}
+                                        )
+                                      </Tag>
+                                    ) : (
+                                      <Tag color={"green"}>
+                                        {t("To'langan")}
+                                      </Tag>
+                                    )
+                                  }
+                                  icon={<RiColorFilterFill />}
+                                />
+                                {get(data, "status", "") === "Qarzdorlik" && (
+                                  <AddPaymentForStorageProduct
+                                    summa={get(data, "debt_balance", "")}
+                                    refetch={refetch}
+                                    item={data}
+                                  />
+                                )}
+                              </Flex>
+                            </Card>
+                          </Col>
+                        </Row>
+                      </Tabs.TabPane>
+                      <Tabs.TabPane tab={t("Mahsulotlar")} key="2">
+                        <Products data={get(data, "products", [])} />
+                      </Tabs.TabPane>
+                      {
+                        !isEmpty(
+                          get(data, "services", []) && (
+                            <Tabs.TabPane tab={t("Xizmatlar")} key="3">
+                              <Services data={get(data, "services", [])} />
+                            </Tabs.TabPane>
+                          )
+                        )
+                      }
+                      {!(
+                        Number(get(data, "cash", 0)) +
+                          Number(get(data, "card", 0)) +
+                          Number(get(data, "other", 0)) ===
+                        Number(get(data, "total_summa", 0))
+                      ) && (
+                        <Tabs.TabPane tab={t("To'lovlar")} key="4">
+                          <Row gutter={[20, 20]}>
+                            <Col xs={24} md={16}>
+                              <Payments
+                                data={get(data, "payments", [])}
+                                refetch={refetch}
+                              />
+                            </Col>
+                            <Col xs={24} md={8}>
+                              <Card
+                                title={
+                                  <CardTitle title={t("To'lov ma'lumotlari")} />
+                                }
+                              >
+                                <Flex vertical gap={"large"}>
+                                  <TitleAndIconText
+                                    title={t("Umumiy summa").toUpperCase()}
+                                    value={NumberToThousandFormat(
+                                      get(data, "total_summa", "")
+                                    )}
+                                    icon={<RiRefundLine />}
+                                  />
+                                  {get(data, "total_pay", "") ? (
+                                    <>
+                                      <Divider style={{ margin: "0" }} />
+                                      <TitleAndIconText
+                                        title={t(
+                                          "Birinchi to'lov"
+                                        ).toUpperCase()}
+                                        value={NumberToThousandFormat(
+                                          Number(get(data, "cash", 0)) +
+                                            Number(get(data, "card", 0)) +
+                                            Number(get(data, "other", 0))
+                                        )}
+                                        icon={<RiWallet3Fill />}
+                                      />
+                                      <TitleAndIconText
+                                        title={t("Naqt").toUpperCase()}
+                                        value={NumberToThousandFormat(
+                                          get(data, "cash", "")
+                                        )}
+                                        icon={<RiCashLine />}
+                                      />
+                                      <TitleAndIconText
+                                        title={t("Karta orqali").toUpperCase()}
+                                        value={NumberToThousandFormat(
+                                          get(data, "card", "")
+                                        )}
+                                        icon={<RiBankCardLine />}
+                                      />
+                                      <TitleAndIconText
+                                        title={t("Boshqa").toUpperCase()}
+                                        value={NumberToThousandFormat(
+                                          get(data, "other", "")
+                                        )}
+                                        icon={<RiCopperCoinLine />}
+                                      />
+                                    </>
+                                  ) : (
+                                    ""
+                                  )}
+                                  <Divider style={{ margin: "0" }} />
+                                  <TitleAndIconText
+                                    title={t(
+                                      "Umumiy to'langan summa"
+                                    ).toUpperCase()}
+                                    value={NumberToThousandFormat(
+                                      get(data, "total_pay", "")
+                                    )}
+                                    icon={<RiRefundFill />}
+                                  />
+                                  <TitleAndIconText
+                                    title={t("Holati").toUpperCase()}
+                                    value={
+                                      get(data, "status", "") ===
+                                      "Qarzdorlik" ? (
+                                        <Tag color={"red"}>
+                                          {t("Qardorlik")} (
+                                          {NumberToThousandFormat(
+                                            get(data, "debt_balance", "")
+                                          )}
+                                          )
+                                        </Tag>
+                                      ) : (
+                                        <Tag color={"green"}>
+                                          {t("To'langan")}
+                                        </Tag>
+                                      )
+                                    }
+                                    icon={<RiColorFilterFill />}
+                                  />
+                                  {get(data, "status", "") === "Qarzdorlik" && (
+                                    <AddPaymentForStorageProduct
+                                      summa={get(data, "debt_balance", "")}
+                                      refetch={refetch}
+                                      item={data}
+                                    />
+                                  )}
+                                </Flex>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Tabs.TabPane>
+                      )}
+                    </CustomTabs>
+                  </>
                 </>
               )}
             </>
@@ -274,8 +421,8 @@ function Products({ data }) {
     },
     {
       title: t("Ombor"),
-      dataIndex: "supplier",
-      key: "supplier",
+      dataIndex: "storage",
+      key: "storage",
       render: (value) => {
         return <>{get(value, "name", "")}</>;
       },
@@ -387,6 +534,14 @@ function Payments({ data, refetch }) {
       key: "other",
       render: (value, row) => {
         return <>{NumberToThousandFormat(row.cash + row.card + row.other)}</>;
+      },
+    },
+    {
+      title: t("Sana"),
+      dataIndex: "date",
+      key: "date",
+      render: (value) => {
+        return <>{formatTimeForUI(value)}</>;
       },
     },
     {
