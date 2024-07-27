@@ -18,7 +18,7 @@ export const useDetailBreadcrumbItems = () => {
       ),
     },
     {
-      title: <NavLink to={"/admin/suppliers"}>{t("Kategoriyalar")}</NavLink>,
+      title: <NavLink to={"/products/category"}>{t("Kategoriyalar")}</NavLink>,
     },
     {
       title: id,

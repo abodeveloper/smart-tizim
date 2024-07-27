@@ -1,4 +1,4 @@
-import { RiProductHuntFill } from "@remixicon/react";
+import { RiHomeOfficeFill } from "@remixicon/react";
 import { Flex } from "antd";
 import { useTranslation } from "react-i18next";
 import { NavLink, useParams } from "react-router-dom";
@@ -12,7 +12,7 @@ export const useDetailBreadcrumbItems = () => {
     {
       title: (
         <Flex align="center" gap="small">
-          <RiProductHuntFill size={20} />
+          <RiHomeOfficeFill size={20} />
           <span>{t("Omborxona")}</span>
         </Flex>
       ),

@@ -6,9 +6,9 @@ export function prepareAddPaymentStorageProductDto(item) {
   return {
     storage_product: Number(get(item, "storage_product", "")),
     date: formatTimeForApi(get(item, "date", "")),
-    cash: get(item, "cash", ""),
-    card: get(item, "card", ""),
-    other: get(item, "other", ""),
+    cash: get(item, "cash", 0) ? get(item, "cash", 0) : 0,
+    card: get(item, "card", 0) ? get(item, "card", 0) : 0,
+    other: get(item, "other", 0) ? get(item, "other", 0) : 0,
   };
 }
 

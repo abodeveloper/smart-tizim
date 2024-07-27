@@ -21,7 +21,7 @@ export const useCreateBreadcrumbItems = () => {
       ),
     },
     {
-      title: t("Format qo'shish"),
+      title: t("Qo'shish"),
     },
   ];
 };

@@ -626,7 +626,7 @@ const StorageProductForm = ({
                                 "O'lchovli" && (
                                 <Col xs={24} md={6}>
                                   <Form.Item
-                                    label={t("Qism hajmi")}
+                                    label={t("O'lchami")}
                                     {...getValidationStatusForArray(
                                       errors,
                                       "products",

@@ -12,7 +12,7 @@ import { httpGetProducts } from "@/services/api/requests/products.requests";
 import { objectToQueryString } from "@/utils/helpers";
 import { RiBarChartHorizontalFill } from "@remixicon/react";
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Card, Col, Divider, Flex, Row } from "antd";
+import { Breadcrumb, Card, Col, Divider, Flex, Row, Tabs } from "antd";
 import { get } from "lodash";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useProductColumns } from "../products/useProductColumns";
 import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
+import CustomTabs from "@/components/atoms/custom-tabs/CustomTabs";
 
 const ProductCategoryDetailPage = () => {
   const { id } = useParams();
@@ -67,30 +68,25 @@ const ProductCategoryDetailPage = () => {
                 <ErrorResult error={error} />
               ) : (
                 <>
-                  <Divider />
-                  <Row gutter={[20, 20]}>
-                    <Col xs={24} md={18}>
-                      <Flex vertical gap={"large"}>
-                        <Card>
-                          <Flex vertical gap={"large"}>
-                            <TitleAndIconText
-                              title={t("Kategoriya nomi").toUpperCase()}
-                              value={get(data, "name", "")}
-                              icon={<RiBarChartHorizontalFill />}
-                            />
-                          </Flex>
-                        </Card>
-                      </Flex>
-                    </Col>
-
-                    <Col xs={24}>
-                      <Divider />
+                  <CustomTabs tabPosition={"top"}>
+                    <Tabs.TabPane tab={t("Umumiy ma'lumotlar")} key="1">
+                      <Card>
+                        <Flex vertical gap={"large"}>
+                          <TitleAndIconText
+                            title={t("Kategoriya nomi").toUpperCase()}
+                            value={get(data, "name", "")}
+                            icon={<RiBarChartHorizontalFill />}
+                          />
+                        </Flex>
+                      </Card>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={t("Mahsulotlar")} key="2">
                       <Products
                         category={get(data, "id", "")}
                         categoryRefetch={refetch}
                       />
-                    </Col>
-                  </Row>
+                    </Tabs.TabPane>
+                  </CustomTabs>
                 </>
               )}
             </>
@@ -190,11 +186,6 @@ const Products = ({ category, categoryRefetch }) => {
   return (
     <>
       <Row gutter={[20, 20]}>
-        <Col span={24}>
-          <Flex align="center" justify="space-between">
-            <PageTitle>{t("Omborga mahsulot")}</PageTitle>
-          </Flex>
-        </Col>
         <Col span={24}>
           <Row gutter={[20, 20]}>
             <Col xs={24} sm={24} md={24} lg={6} xl={6}>

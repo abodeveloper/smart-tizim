@@ -53,7 +53,7 @@ export const useStorageProductColumns = (
       render: (supplier) => {
         return (
           <>
-            <NavLink to={`/admin/suppliers/${get(supplier, "id", "")}`}>
+            <NavLink to={`/storages/suppliers/${get(supplier, "id", "")}`}>
               {get(supplier, "name", "")}
             </NavLink>
           </>
@@ -263,12 +263,14 @@ export const useStorageProductColumns = (
         <Flex align="center" justify="space-between" gap={"middle"}>
           <Button
             type="primary"
-            onClick={() => navigate(`${id}`)}
+            onClick={() => navigate(`/storages/storage-products/${id}`)}
             icon={<EyeFilled />}
           />
           {!get(row, "is_payment", true) && (
             <Button
-              onClick={() => navigate(`update/${id}`)}
+              onClick={() =>
+                navigate(`/storages/storage-products/update/${id}`)
+              }
               icon={<EditFilled />}
             />
           )}

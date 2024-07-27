@@ -73,11 +73,11 @@ export const useStorageProductOffColumns = (
       width: 100,
       render: (id) => (
         <Flex align="center" justify="space-between" gap={"middle"}>
-          <Button
+          {/* <Button
             type="primary"
             icon={<EyeFilled />}
             onClick={() => navigate(`${id}`)}
-          />
+          /> */}
           <Button
             onClick={() => navigate(`update/${id}`)}
             icon={<EditFilled />}

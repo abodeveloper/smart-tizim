@@ -19,7 +19,7 @@ export const useCreateBreadcrumbItems = () => {
       title: <NavLink to={"/products/products"}>{t("Mahsulotlar")}</NavLink>,
     },
     {
-      title: t("Mahsulot qo'shish"),
+      title: t("Qo'shish"),
     },
   ];
 };

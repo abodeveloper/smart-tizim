@@ -1,9 +1,11 @@
 import { RiArrowDownSLine } from "@remixicon/react";
 import { Tooltip } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import * as S from "../Layout.styles";
 
 const Category = ({ item, openSidebar, open, handleToggle }) => {
+  const navigate = useNavigate();
+
   return (
     <S.Category className="category" open={open} openSidebar={openSidebar}>
       <Tooltip placement="top" title={openSidebar ? "" : item.label}>
@@ -25,10 +27,21 @@ const Category = ({ item, openSidebar, open, handleToggle }) => {
         {item?.children?.map((menu) => (
           <li className="menu-item">
             <Tooltip placement="right" title={openSidebar ? "" : menu.title}>
-              <NavLink className="menu-item-link" to={menu.path}>
-                <div className="icon">{menu.icon}</div>
-                {openSidebar && <div className="title">{menu.title}</div>}
-              </NavLink>
+              {menu.isClick ? (
+                <div
+                  className="menu-item-link"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigate(menu.path)}
+                >
+                  <div className="icon">{menu.icon}</div>
+                  {openSidebar && <div className="title">{menu.title}</div>}
+                </div>
+              ) : (
+                <NavLink className="menu-item-link" to={menu.path}>
+                  <div className="icon">{menu.icon}</div>
+                  {openSidebar && <div className="title">{menu.title}</div>}
+                </NavLink>
+              )}
             </Tooltip>
           </li>
         ))}

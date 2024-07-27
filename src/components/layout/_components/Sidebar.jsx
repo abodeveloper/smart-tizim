@@ -1,31 +1,36 @@
 import {
+  RiAlignItemBottomFill,
+  RiArrowLeftSLine,
   RiBankFill,
   RiBarChartBoxFill,
-  RiCopperCoinFill,
+  RiBarChartHorizontalFill,
+  RiBubbleChartFill,
+  RiColorFilterFill,
+  RiContactsBookFill,
   RiDashboard3Fill,
   RiDashboardFill,
+  RiDatabase2Fill,
+  RiDraftFill,
+  RiGroupFill,
+  RiHandCoinFill,
+  RiHomeOfficeFill,
   RiProductHuntFill,
+  RiSettings6Fill,
+  RiShakeHandsFill,
+  RiShapesFill,
   RiShoppingBag3Fill,
+  RiShoppingCart2Fill,
   RiShoppingCartFill,
+  RiStackFill,
   RiTeamFill,
   RiUserSettingsFill,
-  RiSettings6Fill,
-  RiArrowLeftSLine,
-  RiBarChartHorizontalFill,
-  RiColorFilterFill,
-  RiServiceFill,
-  RiShakeHandsFill,
-  RiStackFill,
-  RiBubbleChartFill,
-  RiShapesFill,
-  RiAlignItemBottomFill,
-  RiContactsBookFill,
-  RiGroupFill,
+  RiUserStarFill,
+  RiWaterFlashFill,
 } from "@remixicon/react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import * as S from "../Layout.styles";
 import Category from "./Category";
-import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 const Sidebar = ({ openSidebar, toggleSidebar }) => {
   const location = useLocation();
@@ -42,23 +47,27 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
         },
         {
           title: "Savdo",
-          path: "/admin/orders",
+          path: "/orders/orders",
           icon: <RiShoppingCartFill />,
+          isClick: true,
         },
         {
           title: "Mahsulotlar",
-          path: "/admin/products",
+          path: "/products/products",
           icon: <RiProductHuntFill />,
+          isClick: true,
         },
         {
-          title: "Omborxona",
-          path: "/admin/warehouse",
-          icon: <RiShoppingBag3Fill />,
+          title: "Omborxonalar",
+          path: "/storages/storages",
+          icon: <RiHomeOfficeFill />,
+          isClick: true,
         },
         {
           title: "Statistika",
-          path: "/admin/statistics",
+          path: "/statistics/order-statistic",
           icon: <RiBarChartBoxFill />,
+          isClick: true,
         },
         {
           title: "Moliya",
@@ -67,18 +76,35 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
         },
         {
           title: "Mijozlar",
-          path: "/admin/clients",
+          path: "/clients/clients",
           icon: <RiTeamFill />,
+          isClick: true,
         },
         {
           title: "Xizmatlar",
           path: "/admin/services",
           icon: <RiShakeHandsFill />,
         },
+      ],
+    },
+    {
+      label: "SAVDO",
+      icon: <RiShoppingCartFill />,
+      children: [
         {
-          title: "Ta'minotchilar",
-          path: "/admin/suppliers",
-          icon: <RiShakeHandsFill />,
+          title: "Savdolar",
+          path: "/orders/orders",
+          icon: <RiHandCoinFill />,
+        },
+        {
+          title: "Savdo qo'shish",
+          path: "/orders/orders/create",
+          icon: <RiShoppingCart2Fill />,
+        },
+        {
+          title: "Qoralama",
+          path: "/orders/qoralama",
+          icon: <RiDraftFill />,
         },
       ],
     },
@@ -87,15 +113,10 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       icon: <RiProductHuntFill />,
       children: [
         {
-          title: "Mahsulot",
+          title: "Mahsulotlar",
           path: "/products/products",
           icon: <RiStackFill />,
         },
-        // {
-        //   title: "Omborga mahsulot",
-        //   path: "/products/products-add",
-        //   icon: <RiCopperCoinFill />,
-        // },
         {
           title: "Kategoriya",
           path: "/products/category",
@@ -117,16 +138,21 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           path: "/clients/clients",
           icon: <RiGroupFill />,
         },
+        {
+          title: "Qoralama",
+          path: "/clients/qoralama",
+          icon: <RiDraftFill />,
+        },
       ],
     },
     {
       label: "OMBORXONA",
-      icon: <RiShoppingBag3Fill />,
+      icon: <RiHomeOfficeFill />,
       children: [
         {
           title: "Omborxonalar",
           path: "/storages/storages",
-          icon: <RiShoppingBag3Fill />,
+          icon: <RiDatabase2Fill />,
         },
         {
           title: "Omborga mahsulot",
@@ -134,9 +160,14 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           icon: <RiShoppingBag3Fill />,
         },
         {
+          title: "Ta'minotchilar",
+          path: "/storages/suppliers",
+          icon: <RiUserStarFill />,
+        },
+        {
           title: "Yaroqsiz mahsulotlar",
           path: "/storages/storage-products-off",
-          icon: <RiShoppingBag3Fill />,
+          icon: <RiWaterFlashFill />,
         },
       ],
     },
@@ -161,17 +192,17 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
         },
       ],
     },
-    {
-      label: "XIZMATLAR",
-      icon: <RiShakeHandsFill />,
-      children: [
-        {
-          title: "Xizmatlar",
-          path: "/services/services",
-          icon: <RiServiceFill />,
-        },
-      ],
-    },
+    // {
+    //   label: "XIZMATLAR",
+    //   icon: <RiShakeHandsFill />,
+    //   children: [
+    //     {
+    //       title: "Xizmatlar",
+    //       path: "/services/services",
+    //       icon: <RiServiceFill />,
+    //     },
+    //   ],
+    // },
     {
       label: "STATISTIKA",
       icon: <RiBarChartBoxFill />,
@@ -203,11 +234,6 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       icon: <RiSettings6Fill />,
       children: [
         {
-          title: "Qarzdorlar",
-          path: "/admin/qarzdor",
-          icon: <RiCopperCoinFill />,
-        },
-        {
           title: "Sozlamalar",
           path: "/admin/settings",
           icon: <RiUserSettingsFill />,
@@ -219,7 +245,7 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
   useEffect(() => {
     const updatedMenu = MENUS.map((menu) => {
       const isOpen = menu.children.some(
-        (child) => child.path === location.pathname
+        (child) => child.path === location.pathname && !child.isClick
       );
       return { ...menu, isOpen };
     });
@@ -244,7 +270,6 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           <RiArrowLeftSLine />
         </div>
       </div>
-
       <div className="menu-box">
         <div className="categories">
           {MENUS.map((item, index) => (

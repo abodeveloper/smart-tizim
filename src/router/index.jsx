@@ -18,12 +18,12 @@ const DashboardPage = lazy(() =>
   import("@/pages/admin/dashboard/DashboardPage")
 );
 // CLIENTS
-const ClientsPage = lazy(() => import("@/pages/admin/clients/ClientsPage"));
+const ClientsPage = lazy(() => import("@/pages/clients/clients/ClientsPage"));
 const CreateClientsPage = lazy(() =>
-  import("@/pages/admin/clients/CreateClientsPage")
+  import("@/pages/clients/clients/CreateClientsPage")
 );
 const UpdateClientsPage = lazy(() =>
-  import("@/pages/admin/clients/UpdateClientsPage")
+  import("@/pages/clients/clients/UpdateClientsPage")
 );
 
 // SERVICES
@@ -33,31 +33,6 @@ const CreateServicesPage = lazy(() =>
 );
 const UpdateServicesPage = lazy(() =>
   import("@/pages/admin/services/UpdateServicesPage")
-);
-
-// SUPPPLIERS
-const SuppliersPage = lazy(() =>
-  import("@/pages/admin/suppliers/SuppliersPage")
-);
-const SupplierDetailPage = lazy(() =>
-  import("@/pages/admin/suppliers/SupplierDetailPage")
-);
-const CreateSuppliersPage = lazy(() =>
-  import("@/pages/admin/suppliers/CreateSuppliersPage")
-);
-const UpdateSuppliersPage = lazy(() =>
-  import("@/pages/admin/suppliers/UpdateSuppliersPage")
-);
-
-//Product
-const ProductsPage = lazy(() =>
-  import("@/pages/products/products/ProductsPage")
-);
-const CreateProductsPage = lazy(() =>
-  import("@/pages/products/products/CreateProductsPage")
-);
-const UpdateProductsPage = lazy(() =>
-  import("@/pages/products/products/UpdateProductsPage")
 );
 
 // STORAGES
@@ -94,6 +69,31 @@ const CreateStorageProductsOffPage = lazy(() =>
 );
 const UpdateStorageProductsOffPage = lazy(() =>
   import("@/pages/storages/storage-products-off/UpdateStorageProductsOffPage")
+);
+
+// SUPPPLIERS
+const SuppliersPage = lazy(() =>
+  import("@/pages/storages/suppliers/SuppliersPage")
+);
+const SupplierDetailPage = lazy(() =>
+  import("@/pages/storages/suppliers/SupplierDetailPage")
+);
+const CreateSuppliersPage = lazy(() =>
+  import("@/pages/storages/suppliers/CreateSuppliersPage")
+);
+const UpdateSuppliersPage = lazy(() =>
+  import("@/pages/storages/suppliers/UpdateSuppliersPage")
+);
+
+//Product
+const ProductsPage = lazy(() =>
+  import("@/pages/products/products/ProductsPage")
+);
+const CreateProductsPage = lazy(() =>
+  import("@/pages/products/products/CreateProductsPage")
+);
+const UpdateProductsPage = lazy(() =>
+  import("@/pages/products/products/UpdateProductsPage")
 );
 
 //Product category
@@ -136,11 +136,6 @@ const Router = () => {
                 <Route index element={<Navigate to="dashboard" />} />
                 <Route path={"dashboard"} element={<DashboardPage />} />
 
-                <Route path="clients">
-                  <Route index element={<ClientsPage />} />
-                  <Route path={`create`} element={<CreateClientsPage />} />
-                  <Route path={`update/:id/`} element={<UpdateClientsPage />} />
-                </Route>
                 <Route path="services">
                   <Route index element={<ServicesPage />} />
                   <Route path={`create`} element={<CreateServicesPage />} />
@@ -149,14 +144,17 @@ const Router = () => {
                     element={<UpdateServicesPage />}
                   />
                 </Route>
-                <Route path="suppliers">
-                  <Route index element={<SuppliersPage />} />
-                  <Route path={`:id`} element={<SupplierDetailPage />} />
-                  <Route path={`create`} element={<CreateSuppliersPage />} />
-                  <Route
-                    path={`update/:id/`}
-                    element={<UpdateSuppliersPage />}
-                  />
+
+                <Route path={"*"} element={<NotFoundPage />} />
+              </Route>
+
+              <Route path="clients">
+                <Route index element={<Navigate to="clients" />} />
+
+                <Route path="clients">
+                  <Route index element={<ClientsPage />} />
+                  <Route path={`create`} element={<CreateClientsPage />} />
+                  <Route path={`update/:id/`} element={<UpdateClientsPage />} />
                 </Route>
 
                 <Route path={"*"} element={<NotFoundPage />} />
@@ -234,6 +232,16 @@ const Router = () => {
                   <Route
                     path={`update/:id`}
                     element={<UpdateStorageProductsOffPage />}
+                  />
+                </Route>
+
+                <Route path="suppliers">
+                  <Route index element={<SuppliersPage />} />
+                  <Route path={`:id`} element={<SupplierDetailPage />} />
+                  <Route path={`create`} element={<CreateSuppliersPage />} />
+                  <Route
+                    path={`update/:id/`}
+                    element={<UpdateSuppliersPage />}
                   />
                 </Route>
 

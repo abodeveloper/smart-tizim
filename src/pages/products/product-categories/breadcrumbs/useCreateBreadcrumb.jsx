@@ -23,7 +23,7 @@ export const useCreateBreadcrumbItems = () => {
       ),
     },
     {
-      title: t("Kategoriya qo'shish"),
+      title: t("Qo'shish"),
     },
   ];
 };
