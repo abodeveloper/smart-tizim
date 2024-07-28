@@ -214,10 +214,6 @@ const SupplierDetailPage = () => {
                                 )}
                                 icon={<RiRefundLine />}
                               />
-                              <AddDebtForSupplier
-                                refetch={refetch}
-                                item={data}
-                              />
                               <Divider style={{ margin: "0" }} />
                               <TitleAndIconText
                                 title={t("Holati").toUpperCase()}
@@ -248,7 +244,7 @@ const SupplierDetailPage = () => {
                         </Col>
                       </Row>
                     </Tabs.TabPane>
-                    <Tabs.TabPane tab={t("Qo'shilgan qarzlar")} key="5">
+                    {/* <Tabs.TabPane tab={t("Qo'shilgan qarzlar")} key="5">
                       <Row gutter={[20, 20]}>
                         <Col xs={24} md={16}>
                           <Debts
@@ -276,7 +272,7 @@ const SupplierDetailPage = () => {
                           </Card>
                         </Col>
                       </Row>
-                    </Tabs.TabPane>
+                    </Tabs.TabPane> */}
                   </CustomTabs>
                 </>
               )}

@@ -1,14 +1,25 @@
 import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/CustomModalConfirm";
 import useClientTypes from "@/hooks/useClientTypes";
-import { httpDeleteClient } from "@/services/api/requests/clients.requests";
+import {
+  httpDeleteClient,
+  httpSpecialClient,
+} from "@/services/api/requests/clients.requests";
 import {
   formatTimeForUI,
   handleSuccessNotification,
 } from "@/utils/helpers.jsx";
 import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
-import { RiListSettingsFill } from "@remixicon/react";
+import {
+  RiHeadphoneFill,
+  RiHeadphoneLine,
+  RiHeartFill,
+  RiHeartLine,
+  RiListSettingsFill,
+} from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
+import { get } from "lodash";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -31,6 +42,20 @@ export const useClientColumns = (pagination, filters, setFilters, refetch) => {
 
   const handleDelete = (id) => {
     deleteMutate.mutate(id);
+  };
+
+  const specialMutate = useMutation({
+    mutationFn: httpSpecialClient,
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleSpecial = async (data) => {
+    specialMutate.mutate(data);
   };
 
   return [
@@ -90,6 +115,24 @@ export const useClientColumns = (pagination, filters, setFilters, refetch) => {
         }
       },
     },
+    // {
+    //   title: t("Maxsus mijoz"),
+    //   dataIndex: "is_special",
+    //   key: "is_special",
+    //   filters: [
+    //     { text: t("Maxsus mijoz"), value: true },
+    //     { text: "Maxsus emas", value: false },
+    //   ],
+    //   filteredValue: filters.is_special || null,
+    //   render: (is_special) => {
+    //     switch (is_special) {
+    //       case true:
+    //         return <Tag color={"green"}>{t("Maxsus mijoz")}</Tag>;
+    //       case false:
+    //         return <Tag color={"red"}>{t("Maxsus emas")}</Tag>;
+    //     }
+    //   },
+    // },
     {
       title: t("Qo'shilgan vaqti"),
       dataIndex: "added",
@@ -112,8 +155,29 @@ export const useClientColumns = (pagination, filters, setFilters, refetch) => {
       key: "operation",
       align: "center",
       width: 100,
-      render: (id) => (
+      render: (id, row) => (
         <Flex align="center" justify="space-between" gap={"middle"}>
+          {get(row, "is_special", false) === true ? (
+            <>
+              <Button
+                type="primary"
+                icon={<RiHeartFill />}
+                onClick={() =>
+                  handleSpecial({ client: row.id, is_special: false })
+                }
+              />
+            </>
+          ) : (
+            <>
+              <Button
+                type="primary"
+                icon={<RiHeartLine />}
+                onClick={() =>
+                  handleSpecial({ client: row.id, is_special: true })
+                }
+              />
+            </>
+          )}
           <Button type="primary" icon={<EyeFilled />} />
           <Button
             onClick={() => navigate(`update/${id}`)}

@@ -36,6 +36,10 @@ function httpDeleteClient(id) {
   return request.delete(`/api/clients/${id}/`);
 }
 
+function httpSpecialClient(data) {
+  return request.post(`/api/special_clients/`, data);
+}
+
 export {
   httpGetAllClients,
   httpGetClients,
@@ -44,4 +48,5 @@ export {
   httpImportClients,
   httpPostClient,
   httpGetClientOne,
+  httpSpecialClient,
 };
