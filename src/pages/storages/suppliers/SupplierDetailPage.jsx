@@ -13,7 +13,10 @@ import {
   httpDeletePaymentStorageProduct,
   httpGetStorageProducts,
 } from "@/services/api/requests/storage-products.requests";
-import { httpGetSupplierOne } from "@/services/api/requests/suppliers.requests";
+import {
+  httpDeleteDebtSupplier,
+  httpGetSupplierOne,
+} from "@/services/api/requests/suppliers.requests";
 import {
   NumberToThousandFormat,
   formatTimeForUI,
@@ -26,6 +29,7 @@ import {
   RiColorFilterFill,
   RiListSettingsFill,
   RiPhoneFill,
+  RiRefundFill,
   RiRefundLine,
   RiSlideshowLine,
   RiStackFill,
@@ -47,7 +51,7 @@ import { get, isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import AddDebtForSupplier from "./_components/add-debt-for-supplier/AddDebtForSupplier";
 import AddPaymentForSupplier from "./_components/add-payment-for-supplier/AddPaymentForSupplier";
 import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
@@ -103,7 +107,7 @@ const SupplierDetailPage = () => {
                   <CustomTabs tabPosition={"top"}>
                     <Tabs.TabPane tab={t("Umumiy ma'lumotlar")} key="1">
                       <Row gutter={[20, 20]}>
-                        <Col xs={24} md={24}>
+                        <Col xs={24} md={16}>
                           <Card>
                             <Flex vertical gap={"large"}>
                               <TitleAndIconText
@@ -138,6 +142,48 @@ const SupplierDetailPage = () => {
                             </Flex>
                           </Card>
                         </Col>
+                        <Col xs={24} md={8}>
+                          <Card
+                            title={
+                              <CardTitle title={t("To'lov ma'lumotlari")} />
+                            }
+                          >
+                            <Flex vertical gap={"large"}>
+                              <TitleAndIconText
+                                title={t("Qarzdorlik").toUpperCase()}
+                                value={NumberToThousandFormat(
+                                  get(data, "debt_balance", 0)
+                                )}
+                                icon={<RiRefundLine />}
+                              />
+                              <Divider style={{ margin: "0" }} />
+                              <TitleAndIconText
+                                title={t("Holati").toUpperCase()}
+                                value={
+                                  get(data, "status", "") === "Qarzdorlik" ? (
+                                    <Tag color={"red"}>
+                                      {t("Qardorlik")} (
+                                      {NumberToThousandFormat(
+                                        get(data, "debt_balance", "")
+                                      )}
+                                      )
+                                    </Tag>
+                                  ) : (
+                                    <Tag color={"green"}>{t("To'langan")}</Tag>
+                                  )
+                                }
+                                icon={<RiColorFilterFill />}
+                              />
+                              {get(data, "status", "") === "Qarzdorlik" && (
+                                <AddPaymentForSupplier
+                                  summa={get(data, "debt_balance", "")}
+                                  refetch={refetch}
+                                  item={data}
+                                />
+                              )}
+                            </Flex>
+                          </Card>
+                        </Col>
                       </Row>
                     </Tabs.TabPane>
                     <Tabs.TabPane tab={t("Omborga mahsulot")} key="2">
@@ -145,6 +191,91 @@ const SupplierDetailPage = () => {
                         supplier={get(data, "id", "")}
                         supplierRefetch={refetch}
                       />
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={t("To'lovlar")} key="4">
+                      <Row gutter={[20, 20]}>
+                        <Col xs={24} md={16}>
+                          <Payments
+                            data={get(data, "payments", [])}
+                            refetch={refetch}
+                          />
+                        </Col>
+                        <Col xs={24} md={8}>
+                          <Card
+                            title={
+                              <CardTitle title={t("To'lov ma'lumotlari")} />
+                            }
+                          >
+                            <Flex vertical gap={"large"}>
+                              <TitleAndIconText
+                                title={t("Qarzdorlik").toUpperCase()}
+                                value={NumberToThousandFormat(
+                                  get(data, "debt_balance", 0)
+                                )}
+                                icon={<RiRefundLine />}
+                              />
+                              <AddDebtForSupplier
+                                refetch={refetch}
+                                item={data}
+                              />
+                              <Divider style={{ margin: "0" }} />
+                              <TitleAndIconText
+                                title={t("Holati").toUpperCase()}
+                                value={
+                                  get(data, "status", "") === "Qarzdorlik" ? (
+                                    <Tag color={"red"}>
+                                      {t("Qardorlik")} (
+                                      {NumberToThousandFormat(
+                                        get(data, "debt_balance", "")
+                                      )}
+                                      )
+                                    </Tag>
+                                  ) : (
+                                    <Tag color={"green"}>{t("To'langan")}</Tag>
+                                  )
+                                }
+                                icon={<RiColorFilterFill />}
+                              />
+                              {get(data, "status", "") === "Qarzdorlik" && (
+                                <AddPaymentForSupplier
+                                  summa={get(data, "debt_balance", "")}
+                                  refetch={refetch}
+                                  item={data}
+                                />
+                              )}
+                            </Flex>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={t("Qo'shilgan qarzlar")} key="5">
+                      <Row gutter={[20, 20]}>
+                        <Col xs={24} md={16}>
+                          <Debts
+                            data={get(data, "debts", [])}
+                            refetch={refetch}
+                          />
+                        </Col>
+                        <Col xs={24} md={8}>
+                          <Card
+                            title={<CardTitle title={t("Qarz ma'lumotlari")} />}
+                          >
+                            <Flex vertical gap={"large"}>
+                              <TitleAndIconText
+                                title={t("Qarzdorlik").toUpperCase()}
+                                value={NumberToThousandFormat(
+                                  get(data, "debt_balance", 0)
+                                )}
+                                icon={<RiRefundLine />}
+                              />
+                              <AddDebtForSupplier
+                                refetch={refetch}
+                                item={data}
+                              />
+                            </Flex>
+                          </Card>
+                        </Col>
+                      </Row>
                     </Tabs.TabPane>
                   </CustomTabs>
                 </>
@@ -313,6 +444,20 @@ function Payments({ data, refetch }) {
       },
     },
     {
+      title: t("Omborga mahsulot"),
+      dataIndex: "storage_product",
+      key: "storage_product",
+      render: (value) => {
+        return (
+          <>
+            <NavLink to={`/storages/storage-products/${value}`}>
+              {t("Ko'rish")}
+            </NavLink>
+          </>
+        );
+      },
+    },
+    {
       title: t("Naqt"),
       dataIndex: "cash",
       key: "cash",
@@ -345,6 +490,14 @@ function Payments({ data, refetch }) {
       },
     },
     {
+      title: t("Sana"),
+      dataIndex: "date",
+      key: "date",
+      render: (value) => {
+        return <>{formatTimeForUI(value)}</>;
+      },
+    },
+    {
       title: <RiListSettingsFill size={15} />,
       dataIndex: "id",
       key: "operation",
@@ -364,5 +517,75 @@ function Payments({ data, refetch }) {
 
   return (
     <CustomDataTable title={t("To'lovlar")} data={data} columns={columns} />
+  );
+}
+
+function Debts({ data, refetch }) {
+  const { t } = useTranslation();
+
+  const deleteMutate = useMutation({
+    mutationFn: httpDeleteDebtSupplier,
+    onSuccess: () => {
+      handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleDelete = (id) => {
+    deleteMutate.mutate(id);
+  };
+
+  const columns = [
+    {
+      title: t("#"),
+      dataIndex: "index",
+      key: "index",
+      render: (value, item, index) => {
+        return <>{index + 1}</>;
+      },
+    },
+    {
+      title: t("Summa"),
+      dataIndex: "sum",
+      key: "sum",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
+      title: t("Sana"),
+      dataIndex: "date",
+      key: "date",
+      render: (value) => {
+        return <>{formatTimeForUI(value)}</>;
+      },
+    },
+    {
+      title: <RiListSettingsFill size={15} />,
+      dataIndex: "id",
+      key: "operation",
+      align: "center",
+      width: 50,
+      align: "center",
+      render: (id) => (
+        <Flex align="center" justify="space-between" gap={"small"}>
+          <CustomModalConfirm
+            trigger={<Button danger icon={<DeleteFilled />} />}
+            onOk={() => handleDelete(id)}
+          />
+        </Flex>
+      ),
+    },
+  ];
+
+  return (
+    <CustomDataTable
+      title={t("Qo'shilgan qarzlar")}
+      data={data}
+      columns={columns}
+    />
   );
 }
