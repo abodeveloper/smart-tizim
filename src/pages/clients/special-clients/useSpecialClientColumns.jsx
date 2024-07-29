@@ -9,21 +9,19 @@ import {
   handleSuccessNotification,
 } from "@/utils/helpers.jsx";
 import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
-import {
-  RiHeadphoneFill,
-  RiHeadphoneLine,
-  RiHeartFill,
-  RiHeartLine,
-  RiListSettingsFill,
-} from "@remixicon/react";
+import { RiHeartFill, RiHeartLine, RiListSettingsFill } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
 import { get } from "lodash";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-export const useClientColumns = (pagination, filters, setFilters, refetch) => {
+export const useSpecialClientColumns = (
+  pagination,
+  filters,
+  setFilters,
+  refetch
+) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 

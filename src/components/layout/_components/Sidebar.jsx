@@ -139,9 +139,9 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           icon: <RiGroupFill />,
         },
         {
-          title: "Qoralama",
-          path: "/clients/qoralama",
-          icon: <RiDraftFill />,
+          title: "Maxsus mijozlar",
+          path: "/clients/special-clients",
+          icon: <RiUserStarFill />,
         },
       ],
     },
@@ -192,17 +192,6 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
         },
       ],
     },
-    // {
-    //   label: "XIZMATLAR",
-    //   icon: <RiShakeHandsFill />,
-    //   children: [
-    //     {
-    //       title: "Xizmatlar",
-    //       path: "/services/services",
-    //       icon: <RiServiceFill />,
-    //     },
-    //   ],
-    // },
     {
       label: "STATISTIKA",
       icon: <RiBarChartBoxFill />,

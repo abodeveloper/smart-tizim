@@ -19,6 +19,9 @@ const DashboardPage = lazy(() =>
 );
 // CLIENTS
 const ClientsPage = lazy(() => import("@/pages/clients/clients/ClientsPage"));
+const SpecialClientsPage = lazy(() =>
+  import("@/pages/clients/special-clients/SpecialClientsPage")
+);
 const CreateClientsPage = lazy(() =>
   import("@/pages/clients/clients/CreateClientsPage")
 );
@@ -156,6 +159,11 @@ const Router = () => {
                   <Route path={`create`} element={<CreateClientsPage />} />
                   <Route path={`update/:id/`} element={<UpdateClientsPage />} />
                 </Route>
+
+                <Route
+                  path="special-clients"
+                  element={<SpecialClientsPage />}
+                />
 
                 <Route path={"*"} element={<NotFoundPage />} />
               </Route>

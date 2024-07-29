@@ -77,24 +77,24 @@ export const useSupplierColumns = (
         }
       },
     },
-    // {
-    //   title: t("Holati"),
-    //   dataIndex: "is_active",
-    //   key: "is_active",
-    //   filters: [
-    //     { text: t("Aktiv"), value: 1 },
-    //     { text: "Aktiv emas", value: 0 },
-    //   ],
-    //   filteredValue: filters.is_active || null,
-    //   render: (is_active) => {
-    //     switch (is_active) {
-    //       case true:
-    //         return <Tag color={"green"}>{t("Aktiv")}</Tag>;
-    //       case false:
-    //         return <Tag color={"red"}>{t("Aktiv emas")}</Tag>;
-    //     }
-    //   },
-    // },
+    {
+      title: t("Holati"),
+      dataIndex: "status",
+      filters: [
+        { text: t("Qarzdorlik"), value: "Qarzdorlik" },
+        { text: t("To'langan"), value: "To'langan" },
+      ],
+      filteredValue: filters.status || null,
+      filterSearch: true,
+      render: (value) => {
+        switch (value) {
+          case "To'langan":
+            return <Tag color={"green"}>{t("To'langan")}</Tag>;
+          case "Qarzdorlik":
+            return <Tag color={"red"}>{t("Qarzdorlik")}</Tag>;
+        }
+      },
+    },
     {
       title: t("Qo'shilgan vaqti"),
       dataIndex: "added",
