@@ -47,7 +47,7 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
         },
         {
           title: "Savdo",
-          path: "/orders/orders",
+          path: "/trades/trades",
           icon: <RiShoppingCartFill />,
           isClick: true,
         },
@@ -93,17 +93,17 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       children: [
         {
           title: "Savdolar",
-          path: "/orders/orders",
+          path: "/trades/trades",
           icon: <RiHandCoinFill />,
         },
         {
           title: "Savdo qo'shish",
-          path: "/orders/orders/create",
+          path: "/trades/trades/create",
           icon: <RiShoppingCart2Fill />,
         },
         {
           title: "Qoralama",
-          path: "/orders/qoralama",
+          path: "/trades/qoralama",
           icon: <RiDraftFill />,
         },
       ],

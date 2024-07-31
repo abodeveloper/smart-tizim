@@ -17,8 +17,33 @@ const SignUpPage = lazy(() => import("@/pages/auth/sign-up/SignUpPage"));
 const DashboardPage = lazy(() =>
   import("@/pages/admin/dashboard/DashboardPage")
 );
+
+// TRADES
+const TradesPage = lazy(() => import("@/pages/trades/trades/TradesPage"));
+const CreateTradesPage = lazy(() =>
+  import("@/pages/trades/trades/CreateTradesPage")
+);
+const UpdateTradesPage = lazy(() =>
+  import("@/pages/trades/trades/UpdateTradesPage")
+);
+const TradeDetailPage = lazy(() =>
+  import("@/pages/trades/trades/TradeDetailPage")
+);
+// const CreateStorageProductsPage = lazy(() =>
+//   import("@/pages/storages/storage-products/CreateStorageProductsPage")
+// );
+// const UpdateStorageProductsPage = lazy(() =>
+//   import("@/pages/storages/storage-products/UpdateStorageProductsPage")
+// );
+// const StorageProductDetailPage = lazy(() =>
+//   import("@/pages/storages/storage-products/StorageProductDetailPage")
+// );
+
 // CLIENTS
 const ClientsPage = lazy(() => import("@/pages/clients/clients/ClientsPage"));
+const ClientDetailPage = lazy(() =>
+  import("@/pages/clients/clients/ClientDetailPage")
+);
 const SpecialClientsPage = lazy(() =>
   import("@/pages/clients/special-clients/SpecialClientsPage")
 );
@@ -151,11 +176,27 @@ const Router = () => {
                 <Route path={"*"} element={<NotFoundPage />} />
               </Route>
 
+              <Route path="trades">
+                <Route index element={<Navigate to="trades" />} />
+
+                <Route path="trades">
+                  <Route index element={<TradesPage />} />
+                  <Route path={`:id`} element={<TradeDetailPage />} />
+                  <Route path={`create`} element={<CreateTradesPage />} />
+                  <Route path={`update/:id/`} element={<UpdateTradesPage />} />
+                </Route>
+
+                <Route path="special-trades" element={<SpecialClientsPage />} />
+
+                <Route path={"*"} element={<NotFoundPage />} />
+              </Route>
+
               <Route path="clients">
                 <Route index element={<Navigate to="clients" />} />
 
                 <Route path="clients">
                   <Route index element={<ClientsPage />} />
+                  <Route path={`:id`} element={<ClientDetailPage />} />
                   <Route path={`create`} element={<CreateClientsPage />} />
                   <Route path={`update/:id/`} element={<UpdateClientsPage />} />
                 </Route>

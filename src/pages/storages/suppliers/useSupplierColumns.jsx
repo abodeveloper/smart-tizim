@@ -94,7 +94,7 @@ export const useSupplierColumns = (
             return <Tag color={"red"}>{t("Qarzdorlik")}</Tag>;
         }
       },
-    },
+    },  
     {
       title: t("Qo'shilgan vaqti"),
       dataIndex: "added",
