@@ -182,9 +182,11 @@ const Router = () => {
                 <Route path="trades">
                   <Route index element={<TradesPage />} />
                   <Route path={`:id`} element={<TradeDetailPage />} />
-                  <Route path={`create`} element={<CreateTradesPage />} />
+                  {/* <Route path={`create`} element={<CreateTradesPage />} /> */}
                   <Route path={`update/:id/`} element={<UpdateTradesPage />} />
                 </Route>
+
+                <Route path={`trade-create`} element={<CreateTradesPage />} />
 
                 <Route path="special-trades" element={<SpecialClientsPage />} />
 

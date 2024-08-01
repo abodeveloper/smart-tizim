@@ -192,6 +192,14 @@ export const useTradeColumns = (pagination, filters, setFilters, refetch) => {
       hidden: true,
     },
     {
+      title: t("Chegirma"),
+      dataIndex: "discount_summa",
+      key: "discount_summa",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value)}</>;
+      },
+    },
+    {
       title: t("Jami summa"),
       dataIndex: "total_summa",
       key: "total_summa",

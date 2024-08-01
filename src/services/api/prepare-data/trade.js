@@ -18,9 +18,10 @@ export function prepareTradeDto(item) {
     desc: get(item, "desc", ""),
     date: formatTimeForApi(get(item, "date", "")),
 
-    cash: get(item, "cash", ""),
-    card: get(item, "card", ""),
-    other: get(item, "other", ""),
+    discount_summa: get(item, "discount_summa", 0),
+    cash: get(item, "cash", 0),
+    card: get(item, "card", 0),
+    other: get(item, "other", 0),
 
     products: get(item, "products", []),
     services: get(item, "services", []),

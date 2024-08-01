@@ -150,6 +150,7 @@ const TradeForm = ({
       products: [{ size_type: "O'lchovsiz" }],
       services: [],
       pay_type: true,
+      discount_summa: 0,
       ...defaultValues,
     },
     resolver,
@@ -184,6 +185,7 @@ const TradeForm = ({
       products: [{ size_type: "O'lchovsiz" }],
       services: [],
       pay_type: true,
+      discount_summa: 0,
     });
   };
 
@@ -244,24 +246,31 @@ const TradeForm = ({
   const services = useWatch({ control, name: "services" });
   const products = useWatch({ control, name: "products" });
 
-  const totalServicePrice = services?.reduce(
-    (sum, item) => sum + get(item, "price", 0) * get(item, "count", 0) || 0,
-    0
-  );
+  const totalServicePrice = services?.reduce((sum, item) => {
+    const price = parseFloat(get(item, "price", 0));
+    const count = parseFloat(get(item, "count", 0));
+    const productTotal = price * count;
 
-  const totalProductPrice = products?.reduce(
-    (sum, item) =>
-      sum +
-      get(item, "price", 0) *
-        get(item, "count", 0) *
-        get(item, "part_size", 1) *
-        (get(item, "width", 1) * get(item, "height", 1) || 0),
-    0
-  );
+    return sum + parseFloat(productTotal.toFixed(2));
+  }, 0);
+
+  const totalProductPrice = products?.reduce((sum, item) => {
+    const price = parseFloat(get(item, "price", 0));
+    const count = parseFloat(get(item, "count", 0));
+    const partSize = parseFloat(get(item, "part_size", 1));
+    const width = parseFloat(get(item, "width", 1));
+    const height = parseFloat(get(item, "height", 1));
+
+    const productTotal = price * count * partSize * width * height;
+
+    return sum + parseFloat(productTotal.toFixed(2));
+  }, 0);
 
   const totalSumma =
     (totalServicePrice ? totalServicePrice : 0) +
     (totalProductPrice ? totalProductPrice : 0);
+
+  const paymentSumma = totalSumma - parseFloat(watch("discount_summa")) || 0;
 
   const payType = watch("pay_type");
 
@@ -269,34 +278,34 @@ const TradeForm = ({
     if (payType) {
       const card = getValues("card") || 0;
       const other = getValues("other") || 0;
-      const remainingCash = totalSumma - card - other;
+      const remainingCash = paymentSumma - card - other;
       if (remainingCash !== getValues("cash")) {
         setValue("cash", remainingCash >= 0 ? remainingCash : 0);
       }
     }
-  }, [totalSumma, watch("card"), watch("other"), payType]);
+  }, [paymentSumma, watch("card"), watch("other"), payType]);
 
   useEffect(() => {
     if (payType) {
       const cash = getValues("cash") || 0;
       const other = getValues("other") || 0;
-      const remainingCard = totalSumma - cash - other;
+      const remainingCard = paymentSumma - cash - other;
       if (remainingCard !== getValues("card")) {
         setValue("card", remainingCard >= 0 ? remainingCard : 0);
       }
     }
-  }, [totalSumma, watch("cash"), watch("other"), payType]);
+  }, [paymentSumma, watch("cash"), watch("other"), payType]);
 
   useEffect(() => {
     if (payType) {
       const cash = getValues("cash") || 0;
       const card = getValues("card") || 0;
-      const remainingOther = totalSumma - cash - card;
+      const remainingOther = paymentSumma - cash - card;
       if (remainingOther !== getValues("other")) {
         setValue("other", remainingOther >= 0 ? remainingOther : 0);
       }
     }
-  }, [totalSumma, watch("cash"), watch("card"), payType]);
+  }, [paymentSumma, watch("cash"), watch("card"), payType]);
 
   const totalPayment = watch(["cash", "card", "other"]).reduce(
     (acc, curr) => acc + (parseFloat(curr) || 0),
@@ -707,6 +716,32 @@ const TradeForm = ({
                     type="success"
                     title={t("Umumiy summa").toUpperCase()}
                     value={NumberToThousandFormat(totalSumma)}
+                    icon={<RiMoneyDollarBoxFill />}
+                  />
+                </Flex>
+              </Col>
+
+              <Col xs={24} md={24}>
+                <Form.Item
+                  label={t("Chegirma")}
+                  {...getValidationStatus(errors, "discount_summa")}
+                  required={true}
+                >
+                  <Controller
+                    name="discount_summa"
+                    control={control}
+                    render={({ field }) => (
+                      <CustomInputNumber prefix={<RiCashLine />} {...field} />
+                    )}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col xs={24} md={24}>
+                <Flex vertical gap={"middle"}>
+                  <TitleAndIconText
+                    title={t("To'lov summasi").toUpperCase()}
+                    value={NumberToThousandFormat(paymentSumma)}
                     icon={<RiMoneyDollarBoxFill />}
                   />
                 </Flex>

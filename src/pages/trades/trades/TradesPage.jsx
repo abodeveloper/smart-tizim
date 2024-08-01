@@ -122,7 +122,9 @@ const TradesPage = () => {
             <Col xs={24} sm={24} md={24} lg={18} xl={18}>
               <Flex align="center" justify="end" gap="middle">
                 <ClearFilterButton onClick={clearFilters} />
-                <CreateButton onClick={() => navigate("create")} />
+                <CreateButton
+                  onClick={() => navigate("/trades/trade-create")}
+                />
               </Flex>
             </Col>
             <Col span={24}>

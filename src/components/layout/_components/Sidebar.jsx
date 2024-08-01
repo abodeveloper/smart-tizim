@@ -98,7 +98,7 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
         },
         {
           title: "Savdo qo'shish",
-          path: "/trades/trades/create",
+          path: "/trades/trade-create",
           icon: <RiShoppingCart2Fill />,
         },
         {

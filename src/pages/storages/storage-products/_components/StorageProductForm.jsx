@@ -255,20 +255,25 @@ const StorageProductForm = ({
   const services = useWatch({ control, name: "services" });
   const products = useWatch({ control, name: "products" });
 
-  const totalServicePrice = services?.reduce(
-    (sum, item) => sum + get(item, "price", 0) * get(item, "count", 0) || 0,
-    0
-  );
+  const totalServicePrice = services?.reduce((sum, item) => {
+    const price = parseFloat(get(item, "price", 0));
+    const count = parseFloat(get(item, "count", 0));
+    const productTotal = price * count;
 
-  const totalProductPrice = products?.reduce(
-    (sum, item) =>
-      sum +
-      get(item, "price", 0) *
-        get(item, "count", 0) *
-        get(item, "part_size", 1) *
-        (get(item, "width", 1) * get(item, "height", 1) || 0),
-    0
-  );
+    return sum + parseFloat(productTotal.toFixed(2)); 
+  }, 0);
+
+  const totalProductPrice = products?.reduce((sum, item) => {
+    const price = parseFloat(get(item, "price", 0));
+    const count = parseFloat(get(item, "count", 0));
+    const partSize = parseFloat(get(item, "part_size", 1));
+    const width = parseFloat(get(item, "width", 1));
+    const height = parseFloat(get(item, "height", 1));
+
+    const productTotal = price * count * partSize * width * height;
+
+    return sum + parseFloat(productTotal.toFixed(2));
+  }, 0);
 
   const totalSumma =
     (totalServicePrice ? totalServicePrice : 0) +
@@ -310,7 +315,7 @@ const StorageProductForm = ({
   }, [totalSumma, watch("cash"), watch("card"), payType]);
 
   const totalPayment = watch(["cash", "card", "other"]).reduce(
-    (acc, curr) => acc + (parseFloat(curr) || 0),
+    (acc, curr) => acc + (curr || 0),
     0
   );
 

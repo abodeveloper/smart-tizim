@@ -416,8 +416,8 @@ function Products({ data }) {
     },
     {
       title: t("Miqdori"),
-      dataIndex: "count",
-      key: "count",
+      dataIndex: "total_count",
+      key: "total_count",
       render: (value) => {
         return <>{NumberToThousandFormat(value)}</>;
       },
