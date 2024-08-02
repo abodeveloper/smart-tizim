@@ -24,6 +24,7 @@ import {
   RiColorFilterFill,
   RiCopperCoinLine,
   RiListSettingsFill,
+  RiMoneyDollarBoxFill,
   RiRefundFill,
   RiRefundLine,
   RiShakeHandsFill,
@@ -135,12 +136,20 @@ const TradeDetailPage = () => {
                                   icon={<RiShakeHandsFill />}
                                 />
                                 <TitleAndIconText
+                                  title={t("Chegirma").toUpperCase()}
+                                  value={NumberToThousandFormat(
+                                    get(data, "discount_summa", "")
+                                  )}
+                                  icon={<RiMoneyDollarBoxFill />}
+                                />
+                                <TitleAndIconText
                                   title={t("Umumiy summa").toUpperCase()}
                                   value={NumberToThousandFormat(
                                     get(data, "total_summa", "")
                                   )}
                                   icon={<RiRefundLine />}
                                 />
+
                                 {get(data, "desc", "") ? (
                                   <TitleAndIconText
                                     title={t("Izoh").toUpperCase()}

@@ -23,6 +23,7 @@ import {
   RiBankCardLine,
   RiCashLine,
   RiCopperCoinLine,
+  RiCurrencyFill,
   RiMoneyDollarBoxFill,
   RiMoneyDollarCircleFill,
 } from "@remixicon/react";
@@ -731,7 +732,10 @@ const TradeForm = ({
                     name="discount_summa"
                     control={control}
                     render={({ field }) => (
-                      <CustomInputNumber prefix={<RiCashLine />} {...field} />
+                      <CustomInputNumber
+                        prefix={<RiMoneyDollarBoxFill />}
+                        {...field}
+                      />
                     )}
                   />
                 </Form.Item>
