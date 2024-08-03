@@ -191,7 +191,6 @@ const TradeForm = ({
   };
 
   const onSubmit = rest.handleSubmit((values) => {
-    handleReset();
     handleSubmit(prepareTradeDto(values), handleReset);
   });
 
