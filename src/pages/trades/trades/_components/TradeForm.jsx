@@ -126,6 +126,48 @@ const TradeForm = ({
           ),
         });
       }
+    )
+    .test(
+      "product-count",
+      t(
+        "Mahsulotning tanlangan miqdori mavjud miqdordan oshib ketishi mumkin emas!"
+      ),
+      function (value) {
+        const { path, createError } = this;
+
+        // Qabul qilinadigan mahsulotlar
+        const products = value.products || [];
+
+        // Mahsulotlar ro'yxatidagi har bir mahsulot uchun tekshirish
+        for (let i = 0; i < products.length; i++) {
+          const product = products[i];
+          const productId = product.product;
+          const count = parseFloat(product.count) || 0;
+          const partSize = parseFloat(product.part_size) || 1;
+          const width = parseFloat(product.width) || 1;
+          const height = parseFloat(product.height) || 1;
+          const productTotalCount = count * partSize * width * height;
+
+          // current_total_count olish
+          const currentProduct = productsData.find(
+            (item) => item.id == productId
+          );
+          const currentTotalCount = parseFloat(
+            currentProduct ? currentProduct.current_total_count : 0
+          );
+
+          if (productTotalCount > currentTotalCount) {
+            return createError({
+              path: `${path}.products[${i}].total_count`,
+              message: t(
+                "Mahsulotning tanlangan miqdori mavjud miqdordan oshib ketishi mumkin emas!"
+              ),
+            });
+          }
+        }
+
+        return true;
+      }
     );
 
   const resolver = yupResolver(validationSchema);
@@ -714,7 +756,15 @@ const TradeForm = ({
 
                               {currentValue && (
                                 <Col xs={24} md={6}>
-                                  <Form.Item label={t("Tanlangan miqdor")}>
+                                  <Form.Item
+                                    label={t("Tanlangan miqdor")}
+                                    {...getValidationStatusForArray(
+                                      errors,
+                                      "products",
+                                      index,
+                                      "total_count"
+                                    )}
+                                  >
                                     {NumberToThousandFormat(
                                       productTotalCount,
                                       get(currentProduct, "format.name", "")
