@@ -159,9 +159,7 @@ const TradeForm = ({
           if (productTotalCount > currentTotalCount) {
             return createError({
               path: `${path}.products[${i}].total_count`,
-              message: t(
-                "Mahsulotning tanlangan miqdori mavjud miqdordan oshib ketishi mumkin emas!"
-              ),
+              message: t("Omborda mahsulot yetarli emas !"),
             });
           }
         }
