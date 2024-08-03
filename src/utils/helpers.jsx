@@ -36,7 +36,7 @@ export function getValidationStatusForArray(
 export function handleErrorNotification(error) {
   toast
     .setDuration(4)
-    .setDesc(get(error?.response?.data, "message", get(error, "message", "")))
+    .setDesc(get(error?.response?.data?.error, "uz", get(error, "message", "")))
     .setMessage("Xatolik")
     .error();
 }

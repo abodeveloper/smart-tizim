@@ -37,6 +37,7 @@ request.interceptors.response.use(
   },
   async (error) => {
     if (!isEmpty(error)) {
+      console.log(error);
       handleErrorNotification(error);
     }
 

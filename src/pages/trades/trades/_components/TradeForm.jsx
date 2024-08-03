@@ -482,10 +482,21 @@ const TradeForm = ({
             >
               <Flex gap="large" vertical>
                 {productFields.map((item, index) => {
-                  const productType = productsData.find(
-                    (product) =>
-                      product.id === watch(`products.${index}.product`)
-                  )?.product_type;
+                  const selectedProducts = watch("products").map(
+                    (item) => item.product
+                  );
+
+                  const currentValue = watch(`products.${index}.product`);
+
+                  const filteredProductOptions = productsOptions.filter(
+                    (option) =>
+                      !selectedProducts.includes(option.value) ||
+                      option.value === currentValue
+                  );
+
+                  const currentProduct = productsData.find(
+                    (item) => item.id === currentValue
+                  );
 
                   return (
                     <>
@@ -510,7 +521,7 @@ const TradeForm = ({
                                     render={({ field }) => (
                                       <CustomSelect
                                         {...field}
-                                        options={productsOptions}
+                                        options={filteredProductOptions}
                                         onChange={(value) => {
                                           field.onChange(value);
                                           const selectedProduct =
@@ -529,7 +540,6 @@ const TradeForm = ({
                                   />
                                 </Form.Item>
                               </Col>
-
                               <Col xs={24} md={6}>
                                 <Form.Item
                                   label={t("Narxi")}
@@ -669,6 +679,23 @@ const TradeForm = ({
                                     </Form.Item>
                                   </Col>
                                 </>
+                              )}
+
+                              {currentValue && (
+                                <Col xs={24} md={6}>
+                                  <Form.Item
+                                    label={t("Ombordagi joriy miqdori")}
+                                  >
+                                    {NumberToThousandFormat(
+                                      get(
+                                        currentProduct,
+                                        "current_total_count",
+                                        ""
+                                      ),
+                                      get(currentProduct, "format.name", "")
+                                    )}
+                                  </Form.Item>
+                                </Col>
                               )}
                             </Row>
                           </Card>

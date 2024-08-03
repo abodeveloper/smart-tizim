@@ -127,6 +127,11 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           path: "/products/formats",
           icon: <RiShapesFill />,
         },
+        {
+          title: "O'chirilgan mahsulotlar",
+          path: "/products/deleted-products",
+          icon: <RiStackFill />,
+        },
       ],
     },
     {

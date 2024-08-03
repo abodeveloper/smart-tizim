@@ -36,6 +36,14 @@ function httpDeleteProduct(id) {
   return request.delete(`/api/products/${id}/`);
 }
 
+function httpGetDeletedProducts(page, page_size, filters) {
+  return request.get(
+    `/api/deleted-product/?page=${page}&page_size=${page_size}${
+      filters && `&${filters}`
+    }`
+  );
+}
+
 export {
   httpGetAllProducts,
   httpGetProducts,
@@ -44,4 +52,5 @@ export {
   httpPostProduct,
   httpUpdateProduct,
   httpDeleteProduct,
+  httpGetDeletedProducts,
 };

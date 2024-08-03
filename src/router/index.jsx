@@ -123,6 +123,9 @@ const CreateProductsPage = lazy(() =>
 const UpdateProductsPage = lazy(() =>
   import("@/pages/products/products/UpdateProductsPage")
 );
+const DeletedProductsPage = lazy(() =>
+  import("@/pages/products/deleted-products/DeletedProductsPage")
+);
 
 //Product category
 const ProductCategoriesPage = lazy(() =>
@@ -222,6 +225,11 @@ const Router = () => {
                     element={<UpdateProductsPage />}
                   />
                 </Route>
+
+                <Route
+                  path={`deleted-products`}
+                  element={<DeletedProductsPage />}
+                />
 
                 <Route path="formats">
                   <Route index element={<ProductFormatsPage />} />
