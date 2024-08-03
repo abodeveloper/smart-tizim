@@ -498,6 +498,21 @@ const TradeForm = ({
                     (item) => item.id === currentValue
                   );
 
+                  const count = parseFloat(
+                    get(watch(`products.${index}`), "count", 0)
+                  );
+                  const partSize = parseFloat(
+                    get(watch(`products.${index}`), "part_size", 1)
+                  );
+                  const width = parseFloat(
+                    get(watch(`products.${index}`), "width", 1)
+                  );
+                  const height = parseFloat(
+                    get(watch(`products.${index}`), "width", 1)
+                  );
+
+                  const productTotalCount = count * partSize * width * height;
+
                   return (
                     <>
                       <Row gutter={[20, 20]}>
@@ -692,6 +707,17 @@ const TradeForm = ({
                                         "current_total_count",
                                         ""
                                       ),
+                                      get(currentProduct, "format.name", "")
+                                    )}
+                                  </Form.Item>
+                                </Col>
+                              )}
+
+                              {currentValue && (
+                                <Col xs={24} md={6}>
+                                  <Form.Item label={t("Tanlangan miqdor")}>
+                                    {NumberToThousandFormat(
+                                      productTotalCount,
                                       get(currentProduct, "format.name", "")
                                     )}
                                   </Form.Item>
