@@ -8,9 +8,10 @@ import {
 } from "@/services/api/requests/products.requests";
 import {
   NumberToThousandFormat,
+  formatTimeForUI,
   handleSuccessNotification,
 } from "@/utils/helpers.jsx";
-import { CheckSquareOutlined, DeleteFilled } from "@ant-design/icons";
+import { DeleteFilled } from "@ant-design/icons";
 import { RiCopyleftFill, RiListSettingsFill } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
@@ -130,6 +131,22 @@ export const useDeleteProductColumns = (
     //   filteredValue: filters.format_id || null,
     //   filterSearch: true,
     // },
+    {
+      title: t("Sana"),
+      dataIndex: "deleted_at",
+      key: "deleted_at",
+      render: (value) => {
+        return <>{formatTimeForUI(value)}</>;
+      },
+    },
+    {
+      title: t("O'chirish kuni"),
+      dataIndex: "deleted_range_day",
+      key: "deleted_range_day",
+      render: (value) => {
+        return <>{NumberToThousandFormat(value, t("kun"))}</>;
+      },
+    },
     {
       title: <RiListSettingsFill size={15} />,
       dataIndex: "id",
