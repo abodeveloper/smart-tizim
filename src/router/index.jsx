@@ -160,6 +160,23 @@ const UpdateFinanceTransactionsPage = lazy(() =>
   import("@/pages/finance/finance-transactions/UpdateFinanceTransactionsPage")
 );
 
+//Finance outcomes
+const FinanceOutcomesPage = lazy(() =>
+  import("@/pages/finance/finance-outcome/FinanceOutcomesPage")
+);
+const CreateFinanceOutcomesPage = lazy(() =>
+  import("@/pages/finance/finance-outcome/CreateFinanceOutcomesPage")
+);
+const UpdateFinanceOutcomesPage = lazy(() =>
+  import("@/pages/finance/finance-outcome/FinanceOutcomesPage")
+);
+// const CreateFinanceTransactionsPage = lazy(() =>
+//   import("@/pages/finance/finance-transactions/CreateFinanceTransactionsPage")
+// );
+// const UpdateFinanceTransactionsPage = lazy(() =>
+//   import("@/pages/finance/finance-transactions/UpdateFinanceTransactionsPage")
+// );
+
 // Settings
 const DeleteBasketPage = lazy(() =>
   import("@/pages/settings/delete-basket/DeleteBasketPage")
@@ -317,6 +334,18 @@ const Router = () => {
 
               <Route path="finance">
                 <Route index element={<Navigate to="finance-outcomes" />} />
+
+                <Route path="finance-outcomes">
+                  <Route index element={<FinanceOutcomesPage />} />
+                  <Route
+                    path={`create`}
+                    element={<CreateFinanceOutcomesPage />}
+                  />
+                  <Route
+                    path={`update/:id/`}
+                    element={<UpdateFinanceOutcomesPage />}
+                  />
+                </Route>
 
                 <Route path="finance-transactions">
                   <Route index element={<FinanceTransactionsPage />} />

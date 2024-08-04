@@ -1,35 +1,35 @@
 import request from "../request";
 
-function httpGetAllFinanceTrasactions() {
-  return request.get(`/api/all_categories/`);
+function httpGetAllFinanceTrasanctions() {
+  return request.get(`/api/all_transactions/`);
 }
 
 function httpGetFinanceTransactions(page, page_size, filters) {
   return request.get(
-    `/api/categories/?page=${page}&page_size=${page_size}${
+    `/api/transactions/?page=${page}&page_size=${page_size}${
       filters && `&${filters}`
     }`
   );
 }
 
 function httpGetFinanceTransactionOne(id) {
-  return request.get(`/api/categories/${id}/`);
+  return request.get(`/api/transactions/${id}/`);
 }
 
 function httpPostFinanceTransaction(data) {
-  return request.post(`/api/categories/`, data);
+  return request.post(`/api/transactions/`, data);
 }
 
 function httpUpdateFinanceTransaction({ id, data }) {
-  return request.put(`/api/categories/${id}/`, data);
+  return request.put(`/api/transactions/${id}/`, data);
 }
 
 function httpDeleteFinanceTransaction(id) {
-  return request.delete(`/api/categories/${id}/`);
+  return request.delete(`/api/transactions/${id}/`);
 }
 
 export {
-  httpGetAllFinanceTrasactions,
+  httpGetAllFinanceTrasanctions,
   httpPostFinanceTransaction,
   httpUpdateFinanceTransaction,
   httpDeleteFinanceTransaction,

@@ -180,7 +180,7 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       children: [
         {
           title: "Chiqim",
-          path: "/finance/finance-outcome",
+          path: "/finance/finance-outcomes",
           icon: <RiExchange2Fill />,
         },
         {
