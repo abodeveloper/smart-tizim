@@ -40,7 +40,26 @@ function httpSpecialClient(data) {
   return request.post(`/api/special_clients/`, data);
 }
 
+function httpDeleteBasketClient(id) {
+  return request.delete(`/api/clients/${id}/permanent_delete/`);
+}
+
+function httpGetDeletedClients(page, page_size, filters) {
+  return request.get(
+    `/api/clients/deleted/?page=${page}&page_size=${page_size}${
+      filters && `&${filters}`
+    }`
+  );
+}
+
+function httpRestoreClient(id) {
+  return request.post(`/api/clients/${id}/restore/`);
+}
+
 export {
+  httpDeleteBasketClient,
+  httpGetDeletedClients,
+  httpRestoreClient,
   httpGetAllClients,
   httpGetClients,
   httpDeleteClient,

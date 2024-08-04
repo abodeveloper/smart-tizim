@@ -12,6 +12,7 @@ import {
   RiDatabase2Fill,
   RiDeleteBinFill,
   RiDraftFill,
+  RiExchange2Fill,
   RiGroupFill,
   RiHandCoinFill,
   RiHomeOfficeFill,
@@ -24,6 +25,7 @@ import {
   RiShoppingCartFill,
   RiStackFill,
   RiTeamFill,
+  RiTriangleFill,
   RiUserSettingsFill,
   RiUserStarFill,
   RiWaterFlashFill,
@@ -177,19 +179,14 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       icon: <RiBankFill />,
       children: [
         {
-          title: "Kirim",
-          path: "/payments/kirim",
-          icon: <RiGroupFill />,
-        },
-        {
           title: "Chiqim",
-          path: "/payments/chiqim",
-          icon: <RiGroupFill />,
+          path: "/finance/finance-outcome",
+          icon: <RiExchange2Fill />,
         },
         {
           title: "Tranzaktsiya",
-          path: "/payments/tranzaktsiya",
-          icon: <RiGroupFill />,
+          path: "/finance/finance-transactions",
+          icon: <RiTriangleFill />,
         },
       ],
     },
@@ -220,7 +217,7 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       ],
     },
     {
-      label: "BOSHQA",
+      label: "SOZLAMALAR",
       icon: <RiSettings6Fill />,
       children: [
         {

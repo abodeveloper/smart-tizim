@@ -149,6 +149,17 @@ const UpdateProductFormatsPage = lazy(() =>
   import("@/pages/products/product-formats/UpdateProductFormatsPage")
 );
 
+//Finance transactions
+const FinanceTransactionsPage = lazy(() =>
+  import("@/pages/finance/finance-transactions/FinanceTransactionsPage")
+);
+const CreateFinanceTransactionsPage = lazy(() =>
+  import("@/pages/finance/finance-transactions/CreateFinanceTransactionsPage")
+);
+const UpdateFinanceTransactionsPage = lazy(() =>
+  import("@/pages/finance/finance-transactions/UpdateFinanceTransactionsPage")
+);
+
 // Settings
 const DeleteBasketPage = lazy(() =>
   import("@/pages/settings/delete-basket/DeleteBasketPage")
@@ -302,6 +313,22 @@ const Router = () => {
                 </Route>
 
                 <Route path={"*"} element={<NotFoundPage />} />
+              </Route>
+
+              <Route path="finance">
+                <Route index element={<Navigate to="finance-outcomes" />} />
+
+                <Route path="finance-transactions">
+                  <Route index element={<FinanceTransactionsPage />} />
+                  <Route
+                    path={`create`}
+                    element={<CreateFinanceTransactionsPage />}
+                  />
+                  <Route
+                    path={`update/:id/`}
+                    element={<UpdateFinanceTransactionsPage />}
+                  />
+                </Route>
               </Route>
 
               <Route path="settings">
