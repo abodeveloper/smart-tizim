@@ -2,9 +2,7 @@ import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picke
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
 import CustomSwitch from "@/components/atoms/form-elements/custom-switch/CustomSwitch";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
-import { prepareAddPaymentStorageProductDto } from "@/services/api/prepare-data/storage-products";
 import { prepareAddPaymentSupplierDto } from "@/services/api/prepare-data/suppliers";
-import { httpAddPaymentStorageProduct } from "@/services/api/requests/storage-products.requests";
 import { httpAddPaymentSupplier } from "@/services/api/requests/suppliers.requests";
 import {
   NumberToThousandFormat,

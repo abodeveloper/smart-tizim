@@ -36,21 +36,31 @@ function httpDeleteProduct(id) {
   return request.delete(`/api/products/${id}/`);
 }
 
+function httpDeleteBasketProduct(id) {
+  return request.delete(`/api/products/${id}/permanent_delete/`);
+}
+
 function httpGetDeletedProducts(page, page_size, filters) {
   return request.get(
-    `/api/deleted-product/?page=${page}&page_size=${page_size}${
+    `/api/products/deleted/?page=${page}&page_size=${page_size}${
       filters && `&${filters}`
     }`
   );
 }
 
+function httpRestoreProduct(id) {
+  return request.post(`/api/products/${id}/restore/`);
+}
+
 export {
+  httpDeleteBasketProduct,
+  httpDeleteProduct,
   httpGetAllProducts,
-  httpGetProducts,
+  httpGetDeletedProducts,
   httpGetProductOne,
+  httpGetProducts,
   httpImportProducts,
   httpPostProduct,
+  httpRestoreProduct,
   httpUpdateProduct,
-  httpDeleteProduct,
-  httpGetDeletedProducts,
 };

@@ -2,20 +2,28 @@ import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/Cust
 import useProductCategories from "@/hooks/api/useProductCategories";
 import useProductFormats from "@/hooks/api/useProductFormats";
 import useProductTypes from "@/hooks/useProductTypes";
-import { httpDeleteProduct } from "@/services/api/requests/products.requests";
+import {
+  httpDeleteBasketProduct,
+  httpRestoreProduct,
+} from "@/services/api/requests/products.requests";
 import {
   NumberToThousandFormat,
   handleSuccessNotification,
 } from "@/utils/helpers.jsx";
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
-import { RiListSettingsFill } from "@remixicon/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CheckSquareOutlined, DeleteFilled } from "@ant-design/icons";
+import { RiCopyleftFill, RiListSettingsFill } from "@remixicon/react";
+import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
 import { get } from "lodash";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-export const useDeletedProductColumns = (pagination, filters, setFilters) => {
+export const useDeleteProductColumns = (
+  pagination,
+  filters,
+  setFilters,
+  handleRefetch
+) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -23,22 +31,11 @@ export const useDeletedProductColumns = (pagination, filters, setFilters) => {
   const { productCategoriesOptions } = useProductCategories();
   const productTypes = useProductTypes();
 
-  const queryClient = useQueryClient();
-
   const deleteMutate = useMutation({
-    mutationFn: httpDeleteProduct,
+    mutationFn: httpDeleteBasketProduct,
     onSuccess: () => {
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
-      queryClient.invalidateQueries({
-        queryKey: [
-          "products",
-          {
-            page: pagination.current,
-            pageSize: pagination.pageSize,
-            filters: filters,
-          },
-        ],
-      });
+      handleRefetch();
     },
     onError: (error) => {
       console.log(error);
@@ -47,6 +44,21 @@ export const useDeletedProductColumns = (pagination, filters, setFilters) => {
 
   const handleDelete = (id) => {
     deleteMutate.mutate(id);
+  };
+
+  const restoreMutate = useMutation({
+    mutationFn: httpRestoreProduct,
+    onSuccess: () => {
+      handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
+      handleRefetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleRestore = (id) => {
+    restoreMutate.mutate(id);
   };
 
   return [
@@ -100,24 +112,24 @@ export const useDeletedProductColumns = (pagination, filters, setFilters) => {
         }
       },
     },
-    {
-      title: t("Omboragi joriy miqdori"),
-      dataIndex: "current_total_count",
-      key: "format_id",
-      render: (current_total_count, item) => {
-        return (
-          <>
-            {NumberToThousandFormat(
-              current_total_count,
-              get(item, "format.name", "")
-            )}
-          </>
-        );
-      },
-      filters: [...productFormatsOptions],
-      filteredValue: filters.format_id || null,
-      filterSearch: true,
-    },
+    // {
+    //   title: t("Omboragi joriy miqdori"),
+    //   dataIndex: "current_total_count",
+    //   key: "format_id",
+    //   render: (current_total_count, item) => {
+    //     return (
+    //       <>
+    //         {NumberToThousandFormat(
+    //           current_total_count,
+    //           get(item, "format.name", "")
+    //         )}
+    //       </>
+    //     );
+    //   },
+    //   filters: [...productFormatsOptions],
+    //   filteredValue: filters.format_id || null,
+    //   filterSearch: true,
+    // },
     {
       title: <RiListSettingsFill size={15} />,
       dataIndex: "id",
@@ -126,9 +138,9 @@ export const useDeletedProductColumns = (pagination, filters, setFilters) => {
       width: 100,
       render: (id) => (
         <Flex align="center" justify="space-between" gap={"middle"}>
-          <Button
-            onClick={() => navigate(`/products/products/update/${id}`)}
-            icon={<EditFilled />}
+          <CustomModalConfirm
+            trigger={<Button type="primary" icon={<RiCopyleftFill />} />}
+            onOk={() => handleRestore(id)}
           />
           <CustomModalConfirm
             trigger={<Button danger icon={<DeleteFilled />} />}

@@ -10,6 +10,7 @@ import {
   RiDashboard3Fill,
   RiDashboardFill,
   RiDatabase2Fill,
+  RiDeleteBinFill,
   RiDraftFill,
   RiGroupFill,
   RiHandCoinFill,
@@ -127,11 +128,6 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
           path: "/products/formats",
           icon: <RiShapesFill />,
         },
-        {
-          title: "O'chirilgan mahsulotlar",
-          path: "/products/deleted-products",
-          icon: <RiStackFill />,
-        },
       ],
     },
     {
@@ -227,6 +223,11 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
       label: "BOSHQA",
       icon: <RiSettings6Fill />,
       children: [
+        {
+          title: "O'chirilgan",
+          path: "/settings/delete-basket",
+          icon: <RiDeleteBinFill />,
+        },
         {
           title: "Sozlamalar",
           path: "/admin/settings",

@@ -97,40 +97,23 @@ export const useSpecialClientColumns = (
     },
     {
       title: t("Holati"),
-      dataIndex: "is_active",
-      key: "is_active",
+      dataIndex: "status",
+      key: "status",
       filters: [
-        { text: t("Aktiv"), value: 1 },
-        { text: "Aktiv emas", value: 0 },
+        { text: t("To'langan"), value: "To'langan" },
+        { text: "Qarzdorlik", value: "Qarzdorlik" },
       ],
-      filteredValue: filters.is_active || null,
-      render: (is_active) => {
-        switch (is_active) {
-          case true:
-            return <Tag color={"green"}>{t("Aktiv")}</Tag>;
-          case false:
-            return <Tag color={"red"}>{t("Aktiv emas")}</Tag>;
+      filteredValue: filters.status || null,
+      render: (status) => {
+        switch (status) {
+          case "To'langan":
+            return <Tag color={"green"}>{t("To'langan")}</Tag>;
+          case "Qarzdorlik":
+            return <Tag color={"red"}>{t("Qarzdorlik")}</Tag>;
         }
       },
     },
-    // {
-    //   title: t("Maxsus mijoz"),
-    //   dataIndex: "is_special",
-    //   key: "is_special",
-    //   filters: [
-    //     { text: t("Maxsus mijoz"), value: true },
-    //     { text: "Maxsus emas", value: false },
-    //   ],
-    //   filteredValue: filters.is_special || null,
-    //   render: (is_special) => {
-    //     switch (is_special) {
-    //       case true:
-    //         return <Tag color={"green"}>{t("Maxsus mijoz")}</Tag>;
-    //       case false:
-    //         return <Tag color={"red"}>{t("Maxsus emas")}</Tag>;
-    //     }
-    //   },
-    // },
+
     {
       title: t("Qo'shilgan vaqti"),
       dataIndex: "added",

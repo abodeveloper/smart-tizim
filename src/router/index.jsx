@@ -123,9 +123,6 @@ const CreateProductsPage = lazy(() =>
 const UpdateProductsPage = lazy(() =>
   import("@/pages/products/products/UpdateProductsPage")
 );
-const DeletedProductsPage = lazy(() =>
-  import("@/pages/products/deleted-products/DeletedProductsPage")
-);
 
 //Product category
 const ProductCategoriesPage = lazy(() =>
@@ -150,6 +147,11 @@ const CreateProductFormatsPage = lazy(() =>
 );
 const UpdateProductFormatsPage = lazy(() =>
   import("@/pages/products/product-formats/UpdateProductFormatsPage")
+);
+
+// Settings
+const DeleteBasketPage = lazy(() =>
+  import("@/pages/settings/delete-basket/DeleteBasketPage")
 );
 
 // Not found page
@@ -226,11 +228,6 @@ const Router = () => {
                   />
                 </Route>
 
-                <Route
-                  path={`deleted-products`}
-                  element={<DeletedProductsPage />}
-                />
-
                 <Route path="formats">
                   <Route index element={<ProductFormatsPage />} />
                   <Route
@@ -305,6 +302,12 @@ const Router = () => {
                 </Route>
 
                 <Route path={"*"} element={<NotFoundPage />} />
+              </Route>
+
+              <Route path="settings">
+                <Route index element={<Navigate to="delete-basket" />} />
+
+                <Route path={`delete-basket`} element={<DeleteBasketPage />} />
               </Route>
             </Route>
           </Routes>
