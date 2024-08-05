@@ -2,6 +2,7 @@ import CustomModalConfirm from "@/components/molecules/custom-modal-confirm/Cust
 import useFinanceTransactions from "@/hooks/api/useFinanceTransactions";
 import { httpDeleteClient } from "@/services/api/requests/clients.requests";
 import {
+  NumberToThousandFormat,
   formatTimeForUI,
   handleSuccessNotification,
 } from "@/utils/helpers.jsx";
@@ -9,6 +10,7 @@ import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { RiListSettingsFill } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
+import { get } from "lodash";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
