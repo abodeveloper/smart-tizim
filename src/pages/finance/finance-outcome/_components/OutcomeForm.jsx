@@ -62,7 +62,13 @@ const OutcomeForm = ({
     watch,
     ...rest
   } = useForm({
-    defaultValues: { date: dayjs(), ...defaultValues },
+    defaultValues: {
+      date: dayjs(),
+      cash: 0,
+      card: 0,
+      other: 0,
+      ...defaultValues,
+    },
     resolver,
   });
 

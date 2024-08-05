@@ -168,7 +168,7 @@ const CreateFinanceOutcomesPage = lazy(() =>
   import("@/pages/finance/finance-outcome/CreateFinanceOutcomesPage")
 );
 const UpdateFinanceOutcomesPage = lazy(() =>
-  import("@/pages/finance/finance-outcome/FinanceOutcomesPage")
+  import("@/pages/finance/finance-outcome/UpdateFinanceOutcomesPage")
 );
 // const CreateFinanceTransactionsPage = lazy(() =>
 //   import("@/pages/finance/finance-transactions/CreateFinanceTransactionsPage")
