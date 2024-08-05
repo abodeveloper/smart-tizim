@@ -112,6 +112,7 @@ const CustomDataTable = ({
                 }
               : column
           )}
+          // columns={columns}
           rowKey={(record) => record.id}
           dataSource={data}
           pagination={

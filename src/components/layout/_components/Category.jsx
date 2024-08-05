@@ -3,7 +3,13 @@ import { Tooltip } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import * as S from "../Layout.styles";
 
-const Category = ({ item, openSidebar, open, handleToggle }) => {
+const Category = ({
+  item,
+  openSidebar,
+  open,
+  handleToggle,
+  setOpenSidebar,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -31,13 +37,26 @@ const Category = ({ item, openSidebar, open, handleToggle }) => {
                 <div
                   className="menu-item-link"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigate(menu.path)}
+                  onClick={() => {
+                    if (window.innerWidth < 567) {
+                      setOpenSidebar(false);
+                    }
+                    navigate(menu.path);
+                  }}
                 >
                   <div className="icon">{menu.icon}</div>
                   {openSidebar && <div className="title">{menu.title}</div>}
                 </div>
               ) : (
-                <NavLink className="menu-item-link" to={menu.path}>
+                <NavLink
+                  className="menu-item-link"
+                  to={menu.path}
+                  onClick={() => {
+                    if (window.innerWidth < 567) {
+                      setOpenSidebar(false);
+                    }
+                  }}
+                >
                   <div className="icon">{menu.icon}</div>
                   {openSidebar && <div className="title">{menu.title}</div>}
                 </NavLink>

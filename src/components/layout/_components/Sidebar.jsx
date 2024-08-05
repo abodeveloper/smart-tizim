@@ -35,7 +35,7 @@ import { useLocation } from "react-router-dom";
 import * as S from "../Layout.styles";
 import Category from "./Category";
 
-const Sidebar = ({ openSidebar, toggleSidebar }) => {
+const Sidebar = ({ openSidebar, toggleSidebar, setOpenSidebar }) => {
   const location = useLocation();
 
   const [MENUS, setMenus] = useState([
@@ -271,6 +271,7 @@ const Sidebar = ({ openSidebar, toggleSidebar }) => {
               key={index}
               open={item.isOpen}
               handleToggle={handleCategoryClick}
+              setOpenSidebar={setOpenSidebar}
             />
           ))}
         </div>

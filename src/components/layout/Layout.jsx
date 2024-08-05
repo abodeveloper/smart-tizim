@@ -27,7 +27,11 @@ const DashboardLayout = () => {
 
   return (
     <S.Layout openSidebar={openSidebar}>
-      <Sidebar openSidebar={openSidebar} toggleSidebar={toggleSidebar} />
+      <Sidebar
+        openSidebar={openSidebar}
+        toggleSidebar={toggleSidebar}
+        setOpenSidebar={setOpenSidebar}
+      />
       <div className="content-box">
         <Header openSidebar={openSidebar} toggleSidebar={toggleSidebar} />
         <Content />
