@@ -547,7 +547,7 @@ const TradeForm = ({
                     get(watch(`products.${index}`), "width", 1)
                   );
                   const height = parseFloat(
-                    get(watch(`products.${index}`), "width", 1)
+                    get(watch(`products.${index}`), "height", 1)
                   );
 
                   const productTotalCount = count * partSize * width * height;
