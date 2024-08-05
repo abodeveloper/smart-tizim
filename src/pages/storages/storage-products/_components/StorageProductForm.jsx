@@ -260,7 +260,7 @@ const StorageProductForm = ({
     const count = parseFloat(get(item, "count", 0));
     const productTotal = price * count;
 
-    return sum + parseFloat(productTotal.toFixed(2)); 
+    return sum + parseFloat(productTotal.toFixed(2));
   }, 0);
 
   const totalProductPrice = products?.reduce((sum, item) => {
@@ -493,6 +493,37 @@ const StorageProductForm = ({
                       product.id === watch(`products.${index}.product`)
                   )?.product_type;
 
+                  const selectedProducts = watch("products").map(
+                    (item) => item.product
+                  );
+
+                  const currentValue = watch(`products.${index}.product`);
+
+                  const filteredProductOptions = productsOptions.filter(
+                    (option) =>
+                      !selectedProducts.includes(option.value) ||
+                      option.value === currentValue
+                  );
+
+                  const currentProduct = productsData.find(
+                    (item) => item.id === currentValue
+                  );
+
+                  const count = parseFloat(
+                    get(watch(`products.${index}`), "count", 0)
+                  );
+                  const partSize = parseFloat(
+                    get(watch(`products.${index}`), "part_size", 1)
+                  );
+                  const width = parseFloat(
+                    get(watch(`products.${index}`), "width", 1)
+                  );
+                  const height = parseFloat(
+                    get(watch(`products.${index}`), "width", 1)
+                  );
+
+                  const productTotalCount = count * partSize * width * height;
+
                   return (
                     <>
                       <Row gutter={[20, 20]}>
@@ -516,7 +547,7 @@ const StorageProductForm = ({
                                     render={({ field }) => (
                                       <CustomSelect
                                         {...field}
-                                        options={productsOptions}
+                                        options={filteredProductOptions}
                                         onChange={(value) => {
                                           field.onChange(value);
                                           const selectedProduct =
@@ -701,6 +732,25 @@ const StorageProductForm = ({
                                     </Form.Item>
                                   </Col>
                                 </>
+                              )}
+
+                              {currentValue && (
+                                <Col xs={24} md={6}>
+                                  <Form.Item
+                                    label={t("Umumiy miqdor")}
+                                    {...getValidationStatusForArray(
+                                      errors,
+                                      "products",
+                                      index,
+                                      "total_count"
+                                    )}
+                                  >
+                                    {NumberToThousandFormat(
+                                      productTotalCount,
+                                      get(currentProduct, "format.name", "")
+                                    )}
+                                  </Form.Item>
+                                </Col>
                               )}
                             </Row>
                           </Card>
