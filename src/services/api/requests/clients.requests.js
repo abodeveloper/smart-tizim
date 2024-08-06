@@ -32,6 +32,10 @@ function httpUpdateClient({ id, data }) {
   return request.put(`/api/clients/${id}/`, data);
 }
 
+function httpAddPaymentClient(data) {
+  return request.post(`/api/trade_payments/`, data);
+}
+
 function httpDeleteClient(id) {
   return request.delete(`/api/clients/${id}/`);
 }
@@ -57,6 +61,7 @@ function httpRestoreClient(id) {
 }
 
 export {
+  httpAddPaymentClient,
   httpDeleteBasketClient,
   httpGetDeletedClients,
   httpRestoreClient,

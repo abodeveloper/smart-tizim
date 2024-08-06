@@ -2,8 +2,8 @@ import CustomDatePicker from "@/components/atoms/form-elements/custom-date-picke
 import CustomInputNumber from "@/components/atoms/form-elements/custom-input-number/CustomInputNumber";
 import CustomSwitch from "@/components/atoms/form-elements/custom-switch/CustomSwitch";
 import TitleAndIconText from "@/components/molecules/title-and-icon-text/TitleAndIconText";
-import { prepareAddPaymentSupplierDto } from "@/services/api/prepare-data/suppliers";
-import { httpAddPaymentSupplier } from "@/services/api/requests/suppliers.requests";
+import { prepareAddPaymentClientDto } from "@/services/api/prepare-data/clients";
+import { httpAddPaymentClient } from "@/services/api/requests/clients.requests";
 import {
   NumberToThousandFormat,
   getValidationStatus,
@@ -107,7 +107,7 @@ const AddPaymentForClient = ({ summa, refetch, item }) => {
   });
 
   const { isLoading, mutateAsync } = useMutation({
-    mutationFn: httpAddPaymentSupplier,
+    mutationFn: httpAddPaymentClient,
     onSuccess: () => {
       handleSuccessNotification(t("Muvaffaqiyatli bajarildi !"));
       handleCancel();
@@ -121,9 +121,9 @@ const AddPaymentForClient = ({ summa, refetch, item }) => {
 
   const onSubmit = (data) => {
     mutateAsync(
-      prepareAddPaymentSupplierDto({
+      prepareAddPaymentClientDto({
         ...data,
-        supplier: get(item, "id", ""),
+        client: get(item, "id", ""),
       })
     );
   };

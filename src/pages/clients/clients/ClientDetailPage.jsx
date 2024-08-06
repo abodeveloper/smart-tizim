@@ -52,6 +52,7 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useDetailBreadcrumbItems } from "./breadcrumbs/useDetailBreadcrumb";
+import AddPaymentForClient from "./_components/add-payment-for-client/AddPaymentForClient";
 
 const ClientDetailPage = () => {
   const { id } = useParams();
@@ -170,7 +171,7 @@ const ClientDetailPage = () => {
                                 icon={<RiColorFilterFill />}
                               />
                               {get(data, "status", "") === "Qarzdorlik" && (
-                                <AddPaymentForTrade
+                                <AddPaymentForClient
                                   summa={get(data, "debt_balance", "")}
                                   refetch={refetch}
                                   item={data}
@@ -228,7 +229,7 @@ const ClientDetailPage = () => {
                                 icon={<RiColorFilterFill />}
                               />
                               {get(data, "status", "") === "Qarzdorlik" && (
-                                <AddPaymentForTrade
+                                <AddPaymentForClient
                                   summa={get(data, "debt_balance", "")}
                                   refetch={refetch}
                                   item={data}

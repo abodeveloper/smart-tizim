@@ -21,3 +21,14 @@ export function prepareClientForEdit(item) {
     added: dayjs(item.added),
   };
 }
+
+
+export function prepareAddPaymentClientDto(item) {
+  return {
+    client: Number(get(item, "client", "")),
+    date: formatTimeForApi(get(item, "date", "")),
+    cash: get(item, "cash", ""),
+    card: get(item, "card", ""),
+    other: get(item, "other", ""),
+  };
+}

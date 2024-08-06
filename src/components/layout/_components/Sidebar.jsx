@@ -34,6 +34,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import * as S from "../Layout.styles";
 import Category from "./Category";
+import Logo from "@/assets/images/logo.png";
+import LogoIcon from "@/assets/images/logo-icon.png";
 
 const Sidebar = ({ openSidebar, toggleSidebar, setOpenSidebar }) => {
   const location = useLocation();
@@ -257,7 +259,13 @@ const Sidebar = ({ openSidebar, toggleSidebar, setOpenSidebar }) => {
   return (
     <S.Sidebar openSidebar={openSidebar}>
       <div className="logo-box">
-        <div className="logo">{openSidebar ? "LOGO" : "L"} </div>
+        <div className="logo">
+          {openSidebar ? (
+            <img src={Logo} style={{ width: "150px" }} />
+          ) : (
+            <img src={LogoIcon} style={{ width: "40px" }} />
+          )}{" "}
+        </div>
         <div className="mobile-open-close-btn" onClick={() => toggleSidebar()}>
           <RiArrowLeftSLine />
         </div>
