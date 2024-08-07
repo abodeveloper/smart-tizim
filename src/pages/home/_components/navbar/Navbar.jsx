@@ -29,7 +29,7 @@ const Navbar = () => {
       target: "feature",
     },
     {
-      name: t("Narxlar"),
+      name: t("Prices"),
       target: "prices",
     },
   ];
