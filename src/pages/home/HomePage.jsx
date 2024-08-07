@@ -1,18 +1,13 @@
-import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import * as S from "./HomePage.styles";
+import BusinessDirections from "./sections/business-directions/BusinessDirections";
+import Header from "./sections/header/Header";
 
 const HomePage = () => {
-  const navigate = useNavigate();
-
   return (
     <S.HomePage>
-      <Button type="primary" onClick={() => navigate("/auth/sign-in")}>
-        Sign In
-      </Button>
-      <Button type="default" onClick={() => navigate("/auth/sign-up")}>
-        Sign Up
-      </Button>
+      <Header />
+      <BusinessDirections />
     </S.HomePage>
   );
 };

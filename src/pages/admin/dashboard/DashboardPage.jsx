@@ -1,5 +1,7 @@
 import ProductsCover from "@/assets/images/products-cover.png";
-import { Button, Card, Col, Flex, Row, Steps } from "antd";
+import StorageCover from "@/assets/images/storage-cover.png";
+import TradeCover from "@/assets/images/trade-cover.png";
+import { Card, Col, Flex, Row, Steps } from "antd";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
@@ -33,7 +35,7 @@ const DashboardPage = () => {
         <Col xs={24} md={24}>
           <Card>
             <Meta
-              title={t("SMART TIZIM")}
+              title={"SMART TIZIM"}
               description={t("Ushbu dastur orqali biznesingizni boshqaring !")}
             />
           </Card>
@@ -98,7 +100,7 @@ const DashboardPage = () => {
         <Col xs={24} md={8}>
           <Card
             hoverable={true}
-            cover={<img alt="example" src={ProductsCover} />}
+            cover={<img alt="example" src={StorageCover} />}
           >
             <Meta
               title={t("Omborxona")}
@@ -116,8 +118,8 @@ const DashboardPage = () => {
                       items={[
                         {
                           title: (
-                            <NavLink to={"/products/category"}>
-                              {t("Mahsulot kategoriyalarini qo'shing")}
+                            <NavLink to={"/storages/storages"}>
+                              {t("Omborxona qo'shing")}
                             </NavLink>
                           ),
                           description: t(
@@ -126,8 +128,8 @@ const DashboardPage = () => {
                         },
                         {
                           title: (
-                            <NavLink to={"/products/formats"}>
-                              {t("Mahsulot formatlarini qo'shing")}
+                            <NavLink to={"/storages/suppliers"}>
+                              {t("Ta'minotchi qo'shing")}
                             </NavLink>
                           ),
                           description: t(
@@ -136,8 +138,8 @@ const DashboardPage = () => {
                         },
                         {
                           title: (
-                            <NavLink to={"/products/formats"}>
-                              {t("Mahsulotlaringizni qo'shing")}
+                            <NavLink to={"/storages/storage-products"}>
+                              {t("Omborga mahsulot qo'shing")}
                             </NavLink>
                           ),
                           description: t(
@@ -153,10 +155,7 @@ const DashboardPage = () => {
           </Card>
         </Col>
         <Col xs={24} md={8}>
-          <Card
-            hoverable={true}
-            cover={<img alt="example" src={ProductsCover} />}
-          >
+          <Card hoverable={true} cover={<img alt="example" src={TradeCover} />}>
             <Meta
               title={t("Savdolar")}
               description={
@@ -173,7 +172,7 @@ const DashboardPage = () => {
                       items={[
                         {
                           title: (
-                            <NavLink to={"/products/category"}>
+                            <NavLink to={"/clients/clients"}>
                               {t("Mijozlaringizni qo'shing")}
                             </NavLink>
                           ),
@@ -183,12 +182,12 @@ const DashboardPage = () => {
                         },
                         {
                           title: (
-                            <NavLink to={"/products/formats"}>
-                              {t("Mahsulot formatlarini qo'shing")}
+                            <NavLink to={"/trades/trade-create"}>
+                              {t("Savdolaringizni qo'shing")}
                             </NavLink>
                           ),
                           description: t(
-                            "Mahsulotlaringizning turli o'lchov birliklarini tizimga kiriting !"
+                            "Siz endi savdolaringizni tizimga kiritishingiz mumkin !"
                           ),
                         },
                       ]}

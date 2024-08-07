@@ -1,8 +1,8 @@
 const lightTheme = {
   colors: {
     // primaryColor: "#6691E7",
-    primaryColor: "#2065D1",
-    // primaryColor: "#00C336",
+    //primaryColor: "#2065D1",
+    primaryColor: "#6582FD",
 
     themeIconColor: "#000",
 

@@ -60,7 +60,9 @@ const SignInPage = () => {
         <Row gutter={[0, 24]}>
           <Col span={24}>
             <Flex align="center" justify="center">
-              <Title className="logo-box">LOGO</Title>
+              <Title className="logo-box" onClick={() => navigate("/")}>
+                LOGO
+              </Title>
             </Flex>
           </Col>
           <Col span={24}>
