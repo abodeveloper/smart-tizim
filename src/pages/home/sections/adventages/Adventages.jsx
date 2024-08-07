@@ -80,7 +80,7 @@ const Adventages = () => {
   ];
 
   return (
-    <Styled name="adventages" style={{ overflow: "hidden" }}>
+    <Styled name="suggestions" style={{ overflow: "hidden" }}>
       <>
         <Container>
           <div className="title">{t("Bizning takliflar")}</div>

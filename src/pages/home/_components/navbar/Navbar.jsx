@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
 import { NavbarStyled } from "./navbar.styled";
 import HamburgerIcon from "../hamburger-icon/HamburgerIcon";
+import Logo from "@/assets/images/logo.png";
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -22,14 +23,17 @@ const Navbar = () => {
       target: "home",
     },
     {
-      name: t("Kim uchun ?"),
-      target: "for-whom",
+      name: t("Sohalar"),
+      target: "industries",
     },
     {
-      name: t("Xususiyatlar"),
-      target: "adventages",
+      name: t("Takliflar"),
+      target: "suggestions",
     },
-
+    {
+      name: t("Narxlar"),
+      target: "prices",
+    },
     {
       name: t("Aloqa"),
       target: "contacts",
@@ -94,13 +98,14 @@ const Navbar = () => {
         <Container>
           <div className="content">
             <div className="logo-box">
-              {/* <img
-              onClick={() => scroll.scrollToTop()}
-              className="desctop-logo"
-              src={Logo}
-              alt=""
-            /> */}
-              LOGO
+              <img
+                onClick={() => scroll.scrollToTop()}
+                className="desctop-logo"
+                src={Logo}
+                style={{ width: "150px" }}
+                alt=""
+              />
+              {/* LOGO */}
             </div>
             <ul>
               {menus.map((menu, index) => (

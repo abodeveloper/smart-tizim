@@ -135,7 +135,7 @@ export const NavbarStyled = styled.div`
           margin: 15px 0;
           a {
             color: var(--Text-Gray-900, #18191f);
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 500;
             line-height: 24px; /* 150% */
             cursor: pointer;

@@ -17,20 +17,24 @@ const Footer = () => {
 
   const menus = [
     {
-      name: t("Home"),
+      name: t("Bosh sahifa"),
       target: "home",
     },
     {
-      name: t("Servives"),
-      target: "services",
+      name: t("Sohalar"),
+      target: "industries",
     },
     {
-      name: t("Feature"),
-      target: "feature",
+      name: t("Takliflar"),
+      target: "suggestions",
     },
     {
-      name: t("Prices"),
+      name: t("Narxlar"),
       target: "prices",
+    },
+    {
+      name: t("Aloqa"),
+      target: "contacts",
     },
   ];
 
@@ -43,7 +47,7 @@ const Footer = () => {
               <div className="box">
                 <div className="title">LOGO</div>
                 <div className="commit">
-                  Simple innate summer fat appear basket his desire joy.
+                  Smart tizim - aqlli tizim platformasi.
                 </div>
                 <div className="contact-box">
                   <a href="#" target="_blank">
@@ -63,7 +67,7 @@ const Footer = () => {
             </Col>
             <Col xs={24} md={8}>
               <div className="box">
-                <div className="title">Menu</div>
+                <div className="title">{t("Menyu")}</div>
                 <ul>
                   {menus.map((menu, index) => (
                     <li key={index}>
@@ -88,7 +92,7 @@ const Footer = () => {
             </Col>
             <Col xs={24} md={8}>
               <div className="box">
-                <div className="title">Contacts</div>
+                <div className="title">{t("Kontaktlar")}</div>
                 <ul>
                   <li>
                     <div className="phone">
