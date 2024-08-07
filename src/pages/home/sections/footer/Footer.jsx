@@ -1,8 +1,3 @@
-import { Container } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { Element, Link } from "react-scroll";
-import { Styled } from "./footer.styles";
-import { Col, Row } from "antd";
 import {
   RiFacebookBoxFill,
   RiInstagramFill,
@@ -11,6 +6,11 @@ import {
   RiPhoneFill,
   RiTelegramFill,
 } from "@remixicon/react";
+import { Col, Row } from "antd";
+import { Container } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-scroll";
+import { Styled } from "./footer.styles";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -35,8 +35,8 @@ const Footer = () => {
   ];
 
   return (
-    <Styled>
-      <Element name="footer" style={{ overflow: "hidden" }}>
+    <Styled name="contacts" style={{ overflow: "hidden" }}>
+      <>
         <Container>
           <Row gutter={[30, 30]}>
             <Col xs={24} md={8}>
@@ -109,7 +109,7 @@ const Footer = () => {
             Copyright @ SMART TIZIM 2024. All Rights Reserved.
           </div>
         </Container>
-      </Element>
+      </>
     </Styled>
   );
 };

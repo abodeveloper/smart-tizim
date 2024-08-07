@@ -1,71 +1,65 @@
-import { Element } from "react-scroll";
-import { Container } from "react-bootstrap";
-import { BusinessDirectionsStyled } from "./business-directions.styles";
 import {
+  RiBattery2ChargeFill,
   RiBuilding2Fill,
-  RiCupFill,
-  RiHeartPulseFill,
-  RiIdCardLine,
-  RiSettings6Fill,
-  RiStore3Fill,
+  RiCalendarTodoFill,
+  RiCommandLine,
+  RiDatabaseLine,
+  RiHammerFill,
+  RiTShirt2Fill,
+  RiToolsFill,
 } from "@remixicon/react";
-import { Card, Col, Row } from "antd";
+import { Col, Row } from "antd";
+import { Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { Element } from "react-scroll";
+import { BusinessDirectionsStyled } from "./business-directions.styles";
 
 const BusinessDirections = () => {
   const { t } = useTranslation();
 
   const data = [
     {
-      name: "Supermarketlar",
-      desciption: "Description",
-      icon: <RiStore3Fill size={40} />,
-    },
-    {
-      name: "Aptekalar",
-      desciption: "Description",
-      icon: <RiHeartPulseFill size={40} />,
-    },
-    {
-      name: "Parfumeriya",
-      desciption: "Description",
-      icon: <RiCupFill size={40} />,
-    },
-    {
-      name: "Santexnika",
-      desciption: "Description",
-      icon: <RiSettings6Fill size={40} />,
-    },
-    {
-      name: "Oziq-ovqat do'konlari",
-      desciption: "Description",
-      icon: <RiCupFill size={40} />,
-    },
-    {
-      name: "Kiyim do'konlari",
-      desciption: "Description",
-      icon: <RiCupFill size={40} />,
-    },
-    {
       name: "Qurilish mollari",
-      desciption: "Description",
       icon: <RiBuilding2Fill size={40} />,
     },
     {
-      name: "Har turdagi biznes",
-      desciption: "Description",
-      icon: <RiCupFill size={40} />,
+      name: "Xozmak",
+      icon: <RiHammerFill size={40} />,
+    },
+    {
+      name: "Aksessuar",
+      icon: <RiCommandLine size={40} />,
+    },
+    {
+      name: "Maishiy texnika",
+      icon: <RiDatabaseLine size={40} />,
+    },
+    {
+      name: "Santexnika",
+      icon: <RiToolsFill size={40} />,
+    },
+    {
+      name: "Kiyim-kechak",
+      icon: <RiTShirt2Fill size={40} />,
+    },
+    {
+      name: "Kanstovar",
+      icon: <RiCalendarTodoFill size={40} />,
+    },
+    {
+      name: "Elektronika",
+      icon: <RiBattery2ChargeFill size={40} />,
     },
   ];
 
   return (
-    <BusinessDirectionsStyled>
-      <Element name="home" className="header" style={{ overflow: "hidden" }}>
+    <BusinessDirectionsStyled name="for-whom" style={{ overflow: "hidden" }}>
+      <>
         <Container>
-          <div className="title">
-            {t("Manage your entire community in a single system")}
+          <div className="title">{t(" Qo'llab quvvatlaydigan sohalar")}</div>
+          <div className="desc">
+            {t("Smart tizim qaysi sohalarga mos keladi ?")}
           </div>
-          <div className="desc">{t("Who is Nextcent suitable for ?")}</div>
           <Row gutter={[20, 20]} className="cards">
             {data.map((item) => {
               return (
@@ -79,7 +73,7 @@ const BusinessDirections = () => {
             })}
           </Row>
         </Container>
-      </Element>
+      </>
     </BusinessDirectionsStyled>
   );
 };

@@ -1,16 +1,18 @@
-import { PlayCircleOutlined } from "@ant-design/icons";
+import Image from "@/assets/images/5196871.jpg";
+import { RiRegisteredFill } from "@remixicon/react";
 import { Button, Col, Row } from "antd";
 import { Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../_components/navbar/Navbar";
 import { HeaderStyled } from "./header.styles";
-import Image from "@/assets/images/4380.jpg";
 
 const Header = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
-    <HeaderStyled>
+    <HeaderStyled name="home" style={{ overflow: "hidden" }}>
       <Navbar />
       <Container>
         <div className="main">
@@ -18,21 +20,20 @@ const Header = () => {
             <Col xs={24} md={12}>
               <div className="left">
                 <h1 className="title">
-                  Experience the easier
-                  <span> way for transaction</span>
+                  <span> Smart tizim</span> - biznesning savdo, moliya,
+                  omborxona ishlarini avtomatlashtirish tizimi
                 </h1>
                 <p className="description">
-                  {t(
-                    "Quo is the most easier way for transaction with your friends and family, now matter where are you. An exceptional way for make your life one step easier"
-                  )}
+                  Biz bilan biznesingizni oson boshqaring.
                 </p>
                 <div>
                   <Button
-                    icon={<PlayCircleOutlined />}
+                    icon={<RiRegisteredFill />}
                     type="primary"
                     size="large"
+                    onClick={() => navigate("/auth/sign-up")}
                   >
-                    {t("Register")}
+                    {t("Ro'yxatdan o'tish")}
                   </Button>
                 </div>
               </div>

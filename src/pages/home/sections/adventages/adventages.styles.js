@@ -1,6 +1,7 @@
+import { Element } from "react-scroll";
 import styled from "styled-components";
 
-export const Styled = styled.div`
+export const Styled = styled(Element)`
   padding: 80px 0;
   background-color: #f5f7fa;
   .title {
@@ -42,15 +43,31 @@ export const Styled = styled.div`
         font-weight: 700;
         line-height: 36px; /* 128.571% */
         margin-top: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
       }
 
-      .card-desc {
-        color: var(--Neutral-Grey, #717171);
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 20px; /* 142.857% */
+      .info-data {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          display: flex;
+          .icon {
+            width: 10px;
+            margin-right: 25px;
+            svg {
+              color: #717171;
+            }
+          }
+          .text {
+            color: var(--Neutral-Grey, #717171);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px; /* 142.857% */
+          }
+        }
       }
     }
   }
@@ -81,6 +98,19 @@ export const Styled = styled.div`
         .card-desc {
           font-size: 10px;
           line-height: 18px;
+        }
+
+        .info-data {
+          li {
+            .icon {
+              width: 20px;
+              margin-right: 10px;
+            }
+            .text {
+              font-size: 10px;
+              line-height: 18px;
+            }
+          }
         }
       }
     }

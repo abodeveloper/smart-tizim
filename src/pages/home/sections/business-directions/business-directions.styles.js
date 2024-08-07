@@ -1,6 +1,7 @@
+import { Element } from "react-scroll";
 import styled from "styled-components";
 
-export const BusinessDirectionsStyled = styled.div`
+export const BusinessDirectionsStyled = styled(Element)`
   padding: 80px 0;
   .title {
     color: var(--Neutral-D_Grey, #4d4d4d);

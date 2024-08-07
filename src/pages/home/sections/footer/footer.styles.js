@@ -1,6 +1,7 @@
+import { Element } from "react-scroll";
 import styled from "styled-components";
 
-export const Styled = styled.div`
+export const Styled = styled(Element)`
   padding-top: 50px;
   padding-bottom: 30px;
   .box {

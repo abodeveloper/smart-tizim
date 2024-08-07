@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
 import { NavbarStyled } from "./navbar.styled";
+import HamburgerIcon from "../hamburger-icon/HamburgerIcon";
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -17,20 +18,21 @@ const Navbar = () => {
 
   const menus = [
     {
-      name: t("Home"),
+      name: t("Bosh sahifa"),
       target: "home",
     },
     {
-      name: t("Servives"),
-      target: "services",
+      name: t("Kim uchun ?"),
+      target: "for-whom",
     },
     {
-      name: t("Feature"),
-      target: "feature",
+      name: t("Xususiyatlar"),
+      target: "adventages",
     },
+
     {
-      name: t("Prices"),
-      target: "prices",
+      name: t("Aloqa"),
+      target: "contacts",
     },
   ];
 
@@ -57,9 +59,9 @@ const Navbar = () => {
 
   useEffect(() => {
     if (screenSize.width > 1440) {
-      setOffset(-85);
+      setOffset(-100);
     } else if (screenSize.width < 1440 && screenSize.width > 576) {
-      setOffset(-85);
+      setOffset(-100);
     } else {
       setOffset(-100);
     }
@@ -156,26 +158,42 @@ const Navbar = () => {
         </Container>
       </div>
 
-      {/* <div className="mobile-navbar">
-        <>
+      <div className="mobile-navbar">
+        <Container>
           <div className="content-box">
             <div className="logo-box">
-              <img
+              {/* <img
                 className="mobile-logo"
                 onClick={() => scroll.scrollToTop()}
                 width={"80px"}
                 src={Logo}
                 alt=""
-              />
+              /> */}
+              LOGO
             </div>
             <div className="right">
-              <HamburgerIcon toggleMenu={toggleMenu} menu_show={menu_show} />
+              <Flex gap={"middle"} align="center">
+                <CustomSelect
+                  size={"large"}
+                  defaultValue="lucy"
+                  style={{ width: 50 }}
+                  allowClear={false}
+                  showSearch={false}
+                  // onChange={handleChange}
+                  options={[
+                    { value: "jack", label: "UZ" },
+                    { value: "lucy", label: "RU" },
+                    { value: "Yiminghe", label: "EN" },
+                  ]}
+                />
+                <HamburgerIcon toggleMenu={toggleMenu} menu_show={menu_show} />
+              </Flex>
             </div>
           </div>
-        </>
-      </div> */}
+        </Container>
+      </div>
 
-      {/* <div className={`left-menu  ${menu_show ? "open" : "close"}`}>
+      <div className={`left-menu  ${menu_show ? "open" : "close"}`}>
         <ul>
           {menus.map((menu, index) => (
             <li key={index}>
@@ -201,7 +219,7 @@ const Navbar = () => {
             <a href="#">Оставить заявку</a>
           </li>
         </ul>
-      </div> */}
+      </div>
     </NavbarStyled>
   );
 };

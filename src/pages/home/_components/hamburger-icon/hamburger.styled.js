@@ -17,7 +17,8 @@ export const BurgerIcon = styled.div`
 
   .burger {
     display: block;
-    background: ${color};
+    /* background: ${color}; */
+    background: ${(props) => props.theme.colors.primaryColor};
     width: ${widthLine};
     height: ${heightLine};
     position: absolute;
