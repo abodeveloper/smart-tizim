@@ -114,13 +114,54 @@ export const NavbarStyled = styled.div`
     }
 
     .left-menu {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
       position: absolute;
       left: 0;
       transition: 0.2s all linear;
       height: calc(100vh - 100px);
-      background-color: green;
+      background-color: #efefef;
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+          margin: 15px 0;
+          a {
+            color: var(--Text-Gray-900, #18191f);
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 24px; /* 150% */
+            cursor: pointer;
+            position: relative;
+
+            &::after,
+            &::before {
+              content: "";
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: -5px;
+              height: 2px;
+              background-color: ${(props) => props.theme.colors.primaryColor};
+              transform: scaleX(0);
+              transform-origin: 50%;
+              transition: transform 0.3s;
+            }
+          }
+          .active {
+            text-decoration: none;
+            font-weight: bold;
+            color: ${(props) => props.theme.colors.primaryColor};
+          }
+        }
+      }
     }
 
     .left-menu.close {

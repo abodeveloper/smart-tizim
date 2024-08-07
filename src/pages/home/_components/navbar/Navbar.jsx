@@ -216,7 +216,21 @@ const Navbar = () => {
             </li>
           ))}
           <li>
-            <a href="#">Оставить заявку</a>
+            <Button
+              className="sign-in"
+              onClick={() => navigate("/auth/sign-in")}
+            >
+              {t("Kirish")}
+            </Button>
+          </li>
+          <li>
+            <Button
+              type="primary"
+              className="sign-up"
+              onClick={() => navigate("/auth/sign-up")}
+            >
+              {t("Ro'yxatdan o'tish")}
+            </Button>
           </li>
         </ul>
       </div>

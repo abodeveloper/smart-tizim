@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-const color = "#005665";
+const color = "red";
 const heightIcon = "20px";
 const widthLine = "45px";
 const heightLine = "5px";
@@ -17,8 +17,8 @@ export const BurgerIcon = styled.div`
 
   .burger {
     display: block;
-    /* background: ${color}; */
     background: ${(props) => props.theme.colors.primaryColor};
+    background-color: red;
     width: ${widthLine};
     height: ${heightLine};
     position: absolute;

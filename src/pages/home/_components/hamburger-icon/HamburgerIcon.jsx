@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const color = "#005665";
@@ -27,7 +26,7 @@ const BurgerIcon = styled(NoHighlight)`
 
   .burger {
     display: block;
-    background: ${color};
+    background: ${(props) => props.theme.colors.primaryColor};
     width: ${widthLine};
     height: ${heightLine};
     position: absolute;
