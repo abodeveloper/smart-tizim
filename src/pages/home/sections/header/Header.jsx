@@ -17,7 +17,7 @@ const Header = () => {
       <Container>
         <div className="main">
           <Row gullter={[20, 20]}>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={24}>
               <div className="left">
                 <h1 className="title">
                   <span> Smart tizim</span> - biznesning savdo, moliya,
@@ -36,11 +36,6 @@ const Header = () => {
                     {t("Ro'yxatdan o'tish")}
                   </Button>
                 </div>
-              </div>
-            </Col>
-            <Col xs={24} md={12}>
-              <div className="right">
-                <img src={Image} alt="" />
               </div>
             </Col>
           </Row>

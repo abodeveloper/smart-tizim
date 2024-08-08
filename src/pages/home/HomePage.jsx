@@ -3,6 +3,7 @@ import Adventages from "./sections/adventages/Adventages";
 import BusinessDirections from "./sections/business-directions/BusinessDirections";
 import Header from "./sections/header/Header";
 import Footer from "./sections/footer/Footer";
+import Prices from "./sections/prices/Prices";
 
 const HomePage = () => {
   return (
@@ -10,6 +11,7 @@ const HomePage = () => {
       <Header />
       <BusinessDirections />
       <Adventages />
+      <Prices />
       <Footer />
     </S.HomePage>
   );

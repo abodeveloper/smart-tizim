@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import { Element } from "react-scroll";
+import bgImage from "@/assets/images/bg.png";
 
 export const HeaderStyled = styled(Element)`
-  background-color: #f5f7fa;
+  background-image: url(${bgImage});
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
   .main {
     margin-top: 100px;
     .left {
@@ -10,12 +14,15 @@ export const HeaderStyled = styled(Element)`
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
+      padding: 0 250px;
       .title {
         color: var(--Neutral-D_Grey, #4d4d4d);
-        font-size: 46px;
+        text-align: center;
+        font-size: 40px;
         font-style: normal;
         font-weight: 600;
-        line-height: 67px; /* 118.75% */
+        line-height: 57px; /* 118.75% */
         span {
           color: ${(props) => props.theme.colors.primaryColor};
         }
@@ -33,25 +40,15 @@ export const HeaderStyled = styled(Element)`
         border-radius: 10px;
       }
     }
-    .right {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      img {
-        max-width: 100%;
-      }
-    }
   }
 
   @media (max-width: 576px) {
     .main {
       margin-top: 85px;
+
       .left {
         height: calc(100vh - 85px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        padding: 0;
         .title {
           font-size: 32px;
           font-weight: 600;
@@ -67,12 +64,6 @@ export const HeaderStyled = styled(Element)`
           margin-top: 15px;
           border-radius: 10px;
         }
-      }
-      .right {
-        height: inherit;
-        /* display: flex;
-        justify-content: center;
-        align-items: center; */
       }
     }
   }

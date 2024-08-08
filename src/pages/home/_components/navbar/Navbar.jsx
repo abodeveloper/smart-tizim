@@ -223,6 +223,7 @@ const Navbar = () => {
           <li>
             <Button
               className="sign-in"
+              size="large"
               onClick={() => navigate("/auth/sign-in")}
             >
               {t("Kirish")}
@@ -231,6 +232,7 @@ const Navbar = () => {
           <li>
             <Button
               type="primary"
+              size="large"
               className="sign-up"
               onClick={() => navigate("/auth/sign-up")}
             >

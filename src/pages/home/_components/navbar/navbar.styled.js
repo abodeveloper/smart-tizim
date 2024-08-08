@@ -32,7 +32,7 @@ export const NavbarStyled = styled.div`
           margin: 0 25px;
           a {
             color: var(--Text-Gray-900, #18191f);
-            font-size: 16px;
+            font-size: 14px;
             font-style: normal;
             font-weight: 500;
             line-height: 24px; /* 150% */
@@ -122,7 +122,7 @@ export const NavbarStyled = styled.div`
       left: 0;
       transition: 0.2s all linear;
       height: calc(100vh - 100px);
-      background-color: #efefef;
+      background-color: #f5f7fa;
 
       ul {
         display: flex;

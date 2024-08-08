@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const Styled = styled(Element)`
   padding: 80px 0;
+  background-color: #f5f7fa;
   .title {
     color: var(--Neutral-D_Grey, #4d4d4d);
     text-align: center;
@@ -30,9 +31,11 @@ export const Styled = styled(Element)`
       padding: 24px;
       border-radius: 8px;
       background: var(--Neutral-White, #fff);
-      box-shadow: 0px 2px 4px 0px rgba(171, 190, 209, 0.2);
 
       .img-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: ${(props) => props.theme.colors.primaryColor};
       }
 
@@ -40,6 +43,7 @@ export const Styled = styled(Element)`
         color: var(--Neutral-D_Grey, #4d4d4d);
         font-size: 20px;
         font-style: normal;
+        text-align: center;
         font-weight: 700;
         line-height: 36px; /* 128.571% */
         margin-top: 15px;
@@ -53,9 +57,10 @@ export const Styled = styled(Element)`
 
         li {
           display: flex;
+          align-items: center;
+          margin: 5px 0;
           .icon {
-            width: 10px;
-            margin-right: 25px;
+            margin-right: 10px;
             svg {
               color: #717171;
             }
@@ -66,8 +71,21 @@ export const Styled = styled(Element)`
             font-style: normal;
             font-weight: 400;
             line-height: 20px; /* 142.857% */
+            margin-right: 15px;
+            font-weight: bold;
+          }
+          .count {
+            color: ${(props) => props.theme.colors.primaryColor};
+            font-weight: bold;
           }
         }
+      }
+
+      .btn-box {
+        margin-top: 25px;
+        /* display: flex;
+        align-items: center;
+        justify-content: center; */
       }
     }
   }

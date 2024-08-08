@@ -32,10 +32,6 @@ const Footer = () => {
       name: t("Narxlar"),
       target: "prices",
     },
-    {
-      name: t("Aloqa"),
-      target: "contacts",
-    },
   ];
 
   return (
