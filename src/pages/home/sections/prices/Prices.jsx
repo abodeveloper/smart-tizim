@@ -26,7 +26,7 @@ const Prices = () => {
 
   const data = [
     {
-      name: t("Basic"),
+      name: "Basic",
       icon: <RiAwardFill size={40} />,
       info: {
         statistics: <RiCloseFill style={{ color: "red" }} />,
@@ -42,7 +42,7 @@ const Prices = () => {
       },
     },
     {
-      name: t("Premium"),
+      name: "Premium",
       icon: <RiMedalFill size={40} />,
       info: {
         statistics: <RiCheckFill style={{ color: "green" }} />,
@@ -58,7 +58,7 @@ const Prices = () => {
       },
     },
     {
-      name: t("Gold"),
+      name: "Gold",
       icon: <RiMedal2Fill size={40} />,
       info: {
         statistics: <RiCheckFill style={{ color: "green" }} />,

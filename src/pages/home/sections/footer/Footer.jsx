@@ -1,10 +1,10 @@
 import {
   RiFacebookBoxFill,
   RiInstagramFill,
-  RiLinkedinBoxFill,
   RiMailFill,
   RiPhoneFill,
   RiTelegramFill,
+  RiYoutubeFill
 } from "@remixicon/react";
 import { Col, Row } from "antd";
 import { Container } from "react-bootstrap";
@@ -43,20 +43,26 @@ const Footer = () => {
               <div className="box">
                 <div className="title">LOGO</div>
                 <div className="commit">
-                  Smart tizim - aqlli tizim platformasi.
+                  {t("Smart tizim - aqlli tizim platformasi.")}
                 </div>
                 <div className="contact-box">
-                  <a href="#" target="_blank">
-                    <RiInstagramFill />
+                  <a
+                    href="https://www.instagram.com/smarttizim1"
+                    target="_blank"
+                  >
+                    <RiInstagramFill size={25} />
                   </a>
-                  <a href="#" target="_blank">
-                    <RiFacebookBoxFill />
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61563322245109"
+                    target="_blank"
+                  >
+                    <RiFacebookBoxFill size={25} />
                   </a>
-                  <a href="#" target="_blank">
-                    <RiLinkedinBoxFill />
+                  <a href="https://youtube.com/@smart-tizim" target="_blank">
+                    <RiYoutubeFill size={25} />
                   </a>
-                  <a href="#" target="_blank">
-                    <RiTelegramFill />
+                  <a href="https://t.me/smarttizim" target="_blank">
+                    <RiTelegramFill size={25} />
                   </a>
                 </div>
               </div>
@@ -92,12 +98,12 @@ const Footer = () => {
                 <ul>
                   <li>
                     <div className="phone">
-                      <RiPhoneFill /> <span>+998935221776</span>
+                      <RiPhoneFill size={25} /> <span>+998 77 300 28 29</span>
                     </div>
                   </li>
                   <li>
                     <div className="phone">
-                      <RiMailFill /> <span>abodeveloper2811@gmail.com</span>
+                      <RiMailFill size={25} /> <span>smarttizim@gmail.com</span>
                     </div>
                   </li>
                 </ul>
@@ -106,7 +112,8 @@ const Footer = () => {
           </Row>
           <div className="footer-border" />
           <div className="text">
-            Copyright @ SMART TIZIM 2024. All Rights Reserved.
+            Copyright @ SMART TIZIM {new Date().getFullYear()}.{" "}
+            {t("Barcha huquqlar himoyalangan.")}
           </div>
         </Container>
       </>

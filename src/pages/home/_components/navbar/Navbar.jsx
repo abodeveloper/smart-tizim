@@ -1,3 +1,4 @@
+import Logo from "@/assets/images/logo.png";
 import CustomSelect from "@/components/atoms/form-elements/custom-select/CustomSelect";
 import { Button, Flex } from "antd";
 import { useEffect, useRef, useState } from "react";
@@ -5,9 +6,8 @@ import { Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
-import { NavbarStyled } from "./navbar.styled";
 import HamburgerIcon from "../hamburger-icon/HamburgerIcon";
-import Logo from "@/assets/images/logo.png";
+import { NavbarStyled } from "./navbar.styled";
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -16,6 +16,15 @@ const Navbar = () => {
   const [menu_show, setMenuShow] = useState(false);
 
   const toggleMenu = () => setMenuShow(!menu_show);
+
+  const { i18n } = useTranslation();
+
+  const [currentLang, setCurrentLang] = useState(i18n.language);
+
+  const changeLanguage = (lang = "en") => {
+    setCurrentLang(lang);
+    i18n.changeLanguage(lang);
+  };
 
   const menus = [
     {
@@ -33,10 +42,6 @@ const Navbar = () => {
     {
       name: t("Narxlar"),
       target: "prices",
-    },
-    {
-      name: t("Aloqa"),
-      target: "contacts",
     },
   ];
 
@@ -88,24 +93,21 @@ const Navbar = () => {
     };
   });
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
   return (
     <NavbarStyled>
       <div className="desctop-navbar">
         <Container>
           <div className="content">
             <div className="logo-box">
-              <img
-                onClick={() => scroll.scrollToTop()}
-                className="desctop-logo"
-                src={Logo}
-                style={{ width: "150px" }}
-                alt=""
-              />
-              {/* LOGO */}
+              <a href="#home">
+                <img
+                  onClick={() => scroll.scrollToTop()}
+                  className="desctop-logo"
+                  src={Logo}
+                  style={{ width: "150px", cursor: "pointer" }}
+                  alt=""
+                />
+              </a>
             </div>
             <ul>
               {menus.map((menu, index) => (
@@ -131,15 +133,15 @@ const Navbar = () => {
             <div className="right-box">
               <Flex gap={"large"}>
                 <CustomSelect
-                  defaultValue="lucy"
                   style={{ width: 50 }}
                   allowClear={false}
                   showSearch={false}
-                  // onChange={handleChange}
+                  value={currentLang}
+                  onChange={changeLanguage}
                   options={[
-                    { value: "jack", label: "UZ" },
-                    { value: "lucy", label: "RU" },
-                    { value: "Yiminghe", label: "EN" },
+                    { value: "uz", label: "UZ" },
+                    { value: "ru", label: "RU" },
+                    { value: "en", label: "EN" },
                   ]}
                 />
                 <Flex gap={"middle"}>

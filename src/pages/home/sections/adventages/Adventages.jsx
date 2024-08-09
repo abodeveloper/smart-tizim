@@ -8,7 +8,6 @@ import {
 import { Col, Row } from "antd";
 import { Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Element } from "react-scroll";
 import { Styled } from "./adventages.styles";
 
 const Adventages = () => {

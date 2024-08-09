@@ -56,7 +56,7 @@ const BusinessDirections = () => {
     <BusinessDirectionsStyled name="industries" style={{ overflow: "hidden" }}>
       <>
         <Container>
-          <div className="title">{t(" Qo'llab quvvatlaydigan sohalar")}</div>
+          <div className="title">{t("Qo'llab quvvatlaydigan sohalar")}</div>
           <div className="desc">
             {t("Smart tizim qaysi sohalarga mos keladi ?")}
           </div>

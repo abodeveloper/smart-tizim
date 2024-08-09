@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Element } from "react-scroll";
 import bgImage from "@/assets/images/bg.png";
+import bgImageMobile from "@/assets/images/bg-mobile.png";
 
 export const HeaderStyled = styled(Element)`
   background-image: url(${bgImage});
@@ -43,6 +44,7 @@ export const HeaderStyled = styled(Element)`
   }
 
   @media (max-width: 576px) {
+    background-image: inherit;
     .main {
       margin-top: 85px;
 

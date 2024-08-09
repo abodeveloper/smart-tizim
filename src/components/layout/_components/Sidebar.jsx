@@ -1,3 +1,5 @@
+import LogoIcon from "@/assets/images/logo-icon.png";
+import Logo from "@/assets/images/logo.png";
 import {
   RiAlignItemBottomFill,
   RiArrowLeftSLine,
@@ -34,8 +36,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import * as S from "../Layout.styles";
 import Category from "./Category";
-import Logo from "@/assets/images/logo.png";
-import LogoIcon from "@/assets/images/logo-icon.png";
 
 const Sidebar = ({ openSidebar, toggleSidebar, setOpenSidebar }) => {
   const location = useLocation();
@@ -70,7 +70,7 @@ const Sidebar = ({ openSidebar, toggleSidebar, setOpenSidebar }) => {
         },
         {
           title: "Statistika",
-          path: "/statistics/order-statistic",
+          path: "/statistics/trade-statistics",
           icon: <RiBarChartBoxFill />,
           isClick: true,
         },
@@ -198,22 +198,22 @@ const Sidebar = ({ openSidebar, toggleSidebar, setOpenSidebar }) => {
       children: [
         {
           title: "Savdo statistikasi",
-          path: "/statistics/orders-statistic",
+          path: "/statistics/trade-statistics",
           icon: <RiAlignItemBottomFill />,
         },
         {
           title: "Ombor statistikasi",
-          path: "/statistics/stores-statistic",
+          path: "/statistics/storage-statistics",
           icon: <RiColorFilterFill />,
         },
         {
           title: "Mijoz statistikasi",
-          path: "/statistics/clients-statistic",
+          path: "/statistics/client-statistics",
           icon: <RiContactsBookFill />,
         },
         {
           title: "Xizmatlar statistikasi",
-          path: "/statistics/services-statistic",
+          path: "/statistics/service-statistics",
           icon: <RiBubbleChartFill />,
         },
       ],

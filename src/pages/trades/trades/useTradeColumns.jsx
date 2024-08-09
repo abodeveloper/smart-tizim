@@ -6,17 +6,21 @@ import {
   formatTimeForUI,
   handleSuccessNotification,
 } from "@/utils/helpers.jsx";
-import { DeleteFilled, EditFilled, EyeFilled } from "@ant-design/icons";
+import {
+  DeleteFilled,
+  EditFilled,
+  EyeFilled,
+  PrinterOutlined,
+} from "@ant-design/icons";
 import { RiListSettingsFill } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
 import { get } from "lodash";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import CheckUI from "./_components/check-ui/CheckUI";
-import React from "react";
 
 export const useTradeColumns = (pagination, filters, setFilters, refetch) => {
   const { t } = useTranslation();
@@ -286,7 +290,7 @@ export const useTradeColumns = (pagination, filters, setFilters, refetch) => {
           <ReactToPrint
             pageStyle={`@page { size: 80mm 100%; margin: 20px; padding: 0px; } body {  margin: 20px; padding: 0px; }`}
             bodyClass="print"
-            trigger={() => <EyeFilled />}
+            trigger={() => <Button icon={<PrinterOutlined />} />}
             content={() => getRef(id).current}
           />
           {!get(row, "is_payment", true) && (

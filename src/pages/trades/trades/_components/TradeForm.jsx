@@ -156,10 +156,14 @@ const TradeForm = ({
             currentProduct ? currentProduct.current_total_count : 0
           );
 
-          if (productTotalCount > currentTotalCount) {
+          if (
+            currentProduct &&
+            currentProduct.product_type === "Sanaladigan" &&
+            productTotalCount > currentTotalCount
+          ) {
             return createError({
               path: `${path}.products[${i}].total_count`,
-              message: t("Omborda mahsulot yetarli emas !"),
+              message: t("Omborda mahsulot yetarli emas!"),
             });
           }
         }
@@ -740,13 +744,23 @@ const TradeForm = ({
                                   <Form.Item
                                     label={t("Ombordagi joriy miqdori")}
                                   >
-                                    {NumberToThousandFormat(
-                                      get(
-                                        currentProduct,
-                                        "current_total_count",
-                                        ""
-                                      ),
-                                      get(currentProduct, "format.name", "")
+                                    {get(
+                                      currentProduct,
+                                      "product_type",
+                                      "Sanaladigan"
+                                    ) == "Sanaladigan" ? (
+                                      <>
+                                        {NumberToThousandFormat(
+                                          get(
+                                            currentProduct,
+                                            "current_total_count",
+                                            ""
+                                          ),
+                                          get(currentProduct, "format.name", "")
+                                        )}
+                                      </>
+                                    ) : (
+                                      t("Sanalmaydigan mahsulot")
                                     )}
                                   </Form.Item>
                                 </Col>

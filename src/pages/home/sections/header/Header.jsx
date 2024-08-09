@@ -19,12 +19,16 @@ const Header = () => {
           <Row gullter={[20, 20]}>
             <Col xs={24} md={24}>
               <div className="left">
-                <h1 className="title">
-                  <span> Smart tizim</span> - biznesning savdo, moliya,
-                  omborxona ishlarini avtomatlashtirish tizimi
-                </h1>
+                <h1
+                  className="title"
+                  dangerouslySetInnerHTML={{
+                    __html: t(
+                      "<span> Smart tizim</span> - biznesning savdo, moliya, omborxona ishlarini avtomatlashtirish tizimi"
+                    ),
+                  }}
+                />
                 <p className="description">
-                  Biz bilan biznesingizni oson boshqaring.
+                  {t(" Biz bilan biznesingizni oson boshqaring.")}
                 </p>
                 <div>
                   <Button

@@ -42,6 +42,7 @@ const DashboardPage = () => {
         </Col>
         <Col xs={24} md={8}>
           <Card
+            style={{ height: "100%" }}
             hoverable={true}
             cover={<img alt="example" src={ProductsCover} />}
           >
@@ -65,9 +66,6 @@ const DashboardPage = () => {
                               {t("Mahsulot kategoriyalarini qo'shing")}
                             </NavLink>
                           ),
-                          description: t(
-                            "Ishni mahsulotlaringiz turlarini tizimga kiritishdan boshlang !"
-                          ),
                         },
                         {
                           title: (
@@ -75,18 +73,12 @@ const DashboardPage = () => {
                               {t("Mahsulot formatlarini qo'shing")}
                             </NavLink>
                           ),
-                          description: t(
-                            "Mahsulotlaringizning turli o'lchov birliklarini tizimga kiriting !"
-                          ),
                         },
                         {
                           title: (
                             <NavLink to={"/products/formats"}>
                               {t("Mahsulotlaringizni qo'shing")}
                             </NavLink>
-                          ),
-                          description: t(
-                            "Siz endi mahsulotlaringizni tizimga kiritishingiz mumkin !"
                           ),
                         },
                       ]}
@@ -99,6 +91,7 @@ const DashboardPage = () => {
         </Col>
         <Col xs={24} md={8}>
           <Card
+            style={{ height: "100%" }}
             hoverable={true}
             cover={<img alt="example" src={StorageCover} />}
           >
@@ -122,9 +115,6 @@ const DashboardPage = () => {
                               {t("Omborxona qo'shing")}
                             </NavLink>
                           ),
-                          description: t(
-                            "Ishni mahsulotlaringiz turlarini tizimga kiritishdan boshlang !"
-                          ),
                         },
                         {
                           title: (
@@ -132,18 +122,12 @@ const DashboardPage = () => {
                               {t("Ta'minotchi qo'shing")}
                             </NavLink>
                           ),
-                          description: t(
-                            "Mahsulotlaringizning turli o'lchov birliklarini tizimga kiriting !"
-                          ),
                         },
                         {
                           title: (
                             <NavLink to={"/storages/storage-products"}>
                               {t("Omborga mahsulot qo'shing")}
                             </NavLink>
-                          ),
-                          description: t(
-                            "Siz endi mahsulotlaringizni tizimga kiritishingiz mumkin !"
                           ),
                         },
                       ]}
@@ -155,7 +139,11 @@ const DashboardPage = () => {
           </Card>
         </Col>
         <Col xs={24} md={8}>
-          <Card hoverable={true} cover={<img alt="example" src={TradeCover} />}>
+          <Card
+            style={{ height: "100%" }}
+            hoverable={true}
+            cover={<img alt="example" src={TradeCover} />}
+          >
             <Meta
               title={t("Savdolar")}
               description={
@@ -176,18 +164,12 @@ const DashboardPage = () => {
                               {t("Mijozlaringizni qo'shing")}
                             </NavLink>
                           ),
-                          description: t(
-                            "Ishni mahsulotlaringiz turlarini tizimga kiritishdan boshlang !"
-                          ),
                         },
                         {
                           title: (
                             <NavLink to={"/trades/trade-create"}>
                               {t("Savdolaringizni qo'shing")}
                             </NavLink>
-                          ),
-                          description: t(
-                            "Siz endi savdolaringizni tizimga kiritishingiz mumkin !"
                           ),
                         },
                       ]}
