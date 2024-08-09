@@ -3,7 +3,7 @@ import CreateButton from "@/components/atoms/create-button/CreateButton";
 import CustomDataTable from "@/components/molecules/custom-data-table/CustomDataTable";
 import GlobalSearchInput from "@/components/molecules/global-search-input/GlobalSearchInput";
 import PageTitle from "@/components/molecules/page-title/PageTitle";
-import { httpGetStorageProducts } from "@/services/api/requests/storage-products.requests";
+import { httpGetTrades } from "@/services/api/requests/trade.requests";
 import { objectToQueryString } from "@/utils/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Col, Flex, Row } from "antd";
@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useListBreadcrumbItems } from "./breadcrumbs/useListBreadcrumb";
 import { useTradeColumns } from "./useTradeColumns";
-import { httpGetTrades } from "@/services/api/requests/trade.requests";
 
 const TradesPage = () => {
   const { t } = useTranslation();

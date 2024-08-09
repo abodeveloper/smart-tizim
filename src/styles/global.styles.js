@@ -19,6 +19,10 @@ export default createGlobalStyle`
     src: url(${PoppinsRegularTtf}) format('truetype');
   }
 
+  a{
+    text-decoration: none !important;
+  }
+
   .ant-form-item {
     margin-bottom: 0px;
   }

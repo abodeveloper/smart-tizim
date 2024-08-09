@@ -83,6 +83,40 @@ const SignUpPage = () => {
             >
               <Flex justify="center" vertical gap={"15px"}>
                 <Form.Item
+                  label={t("Korxona nomi")}
+                  {...getValidationStatus(errors, "username")}
+                  required={true}
+                >
+                  <Controller
+                    name="username"
+                    control={control}
+                    render={({ field }) => (
+                      <CustomInput
+                        {...field}
+                        placeholder={t("Username ni kiriting")}
+                        prefix={<UserOutlined />}
+                      />
+                    )}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label={t("Familiya")}
+                  {...getValidationStatus(errors, "username")}
+                  required={true}
+                >
+                  <Controller
+                    name="username"
+                    control={control}
+                    render={({ field }) => (
+                      <CustomInput
+                        {...field}
+                        placeholder={t("Username ni kiriting")}
+                        prefix={<UserOutlined />}
+                      />
+                    )}
+                  />
+                </Form.Item>
+                <Form.Item
                   label={t("Username")}
                   {...getValidationStatus(errors, "username")}
                   required={true}

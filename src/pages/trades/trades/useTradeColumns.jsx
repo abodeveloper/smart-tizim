@@ -11,8 +11,12 @@ import { RiListSettingsFill } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Flex, Tag } from "antd";
 import { get } from "lodash";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
+import ReactToPrint from "react-to-print";
+import CheckUI from "./_components/check-ui/CheckUI";
+import React from "react";
 
 export const useTradeColumns = (pagination, filters, setFilters, refetch) => {
   const { t } = useTranslation();
@@ -33,6 +37,15 @@ export const useTradeColumns = (pagination, filters, setFilters, refetch) => {
 
   const handleDelete = (id) => {
     deleteMutate.mutate(id);
+  };
+
+  const refs = useRef({});
+
+  const getRef = (id) => {
+    if (!refs.current[id]) {
+      refs.current[id] = React.createRef();
+    }
+    return refs.current[id];
   };
 
   return [
@@ -268,6 +281,13 @@ export const useTradeColumns = (pagination, filters, setFilters, refetch) => {
             type="primary"
             onClick={() => navigate(`/trades/trades/${id}`)}
             icon={<EyeFilled />}
+          />
+          <CheckUI data={row} componentRef={getRef(id)} />
+          <ReactToPrint
+            pageStyle={`@page { size: 80mm 100%; margin: 20px; padding: 0px; } body {  margin: 20px; padding: 0px; }`}
+            bodyClass="print"
+            trigger={() => <EyeFilled />}
+            content={() => getRef(id).current}
           />
           {!get(row, "is_payment", true) && (
             <Button

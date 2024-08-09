@@ -376,10 +376,7 @@ const Router = () => {
               <Route index path={"sign-in"} element={<SignInPage />} />
               <Route path={"sign-up"} element={<SignUpPage />} />
             </Route>
-            <Route
-              path={"*"}
-              element={<Navigate to={"/auth/sign-in"} replace />}
-            />
+            <Route path={"*"} element={<Navigate to={"/"} replace />} />
           </Routes>
         </IsGuest>
       </Suspense>
